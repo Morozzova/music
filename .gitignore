@@ -13,4 +13,3 @@ gradle-app.setting
 !gradle-wrapper.properties
 
 /.idea/
-**/yarn.lock

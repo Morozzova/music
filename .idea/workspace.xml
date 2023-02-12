@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="810557cf-86dd-4213-b40e-d5dde6331aaf" name="Changes" comment="Project info, mockup and marketing added">
-      <change afterPath="$PROJECT_DIR$/img/arch.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="810557cf-86dd-4213-b40e-d5dde6331aaf" name="Changes" comment="Architecture scheme added">
       <change beforePath="$PROJECT_DIR$/docs/05-architecture.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/05-architecture.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +69,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676221002025</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Architecture scheme added">
+      <created>1676223399119</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1676223399119</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -88,6 +93,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Project created. Gitignore configured" />
     <MESSAGE value="Project info, mockup and marketing added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Project info, mockup and marketing added" />
+    <MESSAGE value="Architecture scheme added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Architecture scheme added" />
   </component>
 </project>

@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="810557cf-86dd-4213-b40e-d5dde6331aaf" name="Changes" comment="Docker files added">
-      <change afterPath="$PROJECT_DIR$/deploy/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deploy/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deploy/volumes/fluent-bit-etc/fluent-bit.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deploy/volumes/fluent-bit-etc/parsers.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deploy/volumes/nginx/default.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deploy/volumes/nginx/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="810557cf-86dd-4213-b40e-d5dde6331aaf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +19,23 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="music" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -53,7 +66,7 @@
       <recent name="C:\Projects\music\img" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.deploy.dashboards: Compose Deployment">
+  <component name="RunManager">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -108,14 +121,6 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Docker.deploy.dashboards: Compose Deployment" />
-        <item itemvalue="Docker.deploy.opensearch: Compose Deployment" />
-        <item itemvalue="Docker.deploy: Compose Deployment" />
-        <item itemvalue="Docker.deploy/Dockerfile" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.7.20"
     application
 }
 
@@ -17,6 +17,9 @@ val coroutinesVersion: String by project
 val jUnitJupiterVersion: String by project
 
 dependencies {
+    implementation(kotlin("stdlib-common"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
     implementation(kotlin("test-junit5"))
     implementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     implementation("org.junit.jupiter:junit-jupiter-params:$jUnitJupiterVersion")

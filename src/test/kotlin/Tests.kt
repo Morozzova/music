@@ -1,11 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
-import kotlin.test.assertIs
-import kotlin.test.assertTrue
 
-// Test for TDD
 internal class MusicBrokerTests {
 
     @Test

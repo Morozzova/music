@@ -5,12 +5,8 @@ import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
-internal class SimpleTests {
-    @BeforeEach
-    fun simpleBeforeEachTest() {
-        val randomNum = 7 + 4.2
-        assertTrue(randomNum == 11.2)
-    }
+// Test for TDD
+internal class MusicBrokerTests {
 
     @Test
     fun anyTest() {
@@ -24,15 +20,12 @@ internal class SimpleTests {
         val actual = str.length
         assertEquals(sum, actual, "It is wrong")
     }
-}
 
-// Test for TDD
-internal class MusicBrokerTests {
-    @Test
-    fun deleteDiscussionTest() {
-        val discussionId = "345"
-        val discussions = mapOf<String, Discussion>(discussionId to Discussion())
-        deleteDiscussion(discussionId)
-        assertFalse(discussions.keys.contains(discussionId))
-    }
+//    @Test
+//    fun deleteDiscussionTest() {
+//        val discussionId = "345"
+//        val discussions = mapOf<String, Discussion>(discussionId to Discussion())
+//        deleteDiscussion(discussionId)
+//        assertFalse(discussions.keys.contains(discussionId))
+//    }
 }

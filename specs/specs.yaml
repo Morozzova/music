@@ -136,18 +136,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswerCreateResponse'
-  /user/getAllDiscussions:
+  /user/allDiscussions:
     post:
       tags:
         - user
       summary: Show all discussions
-      operationId: getAllDiscussions
+      operationId: allDiscussions
       requestBody:
         description: Request body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetAllDiscussionsRequest'
+              $ref: '#/components/schemas/AllDiscussionsRequest'
         required: true
       responses:
         200:
@@ -155,19 +155,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetAllDiscussionsResponse'
-  /user/getUsersDiscussions:
+                $ref: '#/components/schemas/AllDiscussionsResponse'
+  /user/usersDiscussions:
     post:
       tags:
         - user
       summary: Show users discussions
-      operationId: getUsersDiscussions
+      operationId: usersDiscussions
       requestBody:
         description: Request body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetUsersDiscussionsRequest'
+              $ref: '#/components/schemas/UsersDiscussionsRequest'
         required: true
       responses:
         200:
@@ -175,7 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetUsersDiscussionsResponse'
+                $ref: '#/components/schemas/UsersDiscussionsResponse'
 
 components:
   schemas:
@@ -200,8 +200,8 @@ components:
           delete: '#/components/schemas/DiscussionDeleteRequest'
           close: '#/components/schemas/DiscussionCloseRequest'
           addAnswer: '#/components/schemas/AnswerCreateRequest'
-          allDiscussions: '#/components/schemas/GetAllDiscussionsRequest'
-          usersDiscussions: '#/components/schemas/GetUsersDiscussionsRequest'
+          allDiscussions: '#/components/schemas/AllDiscussionsRequest'
+          usersDiscussions: '#/components/schemas/UsersDiscussionsRequest'
 
     Error:
       type: object
@@ -247,8 +247,8 @@ components:
           delete: '#/components/schemas/DiscussionDeleteResponse'
           close: '#/components/schemas/DiscussionCloseResponse'
           addAnswer: '#/components/schemas/AnswerCreateResponse'
-          allDiscussions: '#/components/schemas/GetAllDiscussionsResponse'
-          usersDiscussions: '#/components/schemas/GetUsersDiscussionsResponse'
+          allDiscussions: '#/components/schemas/UserAllDiscussionsResponse'
+          usersDiscussions: '#/components/schemas/UserUsersDiscussionsResponse'
 
     UserId:
       type: string
@@ -400,35 +400,35 @@ components:
     AnswerCreateRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/AnswerRequestDebug'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
             ad:
               $ref: '#/components/schemas/AnswerCreateObject'
 
     AllDiscussionsObject:
-      $ref: '#/components/schemas/AllDiscussionsReadObject'
+      $ref: '#/components/schemas/AllDiscussionsObject'
 
     AllDiscussionsRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/AllDiscussionsRequestDebug'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
             ad:
-              $ref: '#/components/schemas/AllDiscussionsOffersObject'
+              $ref: '#/components/schemas/AllDiscussionsObject'
 
     UsersDiscussionsObject:
-      $ref: '#/components/schemas/UsersDiscussionsReadObject'
+      $ref: '#/components/schemas/UsersDiscussionsObject'
 
     UsersDiscussionsRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/UsersDiscussionsRequestDebug'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
             ad:
-              $ref: '#/components/schemas/UsersDiscussionsOffersObject'
+              $ref: '#/components/schemas/UsersDiscussionsObject'
 
     DiscussionResponseObject:
       allOf:
@@ -477,22 +477,22 @@ components:
     DiscussionCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionResponseSingle'
+        - $ref: '#/components/schemas/DiscussionCreateResponse'
 
     DiscussionReadResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionResponseSingle'
+        - $ref: '#/components/schemas/DiscussionReadResponse'
 
     DiscussionUpdateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionResponseSingle'
+        - $ref: '#/components/schemas/DiscussionUpdateResponse'
 
     DiscussionDeleteResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionResponseSingle'
+        - $ref: '#/components/schemas/DiscussionDeleteResponse'
 
     DiscussionCloseResponse:
       allOf:
@@ -502,7 +502,7 @@ components:
     AnswerCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/AnswerResponse'
+        - $ref: '#/components/schemas/AnswerCreateResponse'
 
     DiscussionsResponse:
       allOf:

@@ -1,34 +1,60 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
     id("org.openapi.generator")
+    kotlin("plugin.serialization")
 }
 
-dependencies {
-    val jacksonVersion: String by project
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    testImplementation(kotlin("test-junit"))
-}
+kotlin {
+    jvm { }
+    linuxX64 { }
+    macosX64 { }
 
-sourceSets {
-    main {
-        java.srcDir("$buildDir/generate-resources/main/src/main/kotlin")
+    sourceSets {
+        val serializationVersion: String by project
+
+        @Suppress("UNUSED_VARIABLE")
+        val commonMain by getting {
+
+            kotlin.srcDirs("$buildDir/generate-resources/main/src/commonMain/kotlin")
+
+            dependencies {
+                implementation(kotlin("stdlib-common"))
+
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+            }
+        }
+        @Suppress("UNUSED_VARIABLE")
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+        @Suppress("UNUSED_VARIABLE")
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
     }
 }
 
+/**
+ * Настраиваем генерацию здесь
+ */
 openApiGenerate {
-    val openapiGroup = "${rootProject.group}.api.v1"
+    val openapiGroup = "${rootProject.group}.api.v2"
     generatorName.set("kotlin") // Это и есть активный генератор
     packageName.set(openapiGroup)
     apiPackage.set("$openapiGroup.api")
     modelPackage.set("$openapiGroup.models")
     invokerPackage.set("$openapiGroup.invoker")
-    inputSpec.set("$rootDir/specs/specs.yaml")
+    inputSpec.set("$rootDir/specs/specs-ad-v2.yaml")
+    library.set("multiplatform")
 
     /**
      * Здесь указываем, что нам нужны только модели, все остальное не нужно
-     * https://openapi-generator.tech/docs/globals
      */
     globalProperties.apply {
         put("models", "")
@@ -43,14 +69,14 @@ openApiGenerate {
         mapOf(
             "dateLibrary" to "string",
             "enumPropertyNaming" to "UPPERCASE",
-            "serializationLibrary" to "jackson",
-            "collectionType" to "list"
+            "collectionType" to "list",
         )
     )
 }
 
-tasks {
-    compileKotlin {
-        dependsOn(openApiGenerate)
+afterEvaluate {
+    val openApiGenerate = tasks.getByName("openApiGenerate")
+    tasks.filter { it.name.startsWith("compile") }.forEach {
+        it.dependsOn(openApiGenerate)
     }
 }

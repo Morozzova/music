@@ -81,7 +81,7 @@ paths:
       tags:
         - discussion
       summary: Delete discussion
-      operationId: discussionUpdate
+      operationId: discussionDelete
       requestBody:
         description: Request body
         content:
@@ -247,8 +247,8 @@ components:
           delete: '#/components/schemas/DiscussionDeleteResponse'
           close: '#/components/schemas/DiscussionCloseResponse'
           addAnswer: '#/components/schemas/AnswerCreateResponse'
-          allDiscussions: '#/components/schemas/UserAllDiscussionsResponse'
-          usersDiscussions: '#/components/schemas/UserUsersDiscussionsResponse'
+          allDiscussions: '#/components/schemas/AllDiscussionsResponse'
+          usersDiscussions: '#/components/schemas/UsersDiscussionsResponse'
 
     UserId:
       type: string
@@ -301,8 +301,6 @@ components:
         name:
           type: string
           description: Отображаемое имя
-        discussions:
-          type: array
 
     DiscussionInitResponse:
       allOf:

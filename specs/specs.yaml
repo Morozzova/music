@@ -316,7 +316,7 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
+            discussion:
               $ref: '#/components/schemas/DiscussionCreateObject'
 
     DiscussionReadObject:
@@ -332,7 +332,7 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
+            discussion:
               $ref: '#/components/schemas/DiscussionReadObject'
 
     DiscussionUpdateObject:
@@ -351,7 +351,7 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
+            discussion:
               $ref: '#/components/schemas/DiscussionUpdateObject'
 
     DiscussionDeleteObject:
@@ -369,7 +369,7 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
+            discussion:
               $ref: '#/components/schemas/DiscussionDeleteObject'
 
     DiscussionCloseObject:
@@ -388,7 +388,7 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
+            discussion:
               $ref: '#/components/schemas/DiscussionCloseObject'
 
     AnswerCreateObject:
@@ -401,11 +401,11 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
+            answer:
               $ref: '#/components/schemas/AnswerCreateObject'
 
     AllDiscussionsObject:
-      $ref: '#/components/schemas/AllDiscussionsObject'
+      $ref: '#/components/schemas/DiscussionReadObject'
 
     AllDiscussionsRequest:
       allOf:
@@ -413,11 +413,11 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
-              $ref: '#/components/schemas/AllDiscussionsObject'
+            allDiscussions:
+              $ref: '#/components/schemas/DiscussionReadObject'
 
     UsersDiscussionsObject:
-      $ref: '#/components/schemas/UsersDiscussionsObject'
+      $ref: '#/components/schemas/DiscussionReadObject'
 
     UsersDiscussionsRequest:
       allOf:
@@ -425,8 +425,8 @@ components:
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
           properties:
-            ad:
-              $ref: '#/components/schemas/UsersDiscussionsObject'
+            usersDiscussions:
+              $ref: '#/components/schemas/DiscussionReadObject'
 
     DiscussionResponseObject:
       allOf:
@@ -467,7 +467,7 @@ components:
         - type: object
           description: Список найденных объектов
           properties:
-            ads:
+            usersDiscussions:
               type: array
               items:
                 $ref: '#/components/schemas/DiscussionResponseObject'
@@ -475,32 +475,26 @@ components:
     DiscussionCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionCreateResponse'
 
     DiscussionReadResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionReadResponse'
 
     DiscussionUpdateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionUpdateResponse'
 
     DiscussionDeleteResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionDeleteResponse'
 
     DiscussionCloseResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionCloseResponse'
 
     AnswerCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/AnswerCreateResponse'
 
     DiscussionsResponse:
       allOf:

@@ -1,42 +1,19 @@
 plugins {
-    kotlin("multiplatform")
+    kotlin("jvm")
     id("org.openapi.generator")
-    kotlin("plugin.serialization")
 }
 
-kotlin {
-    jvm { }
-    linuxX64 { }
-    macosX64 { }
+dependencies {
+    val jacksonVersion: String by project
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    testImplementation(kotlin("test-junit"))
+}
 
-    sourceSets {
-        val serializationVersion: String by project
-
-        @Suppress("UNUSED_VARIABLE")
-        val commonMain by getting {
-
-            kotlin.srcDirs("$buildDir/generate-resources/main/src/commonMain/kotlin")
-
-            dependencies {
-                implementation(kotlin("stdlib-common"))
-
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-            }
-        }
+sourceSets {
+    main {
+        java.srcDir("$buildDir/generate-resources/main/src/main/kotlin")
     }
 }
 
@@ -74,9 +51,8 @@ openApiGenerate {
     )
 }
 
-afterEvaluate {
-    val openApiGenerate = tasks.getByName("openApiGenerate")
-    tasks.filter { it.name.startsWith("compile") }.forEach {
-        it.dependsOn(openApiGenerate)
+tasks {
+    compileKotlin {
+        dependsOn(openApiGenerate)
     }
 }

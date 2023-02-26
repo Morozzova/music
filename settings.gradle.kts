@@ -13,6 +13,15 @@ pluginManagement {
     }
 }
 
-include("discussions")
-include("users")
 include("answers")
+include("answers:answers-common")
+include("answers:answers-mappers")
+include("answers:answers-api-jackson")
+include("discussions")
+include("discussions:discussions-common")
+include("discussions:discussions-mappers")
+include("discussions:discussions-api-jackson")
+include("users")
+include("users:users-common")
+include("users:users-mappers")
+include("users:users-api-jackson")

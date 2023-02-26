@@ -28,7 +28,6 @@ openApiGenerate {
     modelPackage.set("$openapiGroup.models")
     invokerPackage.set("$openapiGroup.invoker")
     inputSpec.set("$rootDir/specs/spec-music-broker-users.yaml")
-    library.set("multiplatform")
 
     /**
      * Здесь указываем, что нам нужны только модели, все остальное не нужно
@@ -46,7 +45,8 @@ openApiGenerate {
         mapOf(
             "dateLibrary" to "string",
             "enumPropertyNaming" to "UPPERCASE",
-            "collectionType" to "list",
+            "serializationLibrary" to "jackson",
+            "collectionType" to "list"
         )
     )
 }

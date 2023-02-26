@@ -1,0 +1,404 @@
+openapi: 3.0.4
+info:
+  title: Music broker
+  description: App for discussions about music, searching tracks and asking other users for titles
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: discussion
+    description: Discussion with searching music tracks
+
+paths:
+  /discussion/create:
+    post:
+      tags:
+        - discussion
+      summary: Create discussion
+      operationId: discussionCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscussionCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscussionCreateResponse'
+  /discussion/read:
+    post:
+      tags:
+        - discussion
+      summary: Read discussion
+      operationId: discussionRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscussionReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscussionReadResponse'
+  /discussion/update:
+    post:
+      tags:
+        - discussion
+      summary: Update discussion description
+      operationId: discussionUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscussionUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscussionUpdateResponse'
+  /discussion/delete:
+    post:
+      tags:
+        - discussion
+      summary: Delete discussion
+      operationId: discussionDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscussionDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscussionDeleteResponse'
+  /discussion/close:
+    post:
+      tags:
+        - discussion
+      summary: Close discussion
+      operationId: discussionClose
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscussionCloseRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscussionCloseResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/DiscussionCreateRequest'
+          read: '#/components/schemas/DiscussionReadRequest'
+          update: '#/components/schemas/DiscussionUpdateRequest'
+          delete: '#/components/schemas/DiscussionDeleteRequest'
+          close: '#/components/schemas/DiscussionCloseRequest'
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/DiscussionCreateResponse'
+          read: '#/components/schemas/DiscussionReadResponse'
+          update: '#/components/schemas/DiscussionUpdateResponse'
+          delete: '#/components/schemas/DiscussionDeleteResponse'
+          close: '#/components/schemas/DiscussionCloseResponse'
+
+    DiscussionInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    DiscussionCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseDiscussion'
+
+    DiscussionCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - type: object
+          properties:
+            discussion:
+              $ref: '#/components/schemas/DiscussionCreateObject'
+
+    DiscussionReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/DiscussionId'
+
+    DiscussionReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - type: object
+          properties:
+            discussion:
+              $ref: '#/components/schemas/DiscussionReadObject'
+
+    DiscussionUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseDiscussion'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/DiscussionId'
+            lock:
+              $ref: '#/components/schemas/DiscussionLock'
+
+    DiscussionUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - type: object
+          properties:
+            discussion:
+              $ref: '#/components/schemas/DiscussionUpdateObject'
+
+    DiscussionDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/DiscussionId'
+            lock:
+              $ref: '#/components/schemas/DiscussionLock'
+
+    DiscussionDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - type: object
+          properties:
+            discussion:
+              $ref: '#/components/schemas/DiscussionDeleteObject'
+
+    DiscussionCloseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseDiscussion'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/DiscussionId'
+            lock:
+              $ref: '#/components/schemas/DiscussionLock'
+
+    DiscussionCloseRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - type: object
+          properties:
+            discussion:
+              $ref: '#/components/schemas/DiscussionCloseObject'
+
+    DiscussionResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseDiscussion'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/DiscussionId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/DiscussionLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/DiscussionPermissions'
+
+    DiscussionPermissions:
+      type: string
+      description: Доступы для клиента для операций над обсуждениями
+      enum:
+        - read
+        - update
+        - delete
+
+    DiscussionCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    DiscussionReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    DiscussionUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    DiscussionDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    DiscussionCloseResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    DiscussionId:
+      type: string
+      description: Идентификатор обсуждения
+    AnswerId:
+      type: string
+      description: Идентификатор ответа
+    DiscussionLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseDiscussion:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        title:
+          type: string
+          description: Текст обсуждения
+        soundUrl:
+          type: string
+          description: Ссылка на аудиозапись
+        isOpen:
+          type: boolean
+          description: Открыто или закрыто обсуждение для добавления новых ответов
+
+    BaseAnswer:
+      type: object
+      description: Свойства ответа
+      properties:
+        text:
+          type: string
+          description: Текст ответа
+        isRight:
+          type: boolean
+          description: Верен ли ответ
+
+    BaseUser:
+      type: object
+      description: Свойства пользователя
+      properties:
+        login:
+          type: string
+          description: Логин
+        password:
+          type: string
+          description: Пароль
+        name:
+          type: string
+          description: Отображаемое имя
+
+    # STUBS ======================
+    DiscussionRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    DiscussionRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/DiscussionDebug'
+
+    DiscussionDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/DiscussionRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/DiscussionRequestDebugStubs'
+
+    DiscussionRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badTitle
+        - badDescription
+        - badVisibility
+        - cannotDelete
+        - badSearchString

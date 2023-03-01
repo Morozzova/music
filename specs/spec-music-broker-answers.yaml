@@ -34,6 +34,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/AnswerCreateResponse'
 
+  /answer/read:
+    post:
+      tags:
+        - answer
+      summary: Read answer
+      operationId: answerRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerReadResponse'
+
+  /answer/update:
+    post:
+      tags:
+        - answer
+      summary: Update answer
+      operationId: answerUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerUpdateResponse'
+
 components:
   schemas:
     AnswerCreateObject:
@@ -43,7 +85,7 @@ components:
     AnswerCreateRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - $ref: '#/components/schemas/AnswerRequestDebug'
         - type: object
           properties:
             answer:
@@ -52,6 +94,43 @@ components:
     AnswerCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/AnswerResponseSingle'
+
+    AnswerReadObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnswer'
+
+    AnswerReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/AnswerRequestDebug'
+        - type: object
+          properties:
+            answer:
+              $ref: '#/components/schemas/AnswerReadObject'
+
+    AnswerReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/AnswerResponseSingle'
+
+    AnswerUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnswer'
+
+    AnswerUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/AnswerRequestDebug'
+        - type: object
+          properties:
+            answer:
+              $ref: '#/components/schemas/AnswerUpdateObject'
+
+    AnswerUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/AnswerResponseSingle'
 
     IRequest:
       type: object
@@ -118,7 +197,7 @@ components:
     AnswerId:
       type: string
       description: Идентификатор ответа
-    DiscussionLock:
+    AnswerLock:
       type: string
       description: Версия оптимистичной блокировки
 
@@ -140,13 +219,55 @@ components:
       type: object
       description: Свойства ответа
       properties:
+        id:
+          type: string
+        discussionId:
+          type: string
+        usersId:
+          type: string
         text:
           type: string
           description: Текст ответа
         isRight:
           type: boolean
           description: Верен ли ответ
+        permissions:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/AnswerPermissions'
 
+    AnswerPermissions:
+      type: string
+      description: Доступы для клиента для операции над ответами
+      enum:
+        - read
+        - update
+        - delete
+
+    AnswerResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnswer'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/AnswerId'
+            lock:
+              $ref: '#/components/schemas/AnswerLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/AnswerPermissions'
+
+    AnswerResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним обсуждением
+          properties:
+            answer:
+              $ref: '#/components/schemas/AnswerResponseObject'
     BaseUser:
       type: object
       description: Свойства пользователя
@@ -162,36 +283,32 @@ components:
           description: Отображаемое имя
 
     # STUBS ======================
-    DiscussionRequestDebugMode:
+    AnswerRequestDebugMode:
       type: string
       enum:
         - prod
         - test
         - stub
 
-    DiscussionRequestDebug:
+    AnswerRequestDebug:
       type: object
       properties:
         debug:
-          $ref: '#/components/schemas/DiscussionDebug'
+          $ref: '#/components/schemas/AnswerDebug'
 
-    DiscussionDebug:
+    AnswerDebug:
       type: object
       properties:
         mode:
-          $ref: '#/components/schemas/DiscussionRequestDebugMode'
+          $ref: '#/components/schemas/AnswerRequestDebugMode'
         stub:
-          $ref: '#/components/schemas/DiscussionRequestDebugStubs'
+          $ref: '#/components/schemas/AnswerRequestDebugStubs'
 
-    DiscussionRequestDebugStubs:
+    AnswerRequestDebugStubs:
       type: string
       description: Перечисления всех стабов
       enum:
         - success
         - notFound
-        - badId
-        - badTitle
-        - badDescription
-        - badVisibility
-        - cannotDelete
-        - badSearchString
+        - badDiscussion
+        - badText

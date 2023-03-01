@@ -1,11 +1,10 @@
 package ru.music.common.models
 
-enum class DiscussionsCommand {
+enum class DiscCommand {
     NONE,
     CREATE,
     READ,
     UPDATE,
-    DELETE,
-    SEARCH,
-    OFFERS,
+    CLOSE,
+    DELETE
 }

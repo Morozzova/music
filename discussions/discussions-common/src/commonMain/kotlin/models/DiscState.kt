@@ -1,6 +1,6 @@
 package ru.music.common.models
 
-enum class DiscussionsState {
+enum class DiscState {
     NONE,
     RUNNING,
     FAILING,

@@ -277,26 +277,37 @@ components:
         - read
         - update
         - delete
-
+    DiscussionResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним обсуждением
+          properties:
+            discussion:
+              $ref: '#/components/schemas/DiscussionResponseObject'
     DiscussionCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseSingle'
 
     DiscussionReadResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseSingle'
 
     DiscussionUpdateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseSingle'
 
     DiscussionDeleteResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseSingle'
 
     DiscussionCloseResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseSingle'
 
     Error:
       type: object
@@ -398,7 +409,5 @@ components:
         - notFound
         - badId
         - badTitle
-        - badDescription
-        - badVisibility
+        - badFile
         - cannotDelete
-        - badSearchString

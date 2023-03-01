@@ -96,57 +96,85 @@ components:
           allDiscussions: '#/components/schemas/AllDiscussionsResponse'
           usersDiscussions: '#/components/schemas/UsersDiscussionsResponse'
 
-    AllDiscussionsObject:
+    DiscussionResponseObject:
       allOf:
         - $ref: '#/components/schemas/BaseDiscussion'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/DiscussionId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/DiscussionLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/DiscussionPermissions'
+
+    DiscussionResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            discussions:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscussionResponseObject'
+
+
+
+    DiscussionPermissions:
+      type: string
+      description: Доступы для клиента для операций над обсуждениями
+      enum:
+        - read
+        - update
+        - delete
+
+    AllDiscussionsReadObject:
+      allOf:
+        - type: object
+          properties:
+            allDiscussions:
+              $ref: '#/components/schemas/AllDiscussionsReadObject'
 
     AllDiscussionsRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - $ref: '#/components/schemas/UserRequestDebug'
         - type: object
           properties:
             allDiscussions:
-              $ref: '#/components/schemas/AllDiscussionsObject'
+              $ref: '#/components/schemas/AllDiscussionsReadObject'
 
-    UsersDiscussionsObject:
+    AllDiscussionsResponse:
       allOf:
-        - $ref: '#/components/schemas/BaseDiscussion'
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseMulti'
+
+    UsersDiscussionsReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/UserId'
 
     UsersDiscussionsRequest:
       allOf:
         - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - $ref: '#/components/schemas/UserRequestDebug'
         - type: object
           properties:
-            usersDiscussions:
-              $ref: '#/components/schemas/UsersDiscussionsObject'
-
-    AllDiscussionsResponse:
-      allOf:
-        - type: object
-          description: Все обсуждения
-          properties:
-            allDiscussions:
-              type: array
-              items:
-                $ref: '#/components/schemas/AllDiscussionsObject'
+            usersId:
+              $ref: '#/components/schemas/UserId'
 
     UsersDiscussionsResponse:
       allOf:
-        - type: object
-          description: Все обсуждения пользователя
-          properties:
-            usersDiscussions:
-              type: array
-              items:
-                $ref: '#/components/schemas/UsersDiscussionsObject'
-
-    DiscussionsResponse:
-      allOf:
         - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/AllDiscussionsResponse'
-        - $ref: '#/components/schemas/UsersDiscussionsResponse'
+        - $ref: '#/components/schemas/DiscussionResponseMulti'
 
     Error:
       type: object
@@ -219,38 +247,33 @@ components:
           description: Отображаемое имя
 
     # STUBS ======================
-    DiscussionRequestDebugMode:
+    UserRequestDebugMode:
       type: string
       enum:
         - prod
         - test
         - stub
 
-    DiscussionRequestDebug:
+    UserRequestDebug:
       type: object
       properties:
         debug:
-          $ref: '#/components/schemas/DiscussionDebug'
+          $ref: '#/components/schemas/UserDebug'
 
-    DiscussionDebug:
+    UserDebug:
       type: object
       properties:
         mode:
-          $ref: '#/components/schemas/DiscussionRequestDebugMode'
+          $ref: '#/components/schemas/UserRequestDebugMode'
         stub:
-          $ref: '#/components/schemas/DiscussionRequestDebugStubs'
+          $ref: '#/components/schemas/UserRequestDebugStubs'
 
-    DiscussionRequestDebugStubs:
+    UserRequestDebugStubs:
       type: string
       description: Перечисления всех стабов
       enum:
         - success
         - notFound
         - badId
-        - badTitle
-        - badDescription
-        - badVisibility
-        - cannotDelete
-        - badSearchString
 
 

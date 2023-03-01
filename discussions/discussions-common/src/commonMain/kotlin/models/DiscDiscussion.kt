@@ -7,5 +7,4 @@ data class DiscDiscussion(
     var soundUrl: String = "",
     var isOpen: Boolean = true,
     var permissionsClient: MutableList<DiscPermissionsClient> = mutableListOf()
-
 )

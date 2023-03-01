@@ -62,11 +62,11 @@ private fun DiscPermissionsClient.toTransportDisc() = when (this) {
 }
 
 private fun List<DiscError>.toTransportErrors(): List<Error>? = this
-    .map { it.toTransportAd() }
+    .map { it.toTransportDisk() }
     .toList()
     .takeIf { it.isNotEmpty() }
 
-private fun DiscError.toTransportAd() = Error(
+private fun DiscError.toTransportDisk() = Error(
     code = code.takeIf { it.isNotBlank() },
     group = group.takeIf { it.isNotBlank() },
     field = field.takeIf { it.isNotBlank() },

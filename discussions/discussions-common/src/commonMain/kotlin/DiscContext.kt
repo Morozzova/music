@@ -17,5 +17,4 @@ data class DiscContext(
 
     var discussionRequest: DiscDiscussion = DiscDiscussion(),
     var discussionResponse: DiscDiscussion = DiscDiscussion(),
-
-    )
+)

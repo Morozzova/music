@@ -45,6 +45,7 @@ fun List<DiscDiscussion>.toTransportDisc(): List<DiscussionResponseObject>? = th
 
 private fun DiscDiscussion.toTransportDisc(): DiscussionResponseObject = DiscussionResponseObject(
     id = id.takeIf { it != DiscId.NONE }?.asString(),
+    soundUrl = soundUrl.takeIf { it.isNotBlank() },
     title = title.takeIf { it.isNotBlank() },
     ownerId = ownerId.takeIf { it != DiscUserId.NONE }?.asString(),
     permissions = permissionsClient.toTransportDisc(),

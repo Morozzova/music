@@ -1,5 +1,5 @@
 import exceptions.UnknownUsersCommand
-import musicBroker.api.v2.models.*
+import musicBroker.api.v1.models.*
 import ru.music.common.UsersContext
 import ru.music.common.models.*
 
@@ -25,6 +25,8 @@ fun UsersContext.toTransportUsersDisc() = UsersDiscussionsResponse(
 private fun UsersDiscussion.toTransportUsers(): DiscussionResponseObject = DiscussionResponseObject(
     id = id.takeIf { it != UsersDiscussionId.NONE }?.asString(),
     title = title.takeIf { it.isNotBlank() },
+    soundUrl = soundUrl.takeIf { it.isNotBlank() },
+    isOpen = isOpen,
     ownerId = ownerId.takeIf { it != UsersUserId.NONE }?.asString(),
     permissions = permissionsClient.toTransportUsers(),
 )

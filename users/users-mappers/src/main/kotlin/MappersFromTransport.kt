@@ -1,5 +1,5 @@
 import exceptions.UnknownRequestClass
-import musicBroker.api.v2.models.*
+import musicBroker.api.v1.models.*
 import ru.music.common.UsersContext
 import ru.music.common.models.*
 import ru.music.common.stubs.UsersStubs

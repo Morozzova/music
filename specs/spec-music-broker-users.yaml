@@ -70,8 +70,8 @@ components:
       discriminator:
         propertyName: requestType
         mapping:
-          allDiscussions: '#/components/schemas/AllDiscussionsRequest'
-          usersDiscussions: '#/components/schemas/UsersDiscussionsRequest'
+          readAll: '#/components/schemas/AllDiscussionsRequest'
+          readUsers: '#/components/schemas/UsersDiscussionsRequest'
 
     IResponse:
       type: object
@@ -93,8 +93,8 @@ components:
       discriminator:
         propertyName: responseType
         mapping:
-          allDiscussions: '#/components/schemas/AllDiscussionsResponse'
-          usersDiscussions: '#/components/schemas/UsersDiscussionsResponse'
+          readAll: '#/components/schemas/AllDiscussionsResponse'
+          readUsers: '#/components/schemas/UsersDiscussionsResponse'
 
     DiscussionResponseObject:
       allOf:
@@ -139,7 +139,7 @@ components:
         - type: object
           properties:
             allDiscussions:
-              $ref: '#/components/schemas/AllDiscussionsReadObject'
+              $ref: '#/components/schemas/DiscussionResponseMulti'
 
     AllDiscussionsRequest:
       allOf:

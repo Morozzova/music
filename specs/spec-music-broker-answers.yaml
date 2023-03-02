@@ -146,7 +146,9 @@ components:
       discriminator:
         propertyName: requestType
         mapping:
-          addAnswer: '#/components/schemas/AnswerCreateRequest'
+          create: '#/components/schemas/AnswerCreateRequest'
+          read: '#/components/schemas/AnswerReadRequest'
+          update: '#/components/schemas/AnswerUpdateRequest'
 
     Error:
       type: object
@@ -186,7 +188,9 @@ components:
       discriminator:
         propertyName: responseType
         mapping:
-          addAnswer: '#/components/schemas/AnswerCreateResponse'
+          create: '#/components/schemas/AnswerCreateResponse'
+          read: '#/components/schemas/AnswerReadResponse'
+          update: '#/components/schemas/AnswerUpdateResponse'
 
     UserId:
       type: string

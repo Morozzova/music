@@ -10,6 +10,8 @@ fun DiscContext.fromTransport(request: IRequest) = when (request) {
     is DiscussionUpdateRequest -> fromTransport(request)
     is DiscussionCloseRequest -> fromTransport(request)
     is DiscussionDeleteRequest -> fromTransport(request)
+    is AllDiscussionsRequest -> fromTransport(request)
+    is UsersDiscussionsRequest -> fromTransport(request)
     else -> throw UnknownRequestClass(request.javaClass)
 }
 
@@ -37,6 +39,10 @@ private fun DiscussionCloseObject.toInternal(): DiscDiscussion = DiscDiscussion(
     isOpen = false
 )
 
+private fun AllDiscussionsReadObject.toInternal(): DiscMulti = DiscMulti()
+private fun String.toDiscMulti(): DiscMulti = DiscMulti(
+    id = this.toUserId()
+)
 
 fun DiscussionDebug?.transportToWorkMode() = when(this?.mode) {
     DiscussionRequestDebugMode.PROD -> DiscWorkMode.PROD
@@ -89,6 +95,21 @@ fun DiscContext.fromTransport(request: DiscussionDeleteRequest) {
     command = DiscCommand.DELETE
     requestId = request.requestId()
     discussionRequest = request.discussion?.id.toDiscWithId()
+    workMode = request.debug.transportToWorkMode()
+    stubCase = request.debug.transportToStubCase()
+}
+fun DiscContext.fromTransport(request: AllDiscussionsRequest) {
+    command = DiscCommand.ALL_DISCUSSIONS
+    requestId = request.requestId()
+    multiDiscussionsRequest = request.allDiscussions?.toInternal() ?: DiscMulti()
+    workMode = request.debug.transportToWorkMode()
+    stubCase = request.debug.transportToStubCase()
+}
+
+fun DiscContext.fromTransport(request: UsersDiscussionsRequest) {
+    command = DiscCommand.USERS_DISCUSSIONS
+    requestId = request.requestId()
+    multiDiscussionsRequest = request.usersId?.toDiscMulti() ?: DiscMulti()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }

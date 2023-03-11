@@ -6,5 +6,7 @@ enum class DiscCommand {
     READ,
     UPDATE,
     CLOSE,
-    DELETE
+    DELETE,
+    ALL_DISCUSSIONS,
+    USERS_DISCUSSIONS
 }

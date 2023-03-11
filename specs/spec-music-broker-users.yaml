@@ -12,47 +12,6 @@ tags:
   - name: user
     description: User profile and users discussions
 paths:
-  /user/allDiscussions:
-    post:
-      tags:
-        - user
-      summary: Show all discussions
-      operationId: allDiscussions
-      requestBody:
-        description: Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AllDiscussionsRequest'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AllDiscussionsResponse'
-  /user/usersDiscussions:
-    post:
-      tags:
-        - user
-      summary: Show users discussions
-      operationId: usersDiscussions
-      requestBody:
-        description: Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UsersDiscussionsRequest'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UsersDiscussionsResponse'
-
 components:
   schemas:
 
@@ -70,8 +29,6 @@ components:
       discriminator:
         propertyName: requestType
         mapping:
-          readAll: '#/components/schemas/AllDiscussionsRequest'
-          readUsers: '#/components/schemas/UsersDiscussionsRequest'
 
     IResponse:
       type: object
@@ -93,8 +50,6 @@ components:
       discriminator:
         propertyName: responseType
         mapping:
-          readAll: '#/components/schemas/AllDiscussionsResponse'
-          readUsers: '#/components/schemas/UsersDiscussionsResponse'
 
     DiscussionResponseObject:
       allOf:
@@ -124,8 +79,6 @@ components:
               items:
                 $ref: '#/components/schemas/DiscussionResponseObject'
 
-
-
     DiscussionPermissions:
       type: string
       description: Доступы для клиента для операций над обсуждениями
@@ -133,49 +86,7 @@ components:
         - read
         - update
         - delete
-
-    AllDiscussionsReadObject:
-      allOf:
-        - type: object
-          properties:
-            allDiscussions:
-              $ref: '#/components/schemas/DiscussionResponseMulti'
-
-    AllDiscussionsRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/UserRequestDebug'
-        - type: object
-          properties:
-            allDiscussions:
-              $ref: '#/components/schemas/AllDiscussionsReadObject'
-
-    AllDiscussionsResponse:
-      allOf:
-        - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionResponseMulti'
-
-    UsersDiscussionsReadObject:
-      allOf:
-        - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/UserId'
-
-    UsersDiscussionsRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/UserRequestDebug'
-        - type: object
-          properties:
-            usersId:
-              $ref: '#/components/schemas/UserId'
-
-    UsersDiscussionsResponse:
-      allOf:
-        - $ref: '#/components/schemas/IResponse'
-        - $ref: '#/components/schemas/DiscussionResponseMulti'
-
+        -
     Error:
       type: object
       properties:

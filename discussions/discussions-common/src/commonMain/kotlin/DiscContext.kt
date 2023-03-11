@@ -16,5 +16,7 @@ data class DiscContext(
     var timeStart: Instant = Instant.NONE,
 
     var discussionRequest: DiscDiscussion = DiscDiscussion(),
+    var multiDiscussionsRequest: DiscMulti = DiscMulti(),
     var discussionResponse: DiscDiscussion = DiscDiscussion(),
+    var multiDiscussionsResponse: MutableList<DiscDiscussion> = mutableListOf(),
 )

@@ -113,6 +113,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DiscussionCloseResponse'
+  /discussion/allDiscussions:
+    post:
+      tags:
+        - discussion
+      summary: Show all discussions
+      operationId: allDiscussions
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllDiscussionsRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllDiscussionsResponse'
+  /discussion/usersDiscussions:
+    post:
+      tags:
+        - discussion
+      summary: Show users discussions
+      operationId: usersDiscussions
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersDiscussionsRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersDiscussionsResponse'
 
 components:
   schemas:
@@ -136,6 +176,8 @@ components:
           update: '#/components/schemas/DiscussionUpdateRequest'
           delete: '#/components/schemas/DiscussionDeleteRequest'
           close: '#/components/schemas/DiscussionCloseRequest'
+          readAll: '#/components/schemas/AllDiscussionsRequest'
+          readUsers: '#/components/schemas/UsersDiscussionsRequest'
 
     IResponse:
       type: object
@@ -162,6 +204,8 @@ components:
           update: '#/components/schemas/DiscussionUpdateResponse'
           delete: '#/components/schemas/DiscussionDeleteResponse'
           close: '#/components/schemas/DiscussionCloseResponse'
+          readAll: '#/components/schemas/AllDiscussionsResponse'
+          readUsers: '#/components/schemas/UsersDiscussionsResponse'
 
     DiscussionInitResponse:
       allOf:
@@ -252,6 +296,38 @@ components:
             discussion:
               $ref: '#/components/schemas/DiscussionCloseObject'
 
+    AllDiscussionsReadObject:
+      allOf:
+        - type: object
+          properties:
+            allDiscussions:
+              $ref: '#/components/schemas/DiscussionResponseMulti'
+
+    AllDiscussionsRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - type: object
+          properties:
+            allDiscussions:
+              $ref: '#/components/schemas/AllDiscussionsReadObject'
+
+    UsersDiscussionsReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/UserId'
+
+    UsersDiscussionsRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/DiscussionRequestDebug'
+        - type: object
+          properties:
+            usersId:
+              $ref: '#/components/schemas/UserId'
+
     DiscussionResponseObject:
       allOf:
         - $ref: '#/components/schemas/BaseDiscussion'
@@ -284,6 +360,15 @@ components:
           properties:
             discussion:
               $ref: '#/components/schemas/DiscussionResponseObject'
+    DiscussionResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            discussions:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscussionResponseObject'
     DiscussionCreateResponse:
       allOf:
         - $ref: '#/components/schemas/IResponse'
@@ -308,6 +393,16 @@ components:
       allOf:
         - $ref: '#/components/schemas/IResponse'
         - $ref: '#/components/schemas/DiscussionResponseSingle'
+
+    AllDiscussionsResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseMulti'
+
+    UsersDiscussionsResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/DiscussionResponseMulti'
 
     Error:
       type: object

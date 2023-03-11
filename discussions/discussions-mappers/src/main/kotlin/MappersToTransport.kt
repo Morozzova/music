@@ -8,6 +8,8 @@ fun DiscContext.toTransport() : IResponse = when (command) {
     DiscCommand.READ -> toTransportRead()
     DiscCommand.UPDATE -> toTransportUpdate()
     DiscCommand.DELETE -> toTransportDelete()
+    DiscCommand.ALL_DISCUSSIONS -> toTransportAllDisc()
+    DiscCommand.USERS_DISCUSSIONS -> toTransportUsersDisc()
     else -> throw UnknownDiscCommand(command)
 }
 
@@ -38,6 +40,19 @@ fun DiscContext.toTransportDelete() = DiscussionDeleteResponse(
     discussion = discussionResponse.toTransportDisc()
 )
 
+fun DiscContext.toTransportAllDisc() = AllDiscussionsResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+    discussions = multiDiscussionsResponse.toTransportDisc()
+)
+
+fun DiscContext.toTransportUsersDisc() = UsersDiscussionsResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+    discussions = multiDiscussionsResponse.toTransportDisc()
+)
 fun List<DiscDiscussion>.toTransportDisc(): List<DiscussionResponseObject>? = this
     .map { it.toTransportDisc() }
     .toList()

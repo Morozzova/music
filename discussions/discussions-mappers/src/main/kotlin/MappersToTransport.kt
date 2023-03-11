@@ -1,4 +1,3 @@
-import exceptions.UnknownDiscCommand
 import musicBroker.api.v1.models.*
 import ru.music.common.DiscContext
 import ru.music.common.models.*
@@ -10,7 +9,7 @@ fun DiscContext.toTransport() : IResponse = when (command) {
     DiscCommand.DELETE -> toTransportDelete()
     DiscCommand.ALL_DISCUSSIONS -> toTransportAllDisc()
     DiscCommand.USERS_DISCUSSIONS -> toTransportUsersDisc()
-    else -> throw UnknownDiscCommand(command)
+    else -> throw Exception("Wrong command $command at mapping toTransport stage")
 }
 
 fun DiscContext.toTransportCreate() = DiscussionCreateResponse(

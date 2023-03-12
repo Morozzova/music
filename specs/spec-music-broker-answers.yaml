@@ -1,0 +1,318 @@
+openapi: 3.0.4
+info:
+  title: Music broker
+  description: App for discussions about music, searching tracks and asking other users for titles
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: answer
+    description: Answer from other user in discussion
+
+paths:
+  /answer/create:
+    post:
+      tags:
+        - answer
+      summary: Add answer
+      operationId: answerCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerCreateResponse'
+
+  /answer/read:
+    post:
+      tags:
+        - answer
+      summary: Read answer
+      operationId: answerRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerReadResponse'
+
+  /answer/update:
+    post:
+      tags:
+        - answer
+      summary: Update answer
+      operationId: answerUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerUpdateResponse'
+
+components:
+  schemas:
+    AnswerCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnswer'
+
+    AnswerCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/AnswerRequestDebug'
+        - type: object
+          properties:
+            answer:
+              $ref: '#/components/schemas/AnswerCreateObject'
+
+    AnswerCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/AnswerResponseSingle'
+
+    AnswerReadObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnswer'
+
+    AnswerReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/AnswerRequestDebug'
+        - type: object
+          properties:
+            answer:
+              $ref: '#/components/schemas/AnswerReadObject'
+
+    AnswerReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/AnswerResponseSingle'
+
+    AnswerUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnswer'
+
+    AnswerUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/AnswerRequestDebug'
+        - type: object
+          properties:
+            answer:
+              $ref: '#/components/schemas/AnswerUpdateObject'
+
+    AnswerUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/AnswerResponseSingle'
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/AnswerCreateRequest'
+          read: '#/components/schemas/AnswerReadRequest'
+          update: '#/components/schemas/AnswerUpdateRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/AnswerCreateResponse'
+          read: '#/components/schemas/AnswerReadResponse'
+          update: '#/components/schemas/AnswerUpdateResponse'
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    DiscussionId:
+      type: string
+      description: Идентификатор обсуждения
+    AnswerId:
+      type: string
+      description: Идентификатор ответа
+    AnswerLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseDiscussion:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        title:
+          type: string
+          description: Текст обсуждения
+        soundUrl:
+          type: string
+          description: Ссылка на аудиозапись
+        isOpen:
+          type: boolean
+          description: Открыто или закрыто обсуждение для добавления новых ответов
+
+    BaseAnswer:
+      type: object
+      description: Свойства ответа
+      properties:
+        id:
+          type: string
+        discussionId:
+          type: string
+        usersId:
+          type: string
+        text:
+          type: string
+          description: Текст ответа
+        isRight:
+          type: boolean
+          description: Верен ли ответ
+        permissions:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/AnswerPermissions'
+
+    AnswerPermissions:
+      type: string
+      description: Доступы для клиента для операции над ответами
+      enum:
+        - read
+        - update
+        - delete
+
+    AnswerResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseAnswer'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/AnswerId'
+            lock:
+              $ref: '#/components/schemas/AnswerLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/AnswerPermissions'
+
+    AnswerResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним обсуждением
+          properties:
+            answer:
+              $ref: '#/components/schemas/AnswerResponseObject'
+    BaseUser:
+      type: object
+      description: Свойства пользователя
+      properties:
+        login:
+          type: string
+          description: Логин
+        password:
+          type: string
+          description: Пароль
+        name:
+          type: string
+          description: Отображаемое имя
+
+    # STUBS ======================
+    AnswerRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    AnswerRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/AnswerDebug'
+
+    AnswerDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/AnswerRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/AnswerRequestDebugStubs'
+
+    AnswerRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badDiscussion
+        - badText

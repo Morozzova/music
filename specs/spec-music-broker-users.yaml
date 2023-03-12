@@ -1,0 +1,190 @@
+openapi: 3.0.4
+info:
+  title: Music broker
+  description: App for discussions about music, searching tracks and asking other users for titles
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: user
+    description: User profile and users discussions
+paths:
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+
+    DiscussionResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseDiscussion'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/DiscussionId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/DiscussionLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/DiscussionPermissions'
+
+    DiscussionResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            discussions:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscussionResponseObject'
+
+    DiscussionPermissions:
+      type: string
+      description: Доступы для клиента для операций над обсуждениями
+      enum:
+        - read
+        - update
+        - delete
+        -
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    DiscussionId:
+      type: string
+      description: Идентификатор обсуждения
+    AnswerId:
+      type: string
+      description: Идентификатор ответа
+    DiscussionLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseDiscussion:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        title:
+          type: string
+          description: Текст обсуждения
+        soundUrl:
+          type: string
+          description: Ссылка на аудиозапись
+        isOpen:
+          type: boolean
+          description: Открыто или закрыто обсуждение для добавления новых ответов
+
+    BaseAnswer:
+      type: object
+      description: Свойства ответа
+      properties:
+        text:
+          type: string
+          description: Текст ответа
+        isRight:
+          type: boolean
+          description: Верен ли ответ
+
+    BaseUser:
+      type: object
+      description: Свойства пользователя
+      properties:
+        login:
+          type: string
+          description: Логин
+        password:
+          type: string
+          description: Пароль
+        name:
+          type: string
+          description: Отображаемое имя
+
+    # STUBS ======================
+    UserRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    UserRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/UserDebug'
+
+    UserDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/UserRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/UserRequestDebugStubs'
+
+    UserRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+
+

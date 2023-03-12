@@ -4,11 +4,12 @@ pluginManagement {
     plugins {
         val kotlinVersion: String by settings
         val openapiVersion: String by settings
+        val ktorPluginVersion: String by settings
 
         kotlin("jvm") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion apply false
         kotlin("plugin.serialization") version kotlinVersion apply false
-
+        id("io.ktor.plugin") version ktorPluginVersion apply false
         id("org.openapi.generator") version openapiVersion apply false
     }
 }
@@ -26,3 +27,4 @@ include("discussions:discussions-api-jackson")
 //include("users:users-mappers")
 //include("users:users-api-jackson")
 include("discussions-app-ktor")
+include("discussions-stubs")

@@ -5,6 +5,6 @@ data class DiscDiscussion(
     var title: String = "",
     var ownerId: DiscUserId = DiscUserId.NONE,
     var soundUrl: String = "",
-    var isOpen: Boolean = true,
+    var status: DiscStatus = DiscStatus.OPEN,
     var permissionsClient: MutableList<DiscPermissionsClient> = mutableListOf()
 )

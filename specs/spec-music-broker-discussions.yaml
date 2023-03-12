@@ -183,7 +183,7 @@ components:
       type: object
       description: Базовый интерфейс для всех ответов
       properties:
-        requestType:
+        responseType:
           type: string
           description: Поле-дескриминатор для вычисления типа запроса
           example: create
@@ -445,9 +445,15 @@ components:
         soundUrl:
           type: string
           description: Ссылка на аудиозапись
-        isOpen:
-          type: boolean
-          description: Открыто или закрыто обсуждение для добавления новых ответов
+        status:
+          $ref: '#/components/schemas/DiscussionStatus'
+
+    DiscussionStatus:
+      type: string
+      description: 'Возможность добавления новых ответов'
+      enum:
+        - open
+        - closed
 
     BaseAnswer:
       type: object

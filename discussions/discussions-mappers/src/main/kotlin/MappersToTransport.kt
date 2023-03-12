@@ -62,10 +62,15 @@ private fun DiscDiscussion.toTransportDisc(): DiscussionResponseObject = Discuss
     id = id.takeIf { it != DiscId.NONE }?.asString(),
     soundUrl = soundUrl.takeIf { it.isNotBlank() },
     title = title.takeIf { it.isNotBlank() },
+    status = status.toTransport(),
     ownerId = ownerId.takeIf { it != DiscUserId.NONE }?.asString(),
     permissions = permissionsClient.toTransportDisc(),
 )
 
+private fun DiscStatus.toTransport(): DiscussionStatus = when (this) {
+    DiscStatus.OPEN -> DiscussionStatus.OPEN
+    DiscStatus.CLOSED -> DiscussionStatus.CLOSED
+}
 private fun List<DiscPermissionsClient>.toTransportDisc(): Set<DiscussionPermissions>? = this
     .map { it.toTransportDisc() }
     .toSet()

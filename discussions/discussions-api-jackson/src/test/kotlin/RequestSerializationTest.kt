@@ -15,7 +15,7 @@ class RequestSerializationTest {
         discussion = DiscussionCreateObject(
             title = "This is title",
             soundUrl = "/sounds/sound01.wav",
-            isOpen = true
+            status = DiscussionStatus.OPEN
         )
     )
 

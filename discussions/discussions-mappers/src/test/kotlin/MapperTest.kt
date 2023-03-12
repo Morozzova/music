@@ -17,7 +17,7 @@ class MapperTest {
             discussion = DiscussionCreateObject(
                 title = "title",
                 soundUrl = "soundUrl",
-                isOpen = false
+                status = DiscussionStatus.CLOSED
             ),
         )
 
@@ -27,7 +27,7 @@ class MapperTest {
         assertEquals(DiscStubs.SUCCESS, context.stubCase)
         assertEquals(DiscWorkMode.STUB, context.workMode)
         assertEquals("title", context.discussionRequest.title)
-        assertEquals(false, context.discussionRequest.isOpen)
+        assertEquals(DiscStatus.CLOSED, context.discussionRequest.status)
     }
 
     @Test
@@ -38,7 +38,7 @@ class MapperTest {
             discussionResponse = DiscDiscussion(
                 title = "title",
                 soundUrl = "sound",
-                isOpen = true
+                status = DiscStatus.OPEN
             ),
             errors = mutableListOf(
                 DiscError(
@@ -56,6 +56,7 @@ class MapperTest {
         assertEquals("1234", req.requestId)
         assertEquals("title", req.discussion?.title)
         assertEquals("sound", req.discussion?.soundUrl)
+        assertEquals(DiscussionStatus.OPEN, req.discussion?.status)
         assertEquals(1, req.errors?.size)
         assertEquals("err", req.errors?.firstOrNull()?.code)
         assertEquals("request", req.errors?.firstOrNull()?.group)

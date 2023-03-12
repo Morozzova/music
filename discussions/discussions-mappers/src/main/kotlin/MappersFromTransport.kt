@@ -23,26 +23,31 @@ private fun String?.toUserId() = this?.let { DiscUserId(it) } ?: DiscUserId.NONE
 private fun DiscussionCreateObject.toInternal(): DiscDiscussion = DiscDiscussion(
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
-    isOpen = this.isOpen ?: true
+    status = this.status.fromTransport()
 )
 
 private fun DiscussionUpdateObject.toInternal(): DiscDiscussion = DiscDiscussion(
     id = this.id.toDiscId(),
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
-    isOpen = this.isOpen ?: true
+    status = this.status.fromTransport()
 )
 private fun DiscussionCloseObject.toInternal(): DiscDiscussion = DiscDiscussion(
     id = this.id.toDiscId(),
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
-    isOpen = false
+    status = this.status.fromTransport()
 )
 
 private fun AllDiscussionsReadObject.toInternal(): DiscMulti = DiscMulti()
 private fun String.toDiscMulti(): DiscMulti = DiscMulti(
     id = this.toUserId()
 )
+private fun DiscussionStatus?.fromTransport(): DiscStatus = when (this) {
+    DiscussionStatus.OPEN -> DiscStatus.OPEN
+    DiscussionStatus.CLOSED -> DiscStatus.CLOSED
+    else -> DiscStatus.OPEN
+}
 
 fun DiscussionDebug?.transportToWorkMode() = when(this?.mode) {
     DiscussionRequestDebugMode.PROD -> DiscWorkMode.PROD

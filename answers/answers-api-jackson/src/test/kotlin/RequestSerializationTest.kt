@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.api.v1
+package ru.music.answers.api.v1
 
 import apiV1Mapper
 import musicBroker.api.v1.models.*

@@ -26,21 +26,6 @@ application {
 kotlin {
     jvm {}
 
-    val nativeTarget = when (System.getProperty("os.name")) {
-        "Mac OS X" -> macosX64("native")
-        "Linux" -> linuxX64("native")
-        // Windows is currently not supported
-        // Other supported targets are listed here: https://ktor.io/docs/native-server.html#targets
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
-    nativeTarget.apply {
-        binaries {
-            executable {
-                entryPoint = "ru.music.main"
-            }
-        }
-    }
-
     sourceSets {
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
@@ -58,22 +43,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val nativeMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-server-core:$ktorVersion")
-                implementation("io.ktor:ktor-server-cio:$ktorVersion")
-
-                implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val nativeTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.util.suffixIfNot
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 val ktorVersion: String by project
 val logbackVersion: String by project
@@ -10,6 +12,8 @@ fun ktor(module: String, prefix: String = "server-", version: String? = this@Bui
 
 plugins {
     id("application")
+    id("com.bmuschko.docker-java-application")
+    id("com.bmuschko.docker-remote-api")
     kotlin("plugin.serialization")
     kotlin("multiplatform")
 }
@@ -91,5 +95,25 @@ kotlin {
                 implementation(ktor("websockets", prefix = "client-"))
             }
         }
+    }
+}
+
+tasks {
+    val dockerJvmDockerfile by creating(Dockerfile::class) {
+        group = "docker"
+        from("openjdk:17")
+        copyFile("app.jar", "app.jar")
+        entryPoint("java", "-Xms256m", "-Xmx512m", "-jar", "/app.jar")
+    }
+    create("dockerBuildJvmImage", DockerBuildImage::class) {
+        group = "docker"
+        dependsOn(dockerJvmDockerfile, named("jvmJar"))
+        doFirst {
+            copy {
+                from(named("jvmJar"))
+                into("${project.buildDir}/docker/app.jar")
+            }
+        }
+        images.add("${project.name}:${project.version}")
     }
 }

@@ -7,6 +7,7 @@ fun DiscContext.toTransport() : IResponse = when (command) {
     DiscCommand.CREATE -> toTransportCreate()
     DiscCommand.READ -> toTransportRead()
     DiscCommand.UPDATE -> toTransportUpdate()
+    DiscCommand.CLOSE -> toTransportClose()
     DiscCommand.DELETE -> toTransportDelete()
     DiscCommand.ALL_DISCUSSIONS -> toTransportAllDisc()
     DiscCommand.USERS_DISCUSSIONS -> toTransportUsersDisc()
@@ -27,6 +28,12 @@ fun DiscContext.toTransportRead() = DiscussionReadResponse(
     discussion = discussionResponse.toTransportDisc()
 )
 fun DiscContext.toTransportUpdate() = DiscussionUpdateResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+    discussion = discussionResponse.toTransportDisc()
+)
+fun DiscContext.toTransportClose() = DiscussionUpdateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),

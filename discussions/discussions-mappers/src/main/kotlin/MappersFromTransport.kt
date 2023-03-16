@@ -120,7 +120,6 @@ fun DiscContext.fromTransport(request: DiscussionDeleteRequest) {
 fun DiscContext.fromTransport(request: AllDiscussionsRequest) {
     command = DiscCommand.ALL_DISCUSSIONS
     requestId = request.requestId()
-    multiDiscussionsRequest = request.allDiscussions?.toInternal() ?: DiscMulti()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }

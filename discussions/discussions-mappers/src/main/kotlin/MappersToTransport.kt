@@ -33,7 +33,7 @@ fun DiscContext.toTransportUpdate() = DiscussionUpdateResponse(
     errors = errors.toTransportErrors(),
     discussion = discussionResponse.toTransportDisc()
 )
-fun DiscContext.toTransportClose() = DiscussionUpdateResponse(
+fun DiscContext.toTransportClose() = DiscussionCloseResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),

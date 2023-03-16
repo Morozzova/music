@@ -308,9 +308,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
-          properties:
-            allDiscussions:
-              $ref: '#/components/schemas/AllDiscussionsReadObject'
 
     UsersDiscussionsReadObject:
       allOf:

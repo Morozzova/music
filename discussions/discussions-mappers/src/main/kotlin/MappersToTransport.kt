@@ -76,7 +76,7 @@ private fun DiscDiscussion.toTransportDisc(): DiscussionResponseObject = Discuss
 )
 
 private fun MutableList<DiscAnswer>.toTransportAnswers(): List<String>? = this
-    .map { it.toString() }
+    .map { it.asString() }
     .takeIf { it.isNotEmpty() }
 
 private fun DiscStatus.toTransport(): DiscussionStatus = when (this) {

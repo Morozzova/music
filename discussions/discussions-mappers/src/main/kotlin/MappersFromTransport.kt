@@ -19,44 +19,55 @@ private fun IRequest?.requestId() = this?.requestId?.let { DiscRequestId(it) } ?
 private fun String?.toDiscId() = this?.let { DiscId(it) } ?: DiscId.NONE
 private fun String?.toDiscWithId() = DiscDiscussion(id = this.toDiscId())
 private fun String?.toUserId() = this?.let { DiscUserId(it) } ?: DiscUserId.NONE
+private fun String?.toAnswer() = this?.let { DiscAnswer(it) } ?: DiscAnswer.NONE
 
 private fun DiscussionCreateObject.toInternal(): DiscDiscussion = DiscDiscussion(
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
-    status = this.status.fromTransport()
+    answers = this.answers.fromTransport() ?: mutableListOf(),
+    status = this.status.fromTransportStatus()
 )
 
 private fun DiscussionUpdateObject.toInternal(): DiscDiscussion = DiscDiscussion(
     id = this.id.toDiscId(),
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
-    status = this.status.fromTransport()
+    answers = this.answers.fromTransport() ?: mutableListOf(),
+    status = this.status.fromTransportStatus()
 )
+
 private fun DiscussionCloseObject.toInternal(): DiscDiscussion = DiscDiscussion(
     id = this.id.toDiscId(),
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
-    status = this.status.fromTransport()
+    answers = this.answers.fromTransport() ?: mutableListOf(),
+    status = this.status.fromTransportStatus()
 )
 
 private fun AllDiscussionsReadObject.toInternal(): DiscMulti = DiscMulti()
 private fun String.toDiscMulti(): DiscMulti = DiscMulti(
     id = this.toUserId()
 )
-private fun DiscussionStatus?.fromTransport(): DiscStatus = when (this) {
+
+private fun DiscussionStatus?.fromTransportStatus(): DiscStatus = when (this) {
     DiscussionStatus.OPEN -> DiscStatus.OPEN
     DiscussionStatus.CLOSED -> DiscStatus.CLOSED
     else -> DiscStatus.OPEN
 }
 
-fun DiscussionDebug?.transportToWorkMode() = when(this?.mode) {
+private fun List<String>?.fromTransport(): MutableList<DiscAnswer>? = this
+    ?.map { it.toAnswer() }
+    ?.toMutableList()
+    .takeIf { !it.isNullOrEmpty() }
+
+fun DiscussionDebug?.transportToWorkMode() = when (this?.mode) {
     DiscussionRequestDebugMode.PROD -> DiscWorkMode.PROD
     DiscussionRequestDebugMode.TEST -> DiscWorkMode.TEST
     DiscussionRequestDebugMode.STUB -> DiscWorkMode.STUB
     null -> DiscWorkMode.PROD
 }
 
-fun DiscussionDebug?.transportToStubCase() = when(this?.stub) {
+fun DiscussionDebug?.transportToStubCase() = when (this?.stub) {
     DiscussionRequestDebugStubs.SUCCESS -> DiscStubs.SUCCESS
     DiscussionRequestDebugStubs.NOT_FOUND -> DiscStubs.NOT_FOUND
     DiscussionRequestDebugStubs.BAD_ID -> DiscStubs.BAD_ID
@@ -65,6 +76,7 @@ fun DiscussionDebug?.transportToStubCase() = when(this?.stub) {
     DiscussionRequestDebugStubs.CANNOT_DELETE -> DiscStubs.CANNOT_DELETE
     null -> DiscStubs.NONE
 }
+
 fun DiscContext.fromTransport(request: DiscussionCreateRequest) {
     command = DiscCommand.CREATE
     requestId = request.requestId()
@@ -96,6 +108,7 @@ fun DiscContext.fromTransport(request: DiscussionCloseRequest) {
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
+
 fun DiscContext.fromTransport(request: DiscussionDeleteRequest) {
     command = DiscCommand.DELETE
     requestId = request.requestId()
@@ -103,6 +116,7 @@ fun DiscContext.fromTransport(request: DiscussionDeleteRequest) {
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
+
 fun DiscContext.fromTransport(request: AllDiscussionsRequest) {
     command = DiscCommand.ALL_DISCUSSIONS
     requestId = request.requestId()

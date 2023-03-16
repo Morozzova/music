@@ -1,10 +1,10 @@
-package ru.music.discussions.v1
+package ru.music.discussions
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Route.discussions() {
-    route("ad") {
+    route("disc") {
         post("create") {
             call.createDiscussion()
         }

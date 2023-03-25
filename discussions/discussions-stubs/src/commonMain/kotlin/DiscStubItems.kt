@@ -16,7 +16,7 @@ object DiscStubItems {
                 DiscPermissionsClient.DELETE
             )
         )
-    val ALL_DISCUSSIONS = listOf(DiscDiscussion(), DiscDiscussion(), DiscDiscussion())
+    val ALL_DISCUSSIONS = listOf(DISCUSSION_FIRST, DISCUSSION_FIRST, DISCUSSION_FIRST)
 
-    val USERS_DISCUSSIONS = listOf(DiscDiscussion(), DiscDiscussion())
+    val USERS_DISCUSSIONS = listOf(DISCUSSION_FIRST, DISCUSSION_FIRST)
 }

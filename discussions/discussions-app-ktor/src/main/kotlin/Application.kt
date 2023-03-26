@@ -1,5 +1,6 @@
 package ru.music.discussions
 
+import discussions.discussions
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*

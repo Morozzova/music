@@ -1,4 +1,4 @@
-package ru.music.discussions
+package discussions
 
 import fromTransport
 import io.ktor.server.application.*

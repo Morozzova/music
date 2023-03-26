@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.api.v1
+package ru.music.users.api.v1
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

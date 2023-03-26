@@ -308,9 +308,6 @@ components:
         - $ref: '#/components/schemas/IRequest'
         - $ref: '#/components/schemas/DiscussionRequestDebug'
         - type: object
-          properties:
-            allDiscussions:
-              $ref: '#/components/schemas/AllDiscussionsReadObject'
 
     UsersDiscussionsReadObject:
       allOf:
@@ -445,6 +442,10 @@ components:
         soundUrl:
           type: string
           description: Ссылка на аудиозапись
+        answers:
+          type: array
+          items:
+            type: string
         status:
           $ref: '#/components/schemas/DiscussionStatus'
 
@@ -452,6 +453,7 @@ components:
       type: string
       description: 'Возможность добавления новых ответов'
       enum:
+        - none
         - open
         - closed
 
@@ -463,7 +465,11 @@ components:
           type: string
           description: Текст ответа
         isRight:
-          type: boolean
+          type: string
+          enum:
+            - none
+            - true
+            - false
           description: Верен ли ответ
 
     BaseUser:

@@ -7,6 +7,7 @@ fun DiscContext.toTransport() : IResponse = when (command) {
     DiscCommand.CREATE -> toTransportCreate()
     DiscCommand.READ -> toTransportRead()
     DiscCommand.UPDATE -> toTransportUpdate()
+    DiscCommand.CLOSE -> toTransportClose()
     DiscCommand.DELETE -> toTransportDelete()
     DiscCommand.ALL_DISCUSSIONS -> toTransportAllDisc()
     DiscCommand.USERS_DISCUSSIONS -> toTransportUsersDisc()
@@ -27,6 +28,12 @@ fun DiscContext.toTransportRead() = DiscussionReadResponse(
     discussion = discussionResponse.toTransportDisc()
 )
 fun DiscContext.toTransportUpdate() = DiscussionUpdateResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+    discussion = discussionResponse.toTransportDisc()
+)
+fun DiscContext.toTransportClose() = DiscussionCloseResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -63,11 +70,17 @@ private fun DiscDiscussion.toTransportDisc(): DiscussionResponseObject = Discuss
     soundUrl = soundUrl.takeIf { it.isNotBlank() },
     title = title.takeIf { it.isNotBlank() },
     status = status.toTransport(),
+    answers = answers.toTransportAnswers(),
     ownerId = ownerId.takeIf { it != DiscUserId.NONE }?.asString(),
     permissions = permissionsClient.toTransportDisc(),
 )
 
+private fun MutableList<DiscAnswer>.toTransportAnswers(): List<String>? = this
+    .map { it.asString() }
+    .takeIf { it.isNotEmpty() }
+
 private fun DiscStatus.toTransport(): DiscussionStatus = when (this) {
+    DiscStatus.NONE -> DiscussionStatus.NONE
     DiscStatus.OPEN -> DiscussionStatus.OPEN
     DiscStatus.CLOSED -> DiscussionStatus.CLOSED
 }

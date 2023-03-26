@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.api.v1
+package ru.music.discussions.api.v1
 
 import musicBroker.api.v1.models.*
 import kotlin.test.Test

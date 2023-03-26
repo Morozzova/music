@@ -1,35 +1,15 @@
 plugins {
-    kotlin("multiplatform")
+    kotlin("jvm")
 }
 
-kotlin {
-    jvm {}
-    macosX64 {}
-    linuxX64 {}
+dependencies {
+    implementation(kotlin("stdlib-common"))
+    implementation(project(":discussions:discussions-common"))
 
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-common"))
+    implementation(kotlin("test-common"))
+    implementation(kotlin("test-annotations-common"))
 
-                implementation(project(":discussions:discussions-common"))
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-            }
-        }
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib"))
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-            }
-        }
-    }
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("test-junit"))
+
 }

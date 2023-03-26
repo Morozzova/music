@@ -15,7 +15,7 @@ plugins {
     id("com.bmuschko.docker-java-application")
     id("com.bmuschko.docker-remote-api")
     kotlin("plugin.serialization")
-    kotlin("multiplatform")
+    kotlin("jvm")
 }
 
 repositories {
@@ -27,75 +27,55 @@ application {
     mainClass.set("ru.music.ApplicationKt")
 }
 
-kotlin {
-    jvm {}
+dependencies {
+    implementation(kotlin("stdlib-common"))
+    implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion" implementation(project(":discussions:discussions-common"))
+    implementation(project(":discussions:discussions-stubs"))
 
-    sourceSets {
-        @Suppress("UNUSED_VARIABLE")
-        val commonMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-common"))
-                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion" implementation(project(":discussions:discussions-common"))
-                implementation(project(":discussions:discussions-stubs"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
-                implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
+    implementation(kotlin("test-common"))
+    implementation(kotlin("test-annotations-common"))
 
-                // jackson
-                implementation(ktor("jackson", "serialization")) // io.ktor:ktor-serialization-jackson
-                implementation(ktor("content-negotiation")) // io.ktor:ktor-server-content-negotiation
-                implementation(ktor("kotlinx-json", "serialization")) // io.ktor:ktor-serialization-kotlinx-json
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
+    implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
 
-                implementation(ktor("locations"))
-                implementation(ktor("caching-headers"))
-                implementation(ktor("call-logging"))
-                implementation(ktor("auto-head-response"))
-                implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
-                implementation(ktor("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
-                implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
-                implementation(ktor("auto-head-response"))
-                implementation(ktor("websockets"))
+    // jackson
+    implementation(ktor("jackson", "serialization")) // io.ktor:ktor-serialization-jackson
+    implementation(ktor("content-negotiation")) // io.ktor:ktor-server-content-negotiation
+    implementation(ktor("kotlinx-json", "serialization")) // io.ktor:ktor-serialization-kotlinx-json
 
-                implementation(ktor("websockets")) // "io.ktor:ktor-websockets:$ktorVersion"
-                implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"
-                implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
+    implementation(ktor("locations"))
+    implementation(ktor("caching-headers"))
+    implementation(ktor("call-logging"))
+    implementation(ktor("auto-head-response"))
+    implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
+    implementation(ktor("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
+    implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
+    implementation(ktor("auto-head-response"))
+    implementation(ktor("websockets"))
 
-                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation(ktor("websockets")) // "io.ktor:ktor-websockets:$ktorVersion"
+    implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"
+    implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
 
-                // transport models
-                implementation(project(":discussions:discussions-common"))
-                implementation(project(":discussions:discussions-api-jackson"))
-                implementation(project(":discussions:discussions-mappers"))
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-                // Stubs
-                implementation(project(":discussions:discussions-stubs"))
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
-                implementation(ktor("content-negotiation", prefix = "client-"))
-                implementation(ktor("websockets", prefix = "client-"))
-            }
-        }
-    }
+    // transport models
+    implementation(project(":discussions:discussions-common"))
+    implementation(project(":discussions:discussions-api-jackson"))
+    implementation(project(":discussions:discussions-mappers"))
+
+    // Stubs
+    implementation(project(":discussions:discussions-stubs"))
+
+    implementation(kotlin("test-junit"))
+    implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
+    implementation(ktor("content-negotiation", prefix = "client-"))
+    implementation(ktor("websockets", prefix = "client-"))
+
 }
 
 tasks {
@@ -107,10 +87,8 @@ tasks {
     }
     create("dockerBuildJvmImage", DockerBuildImage::class) {
         group = "docker"
-        dependsOn(dockerJvmDockerfile, named("jvmJar"))
         doFirst {
             copy {
-                from(named("jvmJar"))
                 into("${project.buildDir}/docker/app.jar")
             }
         }

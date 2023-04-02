@@ -1,6 +1,5 @@
 package ru.music.discussions
 
-import discussions.discussions
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -17,6 +16,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 import ru.music.discussions.api.v1.apiV1Mapper
+import ru.music.discussions.ru.music.discussions.discussions
 
 // function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)

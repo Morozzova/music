@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":discussions:discussions-common"))
     implementation(project(":discussions:discussions-api-jackson"))
     implementation(project(":discussions:discussions-mappers"))
+    implementation(project(mapOf("path" to ":discussions:discussions-biz")))
 
     testImplementation(kotlin("test-junit"))
 }

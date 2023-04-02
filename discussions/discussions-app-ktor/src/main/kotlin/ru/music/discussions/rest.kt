@@ -1,4 +1,4 @@
-package discussions
+package ru.music.discussions.ru.music.discussions
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*

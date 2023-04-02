@@ -24,12 +24,12 @@ repositories {
 
 application {
 //    mainClass.set("io.ktor.server.netty.EngineMain")
-    mainClass.set("ru.music.ApplicationKt")
+    mainClass.set("ru.music.discussions.ApplicationKt")
 }
 
 dependencies {
     implementation(kotlin("stdlib-common"))
-    implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion" implementation(project(":discussions:discussions-common"))
+    implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(project(":discussions:discussions-stubs"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
@@ -39,7 +39,6 @@ dependencies {
     implementation(kotlin("test-annotations-common"))
 
     implementation(kotlin("stdlib-jdk8"))
-    implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
 
     // jackson
@@ -53,9 +52,6 @@ dependencies {
     implementation(ktor("auto-head-response"))
     implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
     implementation(ktor("default-headers")) // "io.ktor:ktor-cors:$ktorVersion"
-    implementation(ktor("cors")) // "io.ktor:ktor-cors:$ktorVersion"
-    implementation(ktor("auto-head-response"))
-    implementation(ktor("websockets"))
 
     implementation(ktor("websockets")) // "io.ktor:ktor-websockets:$ktorVersion"
     implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"

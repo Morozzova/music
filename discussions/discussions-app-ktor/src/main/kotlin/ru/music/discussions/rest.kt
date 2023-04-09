@@ -1,6 +1,7 @@
 package ru.music.discussions.ru.music.discussions
 
 import io.ktor.server.routing.*
+import ru.music.discussions.DiscAppSettings
 
 val methodsStrategy: List<RouteStrategy> = listOf(
     RouteStrategyCreate(),
@@ -12,12 +13,10 @@ val methodsStrategy: List<RouteStrategy> = listOf(
     RouteStrategyUsers()
 )
 
-fun Route.discussions() {
-    route("disc") {
-        methodsStrategy.forEach { route ->
-            post(route.method) {
-                route.handler(this)
-            }
+fun Route.discussions(appSettings: DiscAppSettings) {
+    methodsStrategy.forEach { route ->
+        post(route.method) {
+            route.handler(this, appSettings)
         }
     }
 }

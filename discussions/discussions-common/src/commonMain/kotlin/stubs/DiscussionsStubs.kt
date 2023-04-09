@@ -7,5 +7,6 @@ enum class DiscStubs {
     BAD_ID,
     BAD_TITLE,
     BAD_FILE,
-    CANNOT_DELETE
+    CANNOT_DELETE,
+    DB_ERROR
 }

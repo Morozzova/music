@@ -84,6 +84,7 @@ dependencies {
     implementation(project(":discussions:discussions-lib-logging-kermit"))
     implementation(project(":discussions:discussions-lib-logging-logback"))
     implementation(project(":discussions:discussions-lib-logging-common"))
+    implementation(project(":discussions:discussions-biz"))
 
     // transport models
     implementation(project(":discussions:discussions-common"))

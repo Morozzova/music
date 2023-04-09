@@ -518,3 +518,4 @@ components:
         - badTitle
         - badFile
         - cannotDelete
+        - dbError

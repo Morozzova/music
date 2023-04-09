@@ -6,7 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import musicBroker.api.v1.models.*
 import ru.music.common.DiscContext
-import ru.music.discussions.stubs.DiscStub
+import ru.music.discussions.ru.music.discussions.process
 import toLog
 import toTransportAllDisc
 import toTransportClose
@@ -29,7 +29,7 @@ suspend fun ApplicationCall.createDiscussion(appSettings: DiscAppSettings) {
             msg = "${context.command} request is got",
             data = context.toLog("${logId}-request"),
         )
-        context.discussionResponse = DiscStub.get()
+        process(context)
         respond(context.toTransportCreate())
         logger.info(
             msg = "${context.command} response is sent",
@@ -42,7 +42,7 @@ suspend fun ApplicationCall.readDiscussion(appSettings: DiscAppSettings) {
     val request = receive<DiscussionReadRequest>()
     val context = DiscContext()
     context.fromTransport(request)
-    context.discussionResponse = DiscStub.get()
+    process(context)
     respond(context.toTransportRead() )
 }
 
@@ -50,7 +50,7 @@ suspend fun ApplicationCall.updateDiscussion(appSettings: DiscAppSettings) {
     val request = receive<DiscussionUpdateRequest>()
     val context = DiscContext()
     context.fromTransport(request)
-    context.discussionResponse = DiscStub.get()
+    process(context)
     respond(context.toTransportUpdate() )
 }
 
@@ -58,7 +58,7 @@ suspend fun ApplicationCall.closeDiscussion(appSettings: DiscAppSettings) {
     val request = receive<DiscussionCloseRequest>()
     val context = DiscContext()
     context.fromTransport(request)
-    context.discussionResponse = DiscStub.get()
+    process(context)
     respond(context.toTransportClose() )
 }
 
@@ -66,7 +66,7 @@ suspend fun ApplicationCall.deleteDiscussion(appSettings: DiscAppSettings) {
     val request = receive<DiscussionDeleteRequest>()
     val context = DiscContext()
     context.fromTransport(request)
-    context.discussionResponse = DiscStub.get()
+    process(context)
     respond(context.toTransportDelete() )
 }
 
@@ -74,13 +74,13 @@ suspend fun ApplicationCall.allDiscussions(appSettings: DiscAppSettings) {
     val request = receive<AllDiscussionsRequest>()
     val context = DiscContext()
     context.fromTransport(request)
-    context.multiDiscussionsResponse = DiscStub.getAll()
+    process(context)
     respond(context.toTransportAllDisc() )
 }
 suspend fun ApplicationCall.usersDiscussions(appSettings: DiscAppSettings) {
     val request = receive<UsersDiscussionsRequest>()
     val context = DiscContext()
     context.fromTransport(request)
-    context.multiDiscussionsResponse = DiscStub.getUsers()
+    process(context)
     respond(context.toTransportUsersDisc() )
 }

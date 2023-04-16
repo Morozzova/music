@@ -61,7 +61,6 @@ class DiscussionsProcessor {
             operation("Получить все обсуждения", DiscCommand.ALL_DISCUSSIONS) {
                 stubs("Обработка стабов") {
                     stubAllDiscussionsSuccess("Имитация успешной обработки")
-                    stubValidationBadId("Имитация ошибки валидации id")
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
@@ -69,7 +68,7 @@ class DiscussionsProcessor {
             operation("Получить обсуждения пользователя", DiscCommand.USERS_DISCUSSIONS) {
                 stubs("Обработка стабов") {
                     stubUsersDiscussionsSuccess("Имитация успешной обработки")
-                    stubValidationBadId("Имитация ошибки валидации id")
+                    stubValidationBadUsersId("Имитация ошибки валидации user id")
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }

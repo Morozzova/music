@@ -19,9 +19,9 @@ fun ICorChainDsl<DiscContext>.stubCloseSuccess(title: String) = worker {
             discussionRequest.id.takeIf { it != DiscId.NONE }?.also { this.id = it }
             discussionRequest.title.takeIf { it.isNotBlank() }?.also { this.title = it }
             discussionRequest.soundUrl.takeIf { it.isNotBlank() }?.also { this.soundUrl = it }
-            discussionRequest.status.takeIf { it != DiscStatus.NONE }?.name
-            discussionRequest.answers.map { it.asString() }.takeIf { it.isNotEmpty() }
-            discussionRequest.ownerId.takeIf { it != DiscUserId.NONE }?.asString()
+            discussionRequest.status.takeIf { it != DiscStatus.NONE }?.also { this.status = it }
+            discussionRequest.answers.takeIf { it.isNotEmpty() }.also { this.answers = it ?: mutableListOf() }
+            discussionRequest.ownerId.takeIf { it != DiscUserId.NONE }?.also { this.ownerId = it }
         }
         discussionResponse = stub
     }

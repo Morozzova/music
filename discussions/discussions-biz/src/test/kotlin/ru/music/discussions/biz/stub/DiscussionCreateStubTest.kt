@@ -1,10 +1,11 @@
-package ru.music.discussions.biz
+package ru.music.discussions.biz.stub
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import ru.music.common.DiscContext
 import ru.music.common.models.*
 import ru.music.common.stubs.DiscStubs
+import ru.music.discussions.biz.DiscussionsProcessor
 import ru.music.discussions.stubs.DiscStub
 import kotlin.test.Test
 import kotlin.test.assertEquals

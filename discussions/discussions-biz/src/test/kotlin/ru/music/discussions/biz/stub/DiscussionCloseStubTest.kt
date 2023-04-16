@@ -1,15 +1,16 @@
-package ru.music.discussions.biz
+package ru.music.discussions.biz.stub
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import ru.music.common.DiscContext
 import ru.music.common.models.*
 import ru.music.common.stubs.DiscStubs
+import ru.music.discussions.biz.DiscussionsProcessor
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DiscussionUpdateStubTest {
+class DiscussionCloseStubTest {
 
     private val processor = DiscussionsProcessor()
     val id = DiscId("888")
@@ -23,7 +24,7 @@ class DiscussionUpdateStubTest {
     fun update() = runTest {
 
         val ctx = DiscContext(
-            command = DiscCommand.UPDATE,
+            command = DiscCommand.CLOSE,
             state = DiscState.NONE,
             workMode = DiscWorkMode.STUB,
             stubCase = DiscStubs.SUCCESS,
@@ -48,7 +49,7 @@ class DiscussionUpdateStubTest {
     @Test
     fun badId() = runTest {
         val ctx = DiscContext(
-            command = DiscCommand.UPDATE,
+            command = DiscCommand.CLOSE,
             state = DiscState.NONE,
             workMode = DiscWorkMode.STUB,
             stubCase = DiscStubs.BAD_ID,
@@ -62,7 +63,7 @@ class DiscussionUpdateStubTest {
     @Test
     fun badTitle() = runTest {
         val ctx = DiscContext(
-            command = DiscCommand.UPDATE,
+            command = DiscCommand.CLOSE,
             state = DiscState.NONE,
             workMode = DiscWorkMode.STUB,
             stubCase = DiscStubs.BAD_TITLE,
@@ -83,7 +84,7 @@ class DiscussionUpdateStubTest {
     @Test
     fun badFile() = runTest {
         val ctx = DiscContext(
-            command = DiscCommand.UPDATE,
+            command = DiscCommand.CLOSE,
             state = DiscState.NONE,
             workMode = DiscWorkMode.STUB,
             stubCase = DiscStubs.BAD_FILE,
@@ -105,7 +106,7 @@ class DiscussionUpdateStubTest {
     @Test
     fun databaseError() = runTest {
         val ctx = DiscContext(
-            command = DiscCommand.UPDATE,
+            command = DiscCommand.CLOSE,
             state = DiscState.NONE,
             workMode = DiscWorkMode.STUB,
             stubCase = DiscStubs.DB_ERROR,
@@ -121,7 +122,7 @@ class DiscussionUpdateStubTest {
     @Test
     fun badNoCase() = runTest {
         val ctx = DiscContext(
-            command = DiscCommand.UPDATE,
+            command = DiscCommand.CLOSE,
             state = DiscState.NONE,
             workMode = DiscWorkMode.STUB,
             stubCase = DiscStubs.CANNOT_DELETE,

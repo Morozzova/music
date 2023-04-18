@@ -13,7 +13,7 @@ fun ICorChainDsl<DiscContext>.validateSoundUrlHasContent(title: String) = worker
     handle {
         fail(
             errorValidation(
-                field = "description",
+                field = "soundUrl",
                 violationCode = "noContent",
                 description = "field must contain letters"
             )

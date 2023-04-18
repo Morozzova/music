@@ -9,6 +9,6 @@ fun ICorChainDsl<DiscContext>.finishDiscValidation(title: String) = worker {
     this.title = title
     on { state == DiscState.RUNNING }
     handle {
-        discussionValidating = discussionValidating
+        discussionValidated = discussionValidating
     }
 }

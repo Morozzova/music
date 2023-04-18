@@ -12,7 +12,7 @@ fun ICorChainDsl<DiscContext>.validateSoundUrlNotEmpty(title: String) = worker {
     handle {
         fail(
             errorValidation(
-                field = "description",
+                field = "soundUrl",
                 violationCode = "empty",
                 description = "field must not be empty"
             )

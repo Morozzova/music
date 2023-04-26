@@ -9,7 +9,6 @@ import kotlin.test.assertEquals
 class ApplicationTest {
     @Test
     fun `root endpoint`() = testApplication {
-        application { module() }
         val response = client.get("/")
         assertEquals(HttpStatusCode.OK, response.status)
     }

@@ -23,9 +23,9 @@ import ru.music.discussions.ru.music.discussions.discussions
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-private val clazz = Application::moduleJvm::class.qualifiedName ?: "Application"
+private val clazz = Application::module::class.qualifiedName ?: "Application"
 @Suppress("unused") // Referenced in application.conf_
-fun Application.moduleJvm(appSettings: DiscAppSettings = initAppSettings()) {
+fun Application.module(appSettings: DiscAppSettings = initAppSettings()) {
     initPlugins(appSettings)
 
     install(CallLogging) {

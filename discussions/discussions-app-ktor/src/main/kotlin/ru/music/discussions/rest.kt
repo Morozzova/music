@@ -14,9 +14,10 @@ val methodsStrategy: List<RouteStrategy> = listOf(
 )
 
 fun Route.discussions(appSettings: DiscAppSettings) {
+    val loggerDisc = appSettings.corSettings.loggerProvider.logger(Route::discussions::class)
     methodsStrategy.forEach { route ->
         post(route.method) {
-            route.handler(this, appSettings)
+            route.handler(this, appSettings, loggerDisc)
         }
     }
 }

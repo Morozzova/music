@@ -1,86 +1,27 @@
 package ru.music.discussions
 
-import fromTransport
 import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
 import musicBroker.api.v1.models.*
-import ru.music.common.DiscContext
+import ru.music.common.models.DiscCommand
 import ru.music.discussions.ru.music.discussions.process
-import toLog
-import toTransportAllDisc
-import toTransportClose
-import toTransportCreate
-import toTransportDelete
-import toTransportRead
-import toTransportUpdate
-import toTransportUsersDisc
 
-private val clazzCreate = ApplicationCall::createDiscussion::class.qualifiedName ?: "create"
-suspend fun ApplicationCall.createDiscussion(appSettings: DiscAppSettings) {
-    val logId = "create"
-    val logger = appSettings.corSettings.loggerProvider.logger(clazzCreate)
+suspend fun ApplicationCall.createDiscussion(appSettings: DiscAppSettings, logger: IMpLogWrapper) =
+    process<DiscussionCreateRequest, DiscussionCreateResponse>(appSettings, logger, "discussion-create", DiscCommand.CREATE)
 
-    logger.doWithLogging(logId) {
-        val request = receive<DiscussionCreateRequest>()
-        val context = DiscContext()
-        context.fromTransport(request)
-        logger.info(
-            msg = "${context.command} request is got",
-            data = context.toLog("${logId}-request"),
-        )
-        process(context)
-        respond(context.toTransportCreate())
-        logger.info(
-            msg = "${context.command} response is sent",
-            data = context.toLog("${logId}-response")
-        )
-    }
-}
+suspend fun ApplicationCall.readDiscussion(appSettings: DiscAppSettings, logger: IMpLogWrapper) =
+    process<DiscussionReadRequest, DiscussionReadResponse>(appSettings, logger, "discussion-read", DiscCommand.READ)
 
-suspend fun ApplicationCall.readDiscussion(appSettings: DiscAppSettings) {
-    val request = receive<DiscussionReadRequest>()
-    val context = DiscContext()
-    context.fromTransport(request)
-    process(context)
-    respond(context.toTransportRead() )
-}
+suspend fun ApplicationCall.updateDiscussion(appSettings: DiscAppSettings, logger: IMpLogWrapper) =
+    process<DiscussionUpdateRequest, DiscussionUpdateResponse>(appSettings, logger, "discussion-update", DiscCommand.UPDATE)
 
-suspend fun ApplicationCall.updateDiscussion(appSettings: DiscAppSettings) {
-    val request = receive<DiscussionUpdateRequest>()
-    val context = DiscContext()
-    context.fromTransport(request)
-    process(context)
-    respond(context.toTransportUpdate() )
-}
+suspend fun ApplicationCall.closeDiscussion(appSettings: DiscAppSettings, logger: IMpLogWrapper) =
+    process<DiscussionCloseRequest, DiscussionCloseResponse>(appSettings, logger, "discussion-close", DiscCommand.CLOSE)
 
-suspend fun ApplicationCall.closeDiscussion(appSettings: DiscAppSettings) {
-    val request = receive<DiscussionCloseRequest>()
-    val context = DiscContext()
-    context.fromTransport(request)
-    process(context)
-    respond(context.toTransportClose() )
-}
+suspend fun ApplicationCall.deleteDiscussion(appSettings: DiscAppSettings, logger: IMpLogWrapper) =
+    process<DiscussionDeleteRequest, DiscussionDeleteResponse>(appSettings, logger, "discussion-delete", DiscCommand.DELETE)
 
-suspend fun ApplicationCall.deleteDiscussion(appSettings: DiscAppSettings) {
-    val request = receive<DiscussionDeleteRequest>()
-    val context = DiscContext()
-    context.fromTransport(request)
-    process(context)
-    respond(context.toTransportDelete() )
-}
+suspend fun ApplicationCall.allDiscussions(appSettings: DiscAppSettings, logger: IMpLogWrapper) =
+    process<AllDiscussionsRequest, AllDiscussionsResponse>(appSettings, logger, "discussion-all_discussions", DiscCommand.ALL_DISCUSSIONS)
 
-suspend fun ApplicationCall.allDiscussions(appSettings: DiscAppSettings) {
-    val request = receive<AllDiscussionsRequest>()
-    val context = DiscContext()
-    context.fromTransport(request)
-    process(context)
-    respond(context.toTransportAllDisc() )
-}
-suspend fun ApplicationCall.usersDiscussions(appSettings: DiscAppSettings) {
-    val request = receive<UsersDiscussionsRequest>()
-    val context = DiscContext()
-    context.fromTransport(request)
-    process(context)
-    respond(context.toTransportUsersDisc() )
-}
+suspend fun ApplicationCall.usersDiscussions(appSettings: DiscAppSettings, logger: IMpLogWrapper) =
+    process<UsersDiscussionsRequest, UsersDiscussionsResponse>(appSettings, logger, "discussion-users_discussions", DiscCommand.USERS_DISCUSSIONS)

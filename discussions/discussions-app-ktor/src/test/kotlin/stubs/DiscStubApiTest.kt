@@ -10,11 +10,15 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import musicBroker.api.v1.models.*
 import org.junit.Test
+import ru.music.discussions.moduleJvm
 import kotlin.test.assertEquals
 
 class DiscStubApiTest {
     @Test
     fun create() = testApplication {
+        application {
+            moduleJvm()
+        }
         val client = myClient()
 
         val response = client.post("/discussions/disc/create") {
@@ -41,6 +45,9 @@ class DiscStubApiTest {
 
     @Test
     fun read() = testApplication {
+        application {
+            moduleJvm()
+        }
         val client = myClient()
 
         val response = client.post("/discussions/disc/read") {
@@ -64,6 +71,9 @@ class DiscStubApiTest {
 
     @Test
     fun update() = testApplication {
+        application {
+            moduleJvm()
+        }
         val client = myClient()
 
         val response = client.post("/discussions/disc/update") {
@@ -89,6 +99,9 @@ class DiscStubApiTest {
 
     @Test
     fun close() = testApplication {
+        application {
+            moduleJvm()
+        }
         val client = myClient()
 
         val response = client.post("/discussions/disc/close") {
@@ -115,6 +128,9 @@ class DiscStubApiTest {
 
     @Test
     fun delete() = testApplication {
+        application {
+            moduleJvm()
+        }
         val client = myClient()
 
         val response = client.post("/discussions/disc/delete") {
@@ -138,6 +154,9 @@ class DiscStubApiTest {
 
     @Test
     fun allDiscussions() = testApplication {
+        application {
+            moduleJvm()
+        }
         val client = myClient()
 
         val response = client.post("/discussions/disc/all") {
@@ -158,6 +177,9 @@ class DiscStubApiTest {
 
     @Test
     fun usersDiscussions() = testApplication {
+        application {
+            moduleJvm()
+        }
         val client = myClient()
 
         val response = client.post("/discussions/disc/users") {

@@ -43,3 +43,7 @@ include("discussions:discussions-lib-logging-common")
 include("discussions:discussions-lib-logging-kermit")
 include("discussions:discussions-lib-logging-logback")
 include("discussions:discussions-lib-cor")
+
+include("discussions:discussions-repo-in-memory")
+include("discussions:discussions-repo-stubs")
+include("discussions:discussions-repo-tests")

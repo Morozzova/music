@@ -74,6 +74,8 @@ fun DiscussionDebug?.transportToStubCase() = when (this?.stub) {
     DiscussionRequestDebugStubs.BAD_TITLE -> DiscStubs.BAD_TITLE
     DiscussionRequestDebugStubs.BAD_FILE -> DiscStubs.BAD_FILE
     DiscussionRequestDebugStubs.CANNOT_DELETE -> DiscStubs.CANNOT_DELETE
+    DiscussionRequestDebugStubs.BAD_USERS_ID -> DiscStubs.BAD_USERS_ID
+    DiscussionRequestDebugStubs.DB_ERROR -> DiscStubs.DB_ERROR
     null -> DiscStubs.NONE
 }
 

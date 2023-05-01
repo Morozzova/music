@@ -17,6 +17,13 @@ data class DiscContext(
 
     var discussionRequest: DiscDiscussion = DiscDiscussion(),
     var multiDiscussionsRequest: DiscMulti = DiscMulti(),
+
+    var discussionValidating: DiscDiscussion = DiscDiscussion(),
+    var discussionValidatingMulti: DiscMulti = DiscMulti(),
+
+    var discussionValidated: DiscDiscussion = DiscDiscussion(),
+    var discussionValidatedMulti: DiscMulti = DiscMulti(),
+
     var discussionResponse: DiscDiscussion = DiscDiscussion(),
     var multiDiscussionsResponse: MutableList<DiscDiscussion> = mutableListOf(),
 )

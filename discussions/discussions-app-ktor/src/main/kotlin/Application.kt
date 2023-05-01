@@ -4,7 +4,6 @@ import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
-import io.ktor.server.locations.*
 import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.cachingheaders.*
 import io.ktor.server.plugins.callloging.*
@@ -16,53 +15,40 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 import ru.music.discussions.api.v1.apiV1Mapper
+import ru.music.discussions.logging.jvm.MpLogWrapperLogback
+import ru.music.discussions.plugins.initAppSettings
+import ru.music.discussions.plugins.initPlugins
+import ru.music.discussions.plugins.swagger
 import ru.music.discussions.ru.music.discussions.discussions
 
-// function with config (application.conf)
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-@Suppress("unused") // Referenced in application.conf
-fun Application.module() {
-    // Generally not needed as it is replaced by a `routing`
-    install(Routing)
+private val clazz = Application::module::class.qualifiedName ?: "Application"
+@Suppress("unused") // Referenced in application.conf_
+fun Application.module(appSettings: DiscAppSettings = initAppSettings()) {
+    initPlugins(appSettings)
 
-    install(CachingHeaders)
-    install(DefaultHeaders)
-    install(AutoHeadResponse)
-    install(WebSockets)
-
-    install(CORS) {
-        allowMethod(HttpMethod.Post)
-        allowHeader(HttpHeaders.Authorization)
-        allowHeader("MyCustomHeader")
-        allowCredentials = true
-        anyHost() // TODO remove
+    install(CallLogging) {
+        level = Level.INFO
+        val lgr = appSettings
+            .corSettings
+            .loggerProvider
+            .logger(clazz) as? MpLogWrapperLogback
+        lgr?.logger?.also { logger = it }
     }
-
     install(ContentNegotiation) {
         jackson {
             setConfig(apiV1Mapper.serializationConfig)
             setConfig(apiV1Mapper.deserializationConfig)
         }
     }
-
-
-    install(CallLogging) {
-        level = Level.INFO
-    }
-
-    @Suppress("OPT_IN_USAGE")
-    install(Locations)
+    install(DefaultHeaders)
 
     routing {
-        get("/") {
-            call.respondText("Yahoo, guys! This is music app for searching music tracks!")
+        route("discussion") {
+            discussions(appSettings)
         }
-
-        route("discussions") {
-            discussions()
-        }
-
+        swagger(appSettings)
         static("static") {
             resources("static")
         }

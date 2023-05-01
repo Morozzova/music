@@ -64,6 +64,9 @@ fun List<DiscDiscussion>.toTransportDisc(): List<DiscussionResponseObject>? = th
     .map { it.toTransportDisc() }
     .toList()
     .takeIf { it.isNotEmpty() }
+fun Set<DiscPermissionsClient>.toTransportDisc(): Set<DiscussionPermissions>? = this
+    .map { it.toTransportDisc() }
+    .takeIf { it.isNotEmpty() }?.toSet()
 
 private fun DiscDiscussion.toTransportDisc(): DiscussionResponseObject = DiscussionResponseObject(
     id = id.takeIf { it != DiscId.NONE }?.asString(),

@@ -10,7 +10,7 @@ object DiscStubItems {
             ownerId = DiscUserId("user-01"),
             soundUrl = "www.lorem.ipsum",
             status = DiscStatus.OPEN,
-            permissionsClient = mutableListOf(
+            permissionsClient = mutableSetOf(
                 DiscPermissionsClient.READ,
                 DiscPermissionsClient.UPDATE,
                 DiscPermissionsClient.DELETE

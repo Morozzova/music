@@ -4,21 +4,14 @@ plugins {
     kotlin("jvm")
 }
 
+val JVM_TARGET = "17"
+
 group = "musicBroker"
 version = "1.0-SNAPSHOT"
 
 val kotestVersion: String by project
 val coroutinesVersion: String by project
 val jUnitJupiterVersion: String by project
-
-dependencies {
-    implementation(kotlin("stdlib-common"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
-    implementation(kotlin("test-junit5"))
-    implementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
-    implementation("org.junit.jupiter:junit-jupiter-params:$jUnitJupiterVersion")
-}
 
 allprojects {
     repositories {
@@ -33,10 +26,12 @@ subprojects {
     version = rootProject.version
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = JVM_TARGET
+    }
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
+        kotlinOptions.jvmTarget = JVM_TARGET
     }
 }
-
 tasks.test {
     useJUnitPlatform()
 }

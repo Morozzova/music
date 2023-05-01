@@ -1,6 +1,4 @@
-import ru.music.discussions.app.kafka.AppKafkaConfig
-import ru.music.discussions.app.kafka.AppKafkaConsumer
-import ru.music.discussions.app.kafka.ConsumerStrategyDisc
+package ru.music.discussions.app.kafka
 
 fun main() {
     val config = AppKafkaConfig()

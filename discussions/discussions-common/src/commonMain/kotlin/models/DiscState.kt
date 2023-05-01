@@ -4,4 +4,5 @@ enum class DiscState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING
 }

@@ -17,7 +17,7 @@ class DiscStubApiTest {
     fun create() = testApplication {
         val client = myClient()
 
-        val response = client.post("/discussions/disc/create") {
+        val response = client.post("/discussion/create") {
             val requestObj = DiscussionCreateRequest (
                 requestId = "12345",
                 discussion = DiscussionCreateObject(
@@ -43,7 +43,7 @@ class DiscStubApiTest {
     fun read() = testApplication {
         val client = myClient()
 
-        val response = client.post("/discussions/disc/read") {
+        val response = client.post("/discussion/read") {
             val requestObj = DiscussionReadRequest(
                 requestId = "12345",
                 discussion = DiscussionReadObject(
@@ -66,7 +66,7 @@ class DiscStubApiTest {
     fun update() = testApplication {
         val client = myClient()
 
-        val response = client.post("/discussions/disc/update") {
+        val response = client.post("/discussion/update") {
             val requestObj = DiscussionUpdateRequest(
                 requestId = "12345",
                 discussion = DiscussionUpdateObject(
@@ -91,7 +91,7 @@ class DiscStubApiTest {
     fun close() = testApplication {
         val client = myClient()
 
-        val response = client.post("/discussions/disc/close") {
+        val response = client.post("/discussion/close") {
             val requestObj = DiscussionCloseRequest(
                 requestId = "12345",
                 discussion = DiscussionCloseObject(
@@ -110,14 +110,14 @@ class DiscStubApiTest {
         val responseObj = response.body<DiscussionCloseResponse>()
         assertEquals(200, response.status.value)
         assertEquals("678", responseObj.discussion?.id)
-        assertEquals(DiscussionStatus.OPEN, responseObj.discussion?.status)
+        assertEquals(DiscussionStatus.CLOSED, responseObj.discussion?.status)
     }
 
     @Test
     fun delete() = testApplication {
         val client = myClient()
 
-        val response = client.post("/discussions/disc/delete") {
+        val response = client.post("/discussion/delete") {
             val requestObj = DiscussionDeleteRequest(
                 requestId = "12345",
                 discussion = DiscussionDeleteObject(
@@ -140,7 +140,7 @@ class DiscStubApiTest {
     fun allDiscussions() = testApplication {
         val client = myClient()
 
-        val response = client.post("/discussions/disc/all") {
+        val response = client.post("/discussion/all") {
             val requestObj = AllDiscussionsRequest(
                 requestId = "12345",
                 debug = DiscussionDebug(
@@ -153,14 +153,14 @@ class DiscStubApiTest {
         }
         val responseObj = response.body<AllDiscussionsResponse>()
         assertEquals(200, response.status.value)
-        assertEquals(3, responseObj.discussions?.size)
+        assertEquals(4, responseObj.discussions?.size)
     }
 
     @Test
     fun usersDiscussions() = testApplication {
         val client = myClient()
 
-        val response = client.post("/discussions/disc/users") {
+        val response = client.post("/discussion/users") {
             val requestObj = UsersDiscussionsRequest(
                 requestId = "12345",
                 usersId = "888",
@@ -174,7 +174,7 @@ class DiscStubApiTest {
         }
         val responseObj = response.body<UsersDiscussionsResponse>()
         assertEquals(200, response.status.value)
-        assertEquals(2, responseObj.discussions?.size)
+        assertEquals(4, responseObj.discussions?.size)
     }
 
 

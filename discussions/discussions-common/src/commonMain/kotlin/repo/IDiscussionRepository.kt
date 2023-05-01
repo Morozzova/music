@@ -6,7 +6,7 @@ interface IDiscussionRepository {
     suspend fun createDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse
     suspend fun readDiscussion(rq: DbDiscussionIdRequest): DbDiscussionResponse
     suspend fun updateDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse
-    suspend fun closeDiscussion(rq: DbDiscussionIdRequest): DbDiscussionResponse
+    suspend fun closeDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse
     suspend fun deleteDiscussion(rq: DbDiscussionIdRequest): DbDiscussionResponse
     suspend fun allDiscussions(rq: DbDiscussionUsersIdRequest): DbDiscussionsResponse
     suspend fun usersDiscussions(rq: DbDiscussionUsersIdRequest): DbDiscussionsResponse
@@ -24,7 +24,7 @@ interface IDiscussionRepository {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun closeDiscussion(rq: DbDiscussionIdRequest): DbDiscussionResponse {
+            override suspend fun closeDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse {
                 TODO("Not yet implemented")
             }
 

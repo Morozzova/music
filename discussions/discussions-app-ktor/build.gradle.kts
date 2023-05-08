@@ -95,6 +95,11 @@ dependencies {
 
     // Stubs
     implementation(project(":discussions:discussions-stubs"))
+
+
+    implementation(project(":discussions:discussions-repo-in-memory"))
+    implementation(project(":discussions:discussions-repo-stubs"))
+    implementation(project(":discussions:discussions-repo-tests"))
 }
 
 tasks {

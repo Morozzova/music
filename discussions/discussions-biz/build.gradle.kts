@@ -11,6 +11,10 @@ dependencies {
     implementation(project(":discussions:discussions-stubs"))
     implementation(project(":discussions:discussions-lib-cor"))
 
+    implementation(project(":discussions:discussions-repo-in-memory"))
+    implementation(project(":discussions:discussions-repo-stubs"))
+    implementation(project(":discussions:discussions-repo-tests"))
+
     implementation(kotlin("test-common"))
     implementation(kotlin("test-annotations-common"))
 

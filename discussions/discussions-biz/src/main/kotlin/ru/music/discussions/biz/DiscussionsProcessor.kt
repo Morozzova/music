@@ -1,6 +1,7 @@
 package ru.music.discussions.biz
 
 import ru.music.common.DiscContext
+import ru.music.common.DiscCorSettings
 import ru.music.common.models.DiscCommand
 import ru.music.common.models.DiscId
 import ru.music.common.models.DiscUserId
@@ -11,7 +12,7 @@ import ru.music.discussions.biz.workers.*
 import ru.music.discussions.cor.rootChain
 import ru.music.discussions.cor.worker
 
-class DiscussionsProcessor {
+class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettings()) {
     suspend fun exec(ctx: DiscContext) = BusinessChain.exec(ctx)
     companion object {
         private val BusinessChain = rootChain<DiscContext> {

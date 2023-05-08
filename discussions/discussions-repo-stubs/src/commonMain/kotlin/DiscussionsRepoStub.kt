@@ -40,14 +40,14 @@ class DiscussionsRepoStub() : IDiscussionRepository {
 
     override suspend fun allDiscussions(rq: DbDiscussionUsersIdRequest): DbDiscussionsResponse {
         return DbDiscussionsResponse(
-            data = DiscStub.prepareDiscussionsList(null) { },
+            data = DiscStub.prepareDiscussionsList(null),
             isSuccess = true,
         )
     }
 
     override suspend fun usersDiscussions(rq: DbDiscussionUsersIdRequest): DbDiscussionsResponse {
         return DbDiscussionsResponse(
-            data = DiscStub.prepareDiscussionsList(rq.usersId) { },
+            data = DiscStub.prepareDiscussionsList(rq.usersId),
             isSuccess = true,
         )
     }

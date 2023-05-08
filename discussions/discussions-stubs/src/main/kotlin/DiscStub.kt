@@ -13,5 +13,5 @@ object DiscStub {
 
     fun prepareResult(block: DiscDiscussion.() -> Unit): DiscDiscussion = get().apply(block)
 
-    fun prepareDiscussionsList(id: DiscUserId?, block: List<DiscDiscussion>.() -> Unit) = getAll().apply(block)
+    fun prepareDiscussionsList(id: DiscUserId?) = getAll()
 }

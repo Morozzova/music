@@ -28,8 +28,8 @@ class DiscussionsRepoInMemory(
         }
     }
 
-    private fun save(ad: DiscDiscussion) {
-        val entity = DiscussionEntity(ad)
+    private fun save(disc: DiscDiscussion) {
+        val entity = DiscussionEntity(disc)
         if (entity.id == null) {
             return
         }
@@ -38,11 +38,11 @@ class DiscussionsRepoInMemory(
 
     override suspend fun createDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse {
         val key = randomUuid()
-        val ad = rq.discussion.copy(id = DiscId(key))
-        val entity = DiscussionEntity(ad)
+        val disc = rq.discussion.copy(id = DiscId(key))
+        val entity = DiscussionEntity(disc)
         cache.put(key, entity)
         return DbDiscussionResponse(
-            data = ad,
+            data = disc,
             isSuccess = true,
         )
     }
@@ -60,14 +60,14 @@ class DiscussionsRepoInMemory(
 
     override suspend fun updateDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse {
         val key = rq.discussion.id.takeIf { it != DiscId.NONE }?.asString() ?: return resultErrorEmptyId
-        val newAd = rq.discussion.copy()
-        val entity = DiscussionEntity(newAd)
+        val newDisc= rq.discussion.copy()
+        val entity = DiscussionEntity(newDisc)
         return when (cache.get(key)) {
             null -> resultErrorNotFound
             else -> {
                 cache.put(key, entity)
                 DbDiscussionResponse(
-                    data = newAd,
+                    data = newDisc,
                     isSuccess = true,
                 )
             }

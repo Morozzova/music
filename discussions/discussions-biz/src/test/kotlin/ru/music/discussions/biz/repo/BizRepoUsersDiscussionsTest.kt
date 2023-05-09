@@ -32,7 +32,7 @@ class BizRepoUsersDiscussionsTest {
         soundUrl = "abc",
         status = DiscStatus.OPEN,
         answers = mutableListOf(DiscAnswer("222")),
-        ownerId = DiscUserId("777")
+        ownerId = userId
     )
 
     private val repo by lazy {
@@ -68,10 +68,10 @@ class BizRepoUsersDiscussionsTest {
         )
         processor.exec(ctx)
         assertEquals(DiscState.FINISHING, ctx.state)
-        assertEquals(1, ctx.multiDiscussionsResponse.size)
+        assertEquals(userId, ctx.multiDiscussionsResponse.first().ownerId)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun repoUsersDiscussionsNotFoundTest() = repoNotFoundTest(command)
+    fun repoUsersDiscussionsNotFoundTest() = repoUsersIdNotFoundTest(command)
 }

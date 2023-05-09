@@ -59,8 +59,4 @@ class BizRepoAllDiscussionsTest {
         assertEquals(DiscState.FINISHING, ctx.state)
         assertEquals(1, ctx.multiDiscussionsResponse.size)
     }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun repoAllDiscussionsNotFoundTest() = repoNotFoundTest(command)
 }

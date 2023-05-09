@@ -1,0 +1,77 @@
+package ru.music.discussions.biz.repo
+
+import DiscussionsRepositoryMock
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import repo.DbDiscussionResponse
+import repo.DbDiscussionsResponse
+import ru.music.common.DiscContext
+import ru.music.common.DiscCorSettings
+import ru.music.common.models.*
+import ru.music.discussions.biz.DiscussionsProcessor
+import kotlin.test.Test
+import kotlin.test.assertEquals
+
+class BizRepoUsersDiscussionsTest {
+
+    private val userId = DiscUserId("321")
+    private val command = DiscCommand.USERS_DISCUSSIONS
+
+    private val initDisc = DiscDiscussion(
+        id = DiscId("123"),
+        title = "abc",
+        soundUrl = "abc",
+        status = DiscStatus.OPEN,
+        answers = mutableListOf(DiscAnswer("111")),
+        ownerId = userId
+    )
+
+    private val initDisc2 = DiscDiscussion(
+        id = DiscId("321"),
+        title = "abc",
+        soundUrl = "abc",
+        status = DiscStatus.OPEN,
+        answers = mutableListOf(DiscAnswer("222")),
+        ownerId = DiscUserId("777")
+    )
+
+    private val repo by lazy {
+        DiscussionsRepositoryMock(
+            invokeReadDiscussion = {
+                DbDiscussionResponse(
+                    isSuccess = true,
+                    data = initDisc
+                )
+            },
+            invokeUsersDiscussions = {
+                DbDiscussionsResponse(
+                    isSuccess = true,
+                    data = listOf(initDisc, initDisc2)
+                )
+            }
+        )
+    }
+
+    private val settings = DiscCorSettings(
+        repoTest = repo
+    )
+    private val processor = DiscussionsProcessor(settings)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun repoUsersDiscussionsSuccessTest() = runTest {
+        val ctx = DiscContext(
+            command = command,
+            state = DiscState.NONE,
+            workMode = DiscWorkMode.TEST,
+            multiDiscussionsRequest = DiscMulti(userId)
+        )
+        processor.exec(ctx)
+        assertEquals(DiscState.FINISHING, ctx.state)
+        assertEquals(1, ctx.multiDiscussionsResponse.size)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun repoUsersDiscussionsNotFoundTest() = repoNotFoundTest(command)
+}

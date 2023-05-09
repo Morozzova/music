@@ -15,6 +15,7 @@ import ru.music.common.DiscCorSettings
 import ru.music.common.models.DiscAnswer
 import ru.music.common.models.DiscId
 import ru.music.common.models.DiscStatus
+import ru.music.common.models.DiscUserId
 import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
 import ru.music.discussions.repo.inmemory.DiscussionsRepoInMemory
@@ -25,6 +26,7 @@ class DiscussionsInMemoryApiTest {
     private val uuidOld = "10000000-0000-0000-0000-000000000001"
     private val uuidNew = "10000000-0000-0000-0000-000000000002"
     private val uuidSup = "10000000-0000-0000-0000-000000000003"
+    private val usersId = "777"
     private val initDiscussion = DiscStub.prepareResult {
         id = DiscId(uuidOld)
         title = "abc"
@@ -38,6 +40,7 @@ class DiscussionsInMemoryApiTest {
         soundUrl = "abc"
         status = DiscStatus.OPEN
         answers = mutableListOf()
+        ownerId = DiscUserId(usersId)
     }
 
     @Test
@@ -51,8 +54,7 @@ class DiscussionsInMemoryApiTest {
         val createDiscussion = DiscussionCreateObject(
             title = "Music song",
             soundUrl = "abc",
-            status = DiscussionStatus.OPEN,
-            answers = mutableListOf()
+            status = DiscussionStatus.OPEN
         )
 
         val response = client.post("/discussion/create") {
@@ -199,13 +201,13 @@ class DiscussionsInMemoryApiTest {
 
     @Test
     fun allDiscussions() = testApplication {
-        val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion), randomUuid = { uuidNew })
+        val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion, initDiscussionSupply), randomUuid = { uuidNew })
         application {
             module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
         }
         val client = myClient()
 
-        val response = client.post("/discussion/allDiscussions") {
+        val response = client.post("/discussion/all") {
             val requestObj = AllDiscussionsRequest(
                 requestId = "12345",
                 debug = DiscussionDebug(
@@ -218,24 +220,26 @@ class DiscussionsInMemoryApiTest {
         val responseObj = response.body<AllDiscussionsResponse>()
         assertEquals(200, response.status.value)
         assertNotEquals(0, responseObj.discussions?.size)
+        println("************************************************************************************************************")
+        println(responseObj)
         assertEquals(uuidOld, responseObj.discussions?.first()?.id)
     }
 
     @Test
     fun usersDiscussions() = testApplication {
-        val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion), randomUuid = { uuidNew })
+        val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion, initDiscussionSupply), randomUuid = { uuidNew })
         application {
             module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
         }
         val client = myClient()
 
-        val response = client.post("/discussion/usersDiscussions") {
+        val response = client.post("/discussion/users") {
             val requestObj = UsersDiscussionsRequest(
                 requestId = "12345",
                 debug = DiscussionDebug(
                     mode = DiscussionRequestDebugMode.TEST,
                 ),
-                usersId = "678"
+                usersId = usersId
             )
             contentType(ContentType.Application.Json)
             setBody(requestObj)
@@ -243,7 +247,7 @@ class DiscussionsInMemoryApiTest {
         val responseObj = response.body<UsersDiscussionsResponse>()
         assertEquals(200, response.status.value)
         assertNotEquals(0, responseObj.discussions?.size)
-        assertEquals("678", responseObj.discussions?.first()?.ownerId)
+        assertEquals(usersId, responseObj.discussions?.first()?.ownerId)
     }
 
     private fun ApplicationTestBuilder.myClient() = createClient {
@@ -256,5 +260,4 @@ class DiscussionsInMemoryApiTest {
             }
         }
     }
-
 }

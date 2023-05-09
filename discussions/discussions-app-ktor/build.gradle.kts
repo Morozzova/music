@@ -40,8 +40,6 @@ dependencies {
 dependencies {
     implementation(kotlin("stdlib-common"))
     implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
-
-    implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktorServer("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
     implementation(ktorServer("auth")) // "io.ktor:ktor-server-auth:$ktorVersion"
     implementation(ktorServer("auto-head-response")) // "io.ktor:ktor-server-auto-head-response:$ktorVersion"

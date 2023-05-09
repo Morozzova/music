@@ -44,8 +44,7 @@ class DiscussionsMockApiTest {
         val createDiscussion = DiscussionCreateObject(
             title = "Music song",
             soundUrl = "abc",
-            status = DiscussionStatus.OPEN,
-            answers = mutableListOf()
+            status = DiscussionStatus.OPEN
         )
 
         val response = client.post("/discussion/create") {
@@ -69,6 +68,7 @@ class DiscussionsMockApiTest {
 
     }
 
+    @Test
     fun read() = testApplication {
         val repo = DiscussionsRepositoryMock(
             invokeReadDiscussion = {
@@ -279,7 +279,7 @@ class DiscussionsMockApiTest {
 
         val client = myClient()
 
-        val response = client.post("/discussion/allDiscussions") {
+        val response = client.post("/discussion/all") {
             val requestObj = AllDiscussionsRequest(
                 requestId = "12345",
                 debug = DiscussionDebug(
@@ -318,7 +318,7 @@ class DiscussionsMockApiTest {
         }
         val client = myClient()
 
-        val response = client.post("/discussion/usersDiscussions") {
+        val response = client.post("/discussion/users") {
             val requestObj = UsersDiscussionsRequest(
                 requestId = "12345",
                 debug = DiscussionDebug(

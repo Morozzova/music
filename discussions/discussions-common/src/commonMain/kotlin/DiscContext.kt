@@ -9,6 +9,7 @@ data class DiscContext(
     var command: DiscCommand = DiscCommand.NONE,
     var state: DiscState = DiscState.NONE,
     val errors: MutableList<DiscError> = mutableListOf(),
+    var settings: DiscCorSettings = DiscCorSettings.NONE,
 
     var workMode: DiscWorkMode = DiscWorkMode.PROD,
     var stubCase: DiscStubs = DiscStubs.NONE,

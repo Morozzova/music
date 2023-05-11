@@ -11,22 +11,32 @@ import ru.music.discussions.biz.DiscussionsProcessor
 import kotlin.test.assertEquals
 
 private val userId = DiscUserId("6789")
-private val initDisc = DiscDiscussion(
-    id = DiscId("123"),
-    title = "abc",
-    soundUrl = "abc",
-    status = DiscStatus.OPEN,
-    answers = mutableListOf(DiscAnswer("111")),
-    ownerId = userId
+private val initDisc = listOf(
+    DiscDiscussion(
+        id = DiscId("123"),
+        title = "abc",
+        soundUrl = "abc",
+        status = DiscStatus.OPEN,
+        answers = mutableListOf(DiscAnswer("111")),
+        ownerId = userId
+    ),
+    DiscDiscussion(
+        id = DiscId("124"),
+        title = "abc",
+        soundUrl = "abc",
+        status = DiscStatus.OPEN,
+        answers = mutableListOf(DiscAnswer("111")),
+        ownerId = userId
+    )
 )
 
 private val repo by lazy {
     DiscussionsRepositoryMock(
         invokeUsersDiscussions = {
-            if (it.usersId == initDisc.ownerId) {
+            if (initDisc.map { it.ownerId }.contains(it.usersId)) {
                 DbDiscussionsResponse(
                     isSuccess = true,
-                    data = listOf(initDisc)
+                    data = initDisc
                 )
             } else {
                 DbDiscussionsResponse(
@@ -50,11 +60,11 @@ fun repoUsersIdNotFoundTest(command: DiscCommand) = runTest {
         command = command,
         state = DiscState.NONE,
         workMode = DiscWorkMode.TEST,
-        multiDiscussionsRequest = DiscMulti(userId)
+        multiDiscussionsRequest = DiscMulti(DiscUserId(""))
     )
     processor.exec(ctx)
     assertEquals(DiscState.FAILING, ctx.state)
-    assertEquals(2, ctx.multiDiscussionsResponse.size)
+    assertEquals(0, ctx.multiDiscussionsResponse.size)
     assertEquals(1, ctx.errors.size)
     assertEquals("ownerId", ctx.errors.first().field)
 }

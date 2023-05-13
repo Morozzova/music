@@ -170,7 +170,6 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                 }
                 chain {
                     title = "Логика поиска в БД"
-                    repoRead("Чтение обсуждения из БД")
                     repoPrepareAllDiscussions("Подготовка загрузки всех обсуждений")
                     repoAllDiscussions("Чтение всех обсуждений")
                 }
@@ -193,7 +192,6 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                 }
                 chain {
                     title = "Логика поиска в БД"
-                    repoRead("Чтение обсуждения из БД")
                     repoPrepareUsersDiscussions("Подготовка загрузки обсуждений пользователя")
                     repoUsersDiscussions("Чтение обсуждений пользователя")
                 }

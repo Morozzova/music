@@ -16,6 +16,7 @@ import ru.music.common.DiscCorSettings
 import ru.music.common.models.DiscDiscussion
 import ru.music.common.models.DiscId
 import ru.music.common.models.DiscStatus
+import ru.music.common.models.DiscUserId
 import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
 import ru.music.discussions.stubs.DiscStub
@@ -291,6 +292,7 @@ class DiscussionsMockApiTest {
         }
         val responseObj = response.body<AllDiscussionsResponse>()
         assertEquals(200, response.status.value)
+        assertEquals(2, responseObj.discussions?.size)
         Assert.assertNotEquals(0, responseObj.discussions?.size)
         assertEquals("456", responseObj.discussions?.first()?.id)
     }
@@ -305,10 +307,10 @@ class DiscussionsMockApiTest {
                             isSuccess = true,
                             data = listOf(
                                 DiscDiscussion(
-                                    id = DiscId("456")
+                                    ownerId = it.usersId!!
                                 ),
                                 DiscDiscussion(
-                                    id = DiscId("567")
+                                    ownerId = DiscUserId("567")
                                 )
                             ),
                         )

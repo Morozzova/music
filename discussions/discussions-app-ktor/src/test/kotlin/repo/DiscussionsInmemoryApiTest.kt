@@ -219,9 +219,8 @@ class DiscussionsInMemoryApiTest {
         }
         val responseObj = response.body<AllDiscussionsResponse>()
         assertEquals(200, response.status.value)
+        assertEquals(2, responseObj.discussions?.size)
         assertNotEquals(0, responseObj.discussions?.size)
-        println("************************************************************************************************************")
-        println(responseObj)
         assertEquals(uuidOld, responseObj.discussions?.first()?.id)
     }
 
@@ -246,7 +245,7 @@ class DiscussionsInMemoryApiTest {
         }
         val responseObj = response.body<UsersDiscussionsResponse>()
         assertEquals(200, response.status.value)
-        assertNotEquals(0, responseObj.discussions?.size)
+        assertEquals(1, responseObj.discussions?.size)
         assertEquals(usersId, responseObj.discussions?.first()?.ownerId)
     }
 

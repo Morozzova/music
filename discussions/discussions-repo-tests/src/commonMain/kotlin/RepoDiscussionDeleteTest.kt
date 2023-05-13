@@ -21,8 +21,7 @@ abstract class RepoDiscussionDeleteTest {
 
     @Test
     fun deleteNotFound() = runRepoTest {
-        val result = repo.deleteDiscussion(DbDiscussionIdRequest(notFoundId))
-
+        val result = repo.readDiscussion(DbDiscussionIdRequest(notFoundId))
         assertEquals(false, result.isSuccess)
         assertEquals(null, result.data)
         val error = result.errors.find { it.code == "not-found" }

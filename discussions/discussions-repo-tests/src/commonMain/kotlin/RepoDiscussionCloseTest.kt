@@ -37,7 +37,7 @@ abstract class RepoDiscussionCloseTest {
     )
 
     private val reqCloseConc = DiscDiscussion(
-        id = closeIdNotFound,
+        id = closeConc.id,
         title = "update object not found",
         soundUrl = "update object not found url",
         ownerId = DiscUserId("owner-123"),

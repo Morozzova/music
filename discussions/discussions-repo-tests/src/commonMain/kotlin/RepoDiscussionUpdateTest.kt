@@ -38,7 +38,7 @@ abstract class RepoDiscussionUpdateTest {
     )
 
     private val reqUpdateConc = DiscDiscussion(
-        id = updateIdNotFound,
+        id = updateConc.id,
         title = "update object not found",
         soundUrl = "update object not found url",
         ownerId = DiscUserId("owner-123"),

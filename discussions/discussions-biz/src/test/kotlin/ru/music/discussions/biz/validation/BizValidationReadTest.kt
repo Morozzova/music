@@ -1,6 +1,8 @@
 package ru.music.discussions.biz.validation
 
+import DiscussionsRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.music.common.DiscCorSettings
 import ru.music.common.models.DiscCommand
 import ru.music.discussions.biz.DiscussionsProcessor
 import kotlin.test.Test
@@ -9,7 +11,12 @@ import kotlin.test.Test
 class BizValidationReadTest {
 
     private val command = DiscCommand.READ
-    private val processor by lazy { DiscussionsProcessor() }
+    private val settings by lazy {
+        DiscCorSettings(
+            repoTest = DiscussionsRepoStub()
+        )
+    }
+    private val processor by lazy { DiscussionsProcessor(settings) }
 
     @Test fun correctId() = validationIdCorrect(command, processor)
     @Test fun trimId() = validationIdTrim(command, processor)

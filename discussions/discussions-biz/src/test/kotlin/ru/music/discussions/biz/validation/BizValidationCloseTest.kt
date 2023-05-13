@@ -1,16 +1,22 @@
 package ru.music.discussions.biz.validation
 
+import DiscussionsRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.music.common.DiscCorSettings
 import ru.music.common.models.DiscCommand
 import ru.music.discussions.biz.DiscussionsProcessor
-import ru.music.discussions.biz.validation.*
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationCloseTest {
 
     private val command = DiscCommand.UPDATE
-    private val processor by lazy { DiscussionsProcessor() }
+    private val settings by lazy {
+        DiscCorSettings(
+            repoTest = DiscussionsRepoStub()
+        )
+    }
+    private val processor by lazy { DiscussionsProcessor(settings) }
 
     @Test fun correctTitle() = validationTitleCorrect(command, processor)
     @Test fun trimTitle() = validationTitleTrim(command, processor)

@@ -1,10 +1,10 @@
 package ru.music.discussions.biz.validation
 
-import DiscussionsRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.music.common.DiscCorSettings
 import ru.music.common.models.DiscCommand
 import ru.music.discussions.biz.DiscussionsProcessor
+import ru.music.discussions.repository.inmemory.DiscussionsRepoStub
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)

@@ -1,3 +1,5 @@
+package ru.music.discussions.repository.inmemory
+
 import repo.*
 import ru.music.common.repo.DbDiscussionUsersIdRequest
 import ru.music.discussions.stubs.DiscStub

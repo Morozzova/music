@@ -24,7 +24,8 @@ fun validationSoundUrlCorrect(command: DiscCommand, processor: DiscussionsProces
             soundUrl = "www.sound.ru",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         ),
     )
     processor.exec(ctx)
@@ -45,7 +46,8 @@ fun validationSoundUrlTrim(command: DiscCommand, processor: DiscussionsProcessor
             soundUrl = " \n\twww.sound.ru \n\t",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         )
     )
     processor.exec(ctx)
@@ -66,7 +68,8 @@ fun validationSoundUrlEmpty(command: DiscCommand, processor: DiscussionsProcesso
             soundUrl = "",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         ),
     )
     processor.exec(ctx)
@@ -89,7 +92,8 @@ fun validationSoundUrlSymbols(command: DiscCommand, processor: DiscussionsProces
             soundUrl = "!@#$%^&*(),.{}",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         )
     )
     processor.exec(ctx)

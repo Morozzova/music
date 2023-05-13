@@ -54,13 +54,14 @@ class BizRepoCloseTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun repoUpdateSuccessTest() = runTest {
+    fun repoCloseSuccessTest() = runTest {
         val discToUpd = DiscDiscussion(
             id = initDisc.id,
             title = initDisc.title,
             soundUrl = initDisc.soundUrl,
             status = DiscStatus.CLOSED,
-            answers = initDisc.answers
+            answers = initDisc.answers,
+            lock = DiscLock("123-234-abc-ABC")
         )
 
         val ctx = DiscContext(

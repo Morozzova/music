@@ -34,5 +34,11 @@ class BizValidationUpdateTest {
     @Test fun badFormatId() = validationIdFormat(command, processor)
 
 
+    @Test fun correctLock() = validationLockCorrect(command, processor)
+    @Test fun trimLock() = validationLockTrim(command, processor)
+    @Test fun emptyLock() = validationLockEmpty(command, processor)
+    @Test fun badFormatLock() = validationLockFormat(command, processor)
+
+
 }
 

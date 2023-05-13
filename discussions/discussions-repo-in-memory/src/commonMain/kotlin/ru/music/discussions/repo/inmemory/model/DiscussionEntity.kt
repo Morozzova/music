@@ -8,7 +8,8 @@ data class DiscussionEntity(
     val soundUrl: String? = null,
     val ownerId: String? = null,
     val status: String? = null,
-    val answers: MutableList<String> = mutableListOf()
+    val answers: MutableList<String> = mutableListOf(),
+    val lock: String? = null,
 ) {
     constructor(model: DiscDiscussion): this(
         id = model.id.asString().takeIf { it.isNotBlank() },
@@ -16,7 +17,8 @@ data class DiscussionEntity(
         soundUrl = model.soundUrl.takeIf { it.isNotBlank() },
         ownerId = model.ownerId.asString().takeIf { it.isNotBlank() },
         status = model.status.takeIf { it != DiscStatus.NONE }?.name,
-        answers = model.answers.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableList() ?: mutableListOf()
+        answers = model.answers.takeIf { it.isNotEmpty() }?.map { it.asString() }?.toMutableList() ?: mutableListOf(),
+        lock = model.lock.asString().takeIf { it.isNotBlank() }
     )
 
     fun toInternal() = DiscDiscussion(
@@ -25,6 +27,7 @@ data class DiscussionEntity(
         soundUrl = soundUrl?: "",
         ownerId = ownerId?.let { DiscUserId(it) }?: DiscUserId.NONE,
         status = status?.let { DiscStatus.valueOf(it) }?: DiscStatus.NONE,
-        answers = answers.map { DiscAnswer(it) }.toMutableList()
+        answers = answers.map { DiscAnswer(it) }.toMutableList(),
+        lock = lock?.let { DiscLock(it) } ?: DiscLock.NONE,
     )
 }

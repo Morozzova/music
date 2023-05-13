@@ -1,7 +1,9 @@
 package ru.music.common.helpers
 
+import exceptions.RepoConcurrencyException
 import ru.music.common.DiscContext
 import ru.music.common.models.DiscError
+import ru.music.common.models.DiscLock
 import ru.music.common.models.DiscState
 
 fun Throwable.asDiscError(
@@ -47,6 +49,7 @@ fun errorAdministration(
     field: String = "",
     violationCode: String,
     description: String,
+    exception: Exception? = null,
     level: DiscError.Level = DiscError.Level.ERROR,
 ) = DiscError(
     field = field,
@@ -54,4 +57,17 @@ fun errorAdministration(
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+    exception = exception,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: DiscLock,
+    actualLock: DiscLock?,
+    exception: Exception? = null,
+) = DiscError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    message = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )

@@ -21,7 +21,8 @@ fun validationIdCorrect(command: DiscCommand, processor: DiscussionsProcessor) =
             soundUrl = "www.sound.ru",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         ),
     )
     processor.exec(ctx)
@@ -41,7 +42,8 @@ fun validationIdTrim(command: DiscCommand, processor: DiscussionsProcessor) = ru
             soundUrl = "www.sound.ru",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         ),
     )
     processor.exec(ctx)
@@ -61,7 +63,8 @@ fun validationIdEmpty(command: DiscCommand, processor: DiscussionsProcessor) = r
             soundUrl = "www.sound.ru",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         ),
     )
     processor.exec(ctx)
@@ -84,7 +87,8 @@ fun validationIdFormat(command: DiscCommand, processor: DiscussionsProcessor) = 
             soundUrl = "www.sound.ru",
             ownerId = DiscUserId("555"),
             status = DiscStatus.OPEN,
-            answers = mutableListOf()
+            answers = mutableListOf(),
+            lock = DiscLock("123-234-abc-ABC")
         ),
     )
     processor.exec(ctx)

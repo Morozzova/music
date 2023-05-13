@@ -13,10 +13,7 @@ import musicBroker.api.v1.models.*
 import org.junit.Assert
 import org.junit.Test
 import ru.music.common.DiscCorSettings
-import ru.music.common.models.DiscDiscussion
-import ru.music.common.models.DiscId
-import ru.music.common.models.DiscStatus
-import ru.music.common.models.DiscUserId
+import ru.music.common.models.*
 import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
 import ru.music.discussions.stubs.DiscStub
@@ -111,6 +108,7 @@ class DiscussionsMockApiTest {
                     data = DiscDiscussion(
                         id = it.id,
                         ownerId = userId,
+                        lock = DiscLock("123")
                     ),
                 )
             },

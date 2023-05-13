@@ -23,7 +23,8 @@ class BizRepoDeleteTest {
         soundUrl = "abc",
         status = DiscStatus.OPEN,
         answers = mutableListOf(DiscAnswer("111")),
-        ownerId = userId
+        ownerId = userId,
+        lock = DiscLock("123-234-abc-ABC")
     )
 
     private val repo by lazy {
@@ -54,7 +55,8 @@ class BizRepoDeleteTest {
     @Test
     fun repoDeleteSuccessTest() = runTest {
         val discToDel = DiscDiscussion(
-            id = DiscId("12345")
+            id = DiscId("12345"),
+            lock = DiscLock("123-234-abc-ABC")
         )
         val ctx = DiscContext(
             command = command,

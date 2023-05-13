@@ -1,10 +1,7 @@
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import repo.DbDiscussionRequest
 import repo.IDiscussionRepository
-import ru.music.common.models.DiscDiscussion
-import ru.music.common.models.DiscId
-import ru.music.common.models.DiscStatus
-import ru.music.common.models.DiscUserId
+import ru.music.common.models.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -13,6 +10,8 @@ import kotlin.test.assertNotEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoDiscussionCreateTest {
     abstract val repo: IDiscussionRepository
+
+    protected open val lockNew: DiscLock = DiscLock("20000000-0000-0000-0000-000000000002")
 
     private val createObj = DiscDiscussion(
         title = "create object",

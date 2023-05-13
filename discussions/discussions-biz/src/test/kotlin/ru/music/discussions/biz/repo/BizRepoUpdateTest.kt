@@ -60,7 +60,8 @@ class BizRepoUpdateTest {
             title = "xyz",
             soundUrl = "xyz",
             status = DiscStatus.CLOSED,
-            answers = mutableListOf(DiscAnswer("000"), DiscAnswer("111"))
+            answers = mutableListOf(DiscAnswer("000"), DiscAnswer("111")),
+            lock = DiscLock("123-234-abc-ABC")
         )
 
         val ctx = DiscContext(

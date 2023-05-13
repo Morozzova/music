@@ -76,6 +76,7 @@ private fun DiscDiscussion.toTransportDisc(): DiscussionResponseObject = Discuss
     answers = answers.toTransportAnswers(),
     ownerId = ownerId.takeIf { it != DiscUserId.NONE }?.asString(),
     permissions = permissionsClient.toTransportDisc(),
+    lock = lock.takeIf { it != DiscLock.NONE }?.asString(),
 )
 
 private fun MutableList<DiscAnswer>.toTransportAnswers(): List<String>? = this

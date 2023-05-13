@@ -12,10 +12,7 @@ import musicBroker.api.v1.models.*
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
 import ru.music.common.DiscCorSettings
-import ru.music.common.models.DiscAnswer
-import ru.music.common.models.DiscId
-import ru.music.common.models.DiscStatus
-import ru.music.common.models.DiscUserId
+import ru.music.common.models.*
 import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
 import ru.music.discussions.repo.inmemory.DiscussionsRepoInMemory
@@ -33,6 +30,7 @@ class DiscussionsInMemoryApiTest {
         soundUrl = "abc"
         status = DiscStatus.CLOSED
         answers = mutableListOf(DiscAnswer("333"), DiscAnswer("444"))
+        lock = DiscLock(uuidOld)
     }
     private val initDiscussionSupply = DiscStub.prepareResult {
         id = DiscId(uuidSup)
@@ -114,7 +112,8 @@ class DiscussionsInMemoryApiTest {
             title = "Very good music",
             soundUrl = "abc.ru",
             status = DiscussionStatus.OPEN,
-            answers = mutableListOf("111", "222", "000")
+            answers = mutableListOf("111", "222", "000"),
+            lock = initDiscussion.lock.asString()
         )
 
         val response = client.post("/discussion/update") {
@@ -150,7 +149,8 @@ class DiscussionsInMemoryApiTest {
             title = "Very good music",
             soundUrl = "abc.ru",
             status = DiscussionStatus.CLOSED,
-            answers = mutableListOf("111", "222", "000")
+            answers = mutableListOf("111", "222", "000"),
+            lock = initDiscussion.lock.asString()
         )
 
         val response = client.post("/discussion/close") {
@@ -186,6 +186,7 @@ class DiscussionsInMemoryApiTest {
                 requestId = "12345",
                 discussion = DiscussionDeleteObject(
                     id = uuidOld,
+                    lock = initDiscussion.lock.asString()
                 ),
                 debug = DiscussionDebug(
                     mode = DiscussionRequestDebugMode.TEST,

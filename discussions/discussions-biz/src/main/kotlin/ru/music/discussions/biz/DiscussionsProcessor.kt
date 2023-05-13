@@ -2,10 +2,7 @@ package ru.music.discussions.biz
 
 import ru.music.common.DiscContext
 import ru.music.common.DiscCorSettings
-import ru.music.common.models.DiscCommand
-import ru.music.common.models.DiscId
-import ru.music.common.models.DiscState
-import ru.music.common.models.DiscUserId
+import ru.music.common.models.*
 import ru.music.discussions.biz.general.initRepo
 import ru.music.discussions.biz.general.operation
 import ru.music.discussions.biz.general.prepareResult
@@ -89,10 +86,13 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                 validation {
                     worker("Копируем поля в discussionValidating") { discussionValidating = discussionRequest.deepCopy() }
                     worker("Очистка id") { discussionValidating.id = DiscId(discussionValidating.id.asString().trim()) }
+                    worker("Очистка lock") { discussionValidating.lock = DiscLock(discussionValidating.lock.asString().trim()) }
                     worker("Очистка заголовка") { discussionValidating.title = discussionValidating.title.trim() }
                     worker("Очистка url звукозаписи") { discussionValidating.soundUrl = discussionValidating.soundUrl.trim() }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     validateTitleNotEmpty("Проверка, что заголовок не пуст")
                     validateTitleHasContent("Проверка символов")
                     validateSoundUrlNotEmpty("Проверка, что url звукозаписи не пуст")
@@ -120,10 +120,13 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                 validation {
                     worker("Копируем поля в discussionValidating") { discussionValidating = discussionRequest.deepCopy() }
                     worker("Очистка id") { discussionValidating.id = DiscId(discussionValidating.id.asString().trim()) }
+                    worker("Очистка lock") { discussionValidating.lock = DiscLock(discussionValidating.lock.asString().trim()) }
                     worker("Очистка заголовка") { discussionValidating.title = discussionValidating.title.trim() }
                     worker("Очистка url звукозаписи") { discussionValidating.soundUrl = discussionValidating.soundUrl.trim() }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     validateTitleNotEmpty("Проверка, что заголовок не пуст")
                     validateTitleHasContent("Проверка символов")
                     validateSoundUrlNotEmpty("Проверка, что url звукозаписи не пуст")
@@ -149,8 +152,11 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                 validation {
                     worker("Копируем поля в discussionValidating") { discussionValidating = discussionRequest.deepCopy() }
                     worker("Очистка id") { discussionValidating.id = DiscId(discussionValidating.id.asString().trim()) }
+                    worker("Очистка lock") { discussionValidating.lock = DiscLock(discussionValidating.lock.asString().trim()) }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
 
                     finishDiscValidation("Успешное завершение валидации")
                 }

@@ -7,9 +7,15 @@ data class DiscDiscussion(
     var soundUrl: String = "",
     var status: DiscStatus = DiscStatus.NONE,
     var answers: MutableList<DiscAnswer> = mutableListOf(),
+    var lock: DiscLock = DiscLock.NONE,
     var permissionsClient: MutableSet<DiscPermissionsClient> = mutableSetOf()
 ) {
     fun deepCopy(): DiscDiscussion = copy(
         permissionsClient = permissionsClient.toMutableSet(),
     )
+    fun isEmpty() = this == NONE
+
+    companion object {
+        val NONE = DiscDiscussion()
+    }
 }

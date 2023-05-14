@@ -3,7 +3,7 @@ package ru.music.discussions.ru.music.discussions.configs
 import io.ktor.server.config.*
 
 data class PostgresConfig(
-    val url: String = "jdbc:postgresql://localhost:5432/marketplace",
+    val url: String = "jdbc:postgresql://localhost:5432/discussions",
     val user: String = "postgres",
     val password: String = "postgres-pass",
     val schema: String = "discussions",

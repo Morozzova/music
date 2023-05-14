@@ -15,7 +15,7 @@ import ru.music.discussions.plugins.initPlugins
 import ru.music.discussions.plugins.swagger
 import ru.music.discussions.ru.music.discussions.discussions
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>) = io.ktor.server.cio.EngineMain.main(args)
 
 private val clazz = Application::module::class.qualifiedName ?: "Application"
 @Suppress("unused") // Referenced in application.conf_

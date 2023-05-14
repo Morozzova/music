@@ -4,15 +4,16 @@ import io.ktor.server.application.*
 import ru.music.common.DiscCorSettings
 import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.biz.DiscussionsProcessor
-import ru.music.discussions.repo.inmemory.DiscussionsRepoInMemory
 import ru.music.discussions.repository.inmemory.DiscussionsRepoStub
+import ru.music.discussions.ru.music.discussions.plugins.DiscussionDbType
+import ru.music.discussions.ru.music.discussions.plugins.getDatabaseConf
 
 fun Application.initAppSettings(): DiscAppSettings {
 
     val corSettings = DiscCorSettings(
         loggerProvider = getLoggerProviderConf(),
-        repoTest = DiscussionsRepoInMemory(),
-        repoProd = DiscussionsRepoInMemory(),
+        repoTest = getDatabaseConf(DiscussionDbType.TEST),
+        repoProd = getDatabaseConf(DiscussionDbType.PROD),
         repoStub = DiscussionsRepoStub(),
     )
 

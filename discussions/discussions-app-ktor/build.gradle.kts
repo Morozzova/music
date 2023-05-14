@@ -1,7 +1,3 @@
-import org.jetbrains.kotlin.util.suffixIfNot
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-
 val ktorVersion: String by project
 val logbackVersion: String by project
 val serializationVersion: String by project
@@ -98,6 +94,7 @@ dependencies {
     implementation(project(":discussions:discussions-repo-in-memory"))
     implementation(project(":discussions:discussions-repo-stubs"))
     implementation(project(":discussions:discussions-repo-tests"))
+    implementation(project(":discussions:discussions-repo-postgresql"))
 }
 
 tasks {

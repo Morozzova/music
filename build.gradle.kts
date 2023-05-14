@@ -1,13 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     kotlin("jvm")
 }
-
-val JVM_TARGET = "17"
+val javaVersion: String by project
 
 group = "musicBroker"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
 val kotestVersion: String by project
 val coroutinesVersion: String by project
@@ -26,12 +26,9 @@ subprojects {
     version = rootProject.version
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = JVM_TARGET
+        kotlinOptions.jvmTarget = javaVersion
     }
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile> {
-        kotlinOptions.jvmTarget = JVM_TARGET
+    tasks.withType<KotlinJvmCompile> {
+        kotlinOptions.jvmTarget = javaVersion
     }
-}
-tasks.test {
-    useJUnitPlatform()
 }

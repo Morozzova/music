@@ -1,13 +1,7 @@
 package ru.music.discussions.repo.postgresql
 
-import RepoDiscussionAllDiscussionsTest
-import RepoDiscussionCloseTest
-import RepoDiscussionCreateTest
-import RepoDiscussionDeleteTest
-import RepoDiscussionReadTest
-import RepoDiscussionUpdateTest
-import RepoDiscussionUsersDiscussionsTest
 import repo.IDiscussionRepository
+import ru.music.discussions.repo.tests.*
 
 class RepoDiscussionsSQLCreateTest : RepoDiscussionCreateTest() {
     override val repo: IDiscussionRepository = SqlTestCompanion.repoUnderTestContainer(

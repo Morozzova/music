@@ -1,6 +1,6 @@
 package ru.music.discussions.repo.inmemory
 
-import RepoDiscussionUpdateTest
+import ru.music.discussions.repo.tests.RepoDiscussionUpdateTest
 
 class DiscussionRepoInMemoryUpdateTest : RepoDiscussionUpdateTest() {
     override val repo = DiscussionsRepoInMemory(

@@ -1,3 +1,5 @@
+package ru.music.discussions.repo.tests
+
 import ru.music.common.models.*
 
 abstract class BaseInitDiscussions(val op: String): IInitObjects<DiscDiscussion> {

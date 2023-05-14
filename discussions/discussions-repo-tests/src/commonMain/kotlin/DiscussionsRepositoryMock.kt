@@ -1,3 +1,5 @@
+package ru.music.discussions.repo.tests
+
 import repo.*
 import ru.music.common.repo.DbDiscussionUsersIdRequest
 

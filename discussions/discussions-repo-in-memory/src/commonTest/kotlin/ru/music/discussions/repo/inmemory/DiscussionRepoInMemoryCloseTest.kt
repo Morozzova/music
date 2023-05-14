@@ -1,6 +1,7 @@
 package ru.music.discussions.repo.inmemory
 
-import RepoDiscussionCloseTest
+import ru.music.discussions.repo.tests.RepoDiscussionCloseTest
+
 
 class DiscussionRepoInMemoryCloseTest : RepoDiscussionCloseTest() {
     override val repo = DiscussionsRepoInMemory(

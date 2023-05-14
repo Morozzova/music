@@ -1,3 +1,5 @@
+package ru.music.discussions.repo.tests
+
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import repo.DbDiscussionRequest
 import repo.IDiscussionRepository

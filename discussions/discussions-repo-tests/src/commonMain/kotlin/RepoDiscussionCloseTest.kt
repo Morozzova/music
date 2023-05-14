@@ -70,7 +70,7 @@ abstract class RepoDiscussionCloseTest {
     }
 
     @Test
-    fun updateConcurrencyError() = runRepoTest {
+    fun closeConcurrencyError() = runRepoTest {
         val result = repo.updateDiscussion(DbDiscussionRequest(reqCloseConc))
         assertEquals(false, result.isSuccess)
         val error = result.errors.find { it.code == "concurrency" }

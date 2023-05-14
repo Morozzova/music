@@ -16,8 +16,8 @@ data class DbDiscussionResponse(
     companion object {
         val MOCK_SUCCESS_EMPTY = DbDiscussionResponse(null, true)
         fun success(result: DiscDiscussion) = DbDiscussionResponse(result, true)
-        fun error(errors: List<DiscError>, data: DiscDiscussion? = null) = DbDiscussionResponse(null, false, errors)
-        fun error(error: DiscError, data: DiscDiscussion? = null) = DbDiscussionResponse(null, false, listOf(error))
+        fun error(errors: List<DiscError>, data: DiscDiscussion? = null) = DbDiscussionResponse(data, false, errors)
+        fun error(error: DiscError, data: DiscDiscussion? = null) = DbDiscussionResponse(data, false, listOf(error))
 
         val errorEmptyId = error(discErrorEmptyId)
 

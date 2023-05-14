@@ -1,7 +1,6 @@
 package ru.music.discussions.biz.repo
 
 import repo.DbDiscussionIdRequest
-import repo.DbDiscussionRequest
 import ru.music.common.DiscContext
 import ru.music.common.models.DiscState
 import ru.music.discussions.cor.ICorChainDsl
@@ -14,10 +13,6 @@ fun ICorChainDsl<DiscContext>.repoDelete(title: String) = worker {
     handle {
         val request = DbDiscussionIdRequest(discussionRepoPrepare)
         val result = discussionRepo.deleteDiscussion(request)
-        val resultDisc = result.data
-        if (result.isSuccess && resultDisc != null) {
-            discussionRepoRead = resultDisc
-        }
         if (!result.isSuccess) {
             state = DiscState.FAILING
             errors.addAll(result.errors)

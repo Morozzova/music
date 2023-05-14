@@ -1,5 +1,4 @@
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import repo.DbDiscussionRequest
 import repo.IDiscussionRepository
 import ru.music.common.models.*
@@ -10,8 +9,8 @@ import kotlin.test.assertEquals
 abstract class RepoDiscussionCloseTest {
     abstract val repo: IDiscussionRepository
     protected open val closeSucc = initObjects[0]
-    protected val closeConc = initObjects[1]
-    private val closeIdNotFound = DiscId("discussion-repo-close-not-found")
+    protected open val closeConc = initObjects[1]
+    protected val closeIdNotFound = DiscId("discussion-repo-close-not-found")
     protected val lockBad = DiscLock("20000000-0000-0000-0000-000000000009")
     protected val lockNew = DiscLock("20000000-0000-0000-0000-000000000002")
 
@@ -36,15 +35,17 @@ abstract class RepoDiscussionCloseTest {
         lock = initObjects.first().lock,
     )
 
-    private val reqCloseConc = DiscDiscussion(
-        id = closeConc.id,
-        title = "update object not found",
-        soundUrl = "update object not found url",
-        ownerId = DiscUserId("owner-123"),
-        status = DiscStatus.OPEN,
-        answers = mutableListOf(),
-        lock = lockBad,
-    )
+    private val reqCloseConc by lazy {
+        DiscDiscussion(
+            id = closeConc.id,
+            title = "update object not found",
+            soundUrl = "update object not found url",
+            ownerId = DiscUserId("owner-123"),
+            status = DiscStatus.OPEN,
+            answers = mutableListOf(),
+            lock = lockBad,
+        )
+    }
     @Test
     fun closeSuccess() = runRepoTest {
         val result = repo.closeDiscussion(DbDiscussionRequest(reqCloseSucc))
@@ -55,6 +56,7 @@ abstract class RepoDiscussionCloseTest {
         assertEquals(reqCloseSucc.status, result.data?.status)
         assertEquals(reqCloseSucc.answers, result.data?.answers)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     @Test
@@ -68,7 +70,7 @@ abstract class RepoDiscussionCloseTest {
     }
 
     @Test
-    fun updateConcurrencyError() = runTest {
+    fun updateConcurrencyError() = runRepoTest {
         val result = repo.updateDiscussion(DbDiscussionRequest(reqCloseConc))
         assertEquals(false, result.isSuccess)
         val error = result.errors.find { it.code == "concurrency" }

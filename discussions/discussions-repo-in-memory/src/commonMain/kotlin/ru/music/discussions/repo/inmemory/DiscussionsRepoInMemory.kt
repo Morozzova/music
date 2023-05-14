@@ -5,7 +5,6 @@ import io.github.reactivecircus.cache4k.Cache
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import repo.*
-import ru.music.common.helpers.errorRepoConcurrency
 import ru.music.common.models.*
 import ru.music.common.repo.DbDiscussionUsersIdRequest
 import ru.music.discussions.repo.inmemory.model.DiscussionEntity
@@ -39,7 +38,7 @@ class DiscussionsRepoInMemory(
 
     override suspend fun createDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse {
         val key = randomUuid()
-        val disc = rq.discussion.copy(id = DiscId(key))
+        val disc = rq.discussion.copy(id = DiscId(key), lock = DiscLock(randomUuid()))
         val entity = DiscussionEntity(disc)
         cache.put(key, entity)
         return DbDiscussionResponse(
@@ -60,60 +59,50 @@ class DiscussionsRepoInMemory(
     }
 
     private suspend fun doUpdate(
-        key: String,
-        oldLock: String,
-        okBlock: (oldDisc: DiscussionEntity) -> DbDiscussionResponse
-    ): DbDiscussionResponse = mutex.withLock {
-        val oldDisc = cache.get(key)
-        when {
-            oldDisc == null -> resultErrorNotFound
-            oldDisc.lock != oldLock -> DbDiscussionResponse(
-                data = oldDisc.toInternal(),
-                isSuccess = false,
-                errors = listOf(errorRepoConcurrency(DiscLock(oldLock), oldDisc.lock?.let { DiscLock(it) }))
-            )
+        id: DiscId,
+        oldLock: DiscLock,
+        okBlock: (key: String, oldDisc: DiscussionEntity) -> DbDiscussionResponse
+    ): DbDiscussionResponse {
+        val key = id.takeIf { it != DiscId.NONE }?.asString() ?: return resultErrorEmptyId
+        val oldLockStr = oldLock.takeIf { it != DiscLock.NONE }?.asString()
+            ?: return resultErrorEmptyLock
 
-            else -> okBlock(oldDisc)
+        return mutex.withLock {
+            val oldDisc = cache.get(key)
+            when {
+                oldDisc == null -> resultErrorNotFound
+                oldDisc.lock != oldLockStr -> DbDiscussionResponse.errorConcurrent(
+                    oldLock,
+                    oldDisc.toInternal()
+                )
+
+                else -> okBlock(key, oldDisc)
+            }
         }
     }
 
     override suspend fun updateDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse {
-        val key = rq.discussion.id.takeIf { it != DiscId.NONE }?.asString() ?: return resultErrorEmptyId
-        val oldLock = rq.discussion.lock.takeIf { it != DiscLock.NONE }?.asString() ?: return resultErrorEmptyLock
-        val newDisc = rq.discussion.copy()
-        val entity = DiscussionEntity(newDisc)
-        return doUpdate(key, oldLock) {
+        return doUpdate(rq.discussion.id, rq.discussion.lock) { key, _ ->
+            val newDisc = rq.discussion.copy(lock = DiscLock(randomUuid()))
+            val entity = DiscussionEntity(newDisc)
             cache.put(key, entity)
-            DbDiscussionResponse(
-                data = newDisc,
-                isSuccess = true,
-            )
+            DbDiscussionResponse.success(newDisc)
         }
     }
 
     override suspend fun closeDiscussion(rq: DbDiscussionRequest): DbDiscussionResponse {
-        val key = rq.discussion.id.takeIf { it != DiscId.NONE }?.asString() ?: return resultErrorEmptyId
-        val oldLock = rq.discussion.lock.takeIf { it != DiscLock.NONE }?.asString() ?: return resultErrorEmptyLock
-        val newDisc = rq.discussion.copy()
-        val entity = DiscussionEntity(newDisc)
-        return doUpdate(key, oldLock) {
+        return doUpdate(rq.discussion.id, rq.discussion.lock) { key, _ ->
+            val newDisc = rq.discussion.copy(lock = DiscLock(randomUuid()))
+            val entity = DiscussionEntity(newDisc)
             cache.put(key, entity)
-            DbDiscussionResponse(
-                data = newDisc,
-                isSuccess = true,
-            )
+            DbDiscussionResponse.success(newDisc)
         }
     }
 
     override suspend fun deleteDiscussion(rq: DbDiscussionIdRequest): DbDiscussionResponse {
-        val key = rq.id.takeIf { it != DiscId.NONE }?.asString() ?: return resultErrorEmptyId
-        val oldLock = rq.lock.takeIf { it != DiscLock.NONE }?.asString() ?: return resultErrorEmptyLock
-        return doUpdate(key, oldLock) { oldDisc ->
+        return doUpdate(rq.id, rq.lock) { key, oldDisc ->
             cache.invalidate(key)
-            DbDiscussionResponse(
-                data = oldDisc.toInternal(),
-                isSuccess = true,
-            )
+            DbDiscussionResponse.success(oldDisc.toInternal())
         }
     }
 

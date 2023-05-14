@@ -1,5 +1,4 @@
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import repo.DbDiscussionRequest
 import repo.IDiscussionRepository
 import ru.music.common.models.*
@@ -10,8 +9,8 @@ import kotlin.test.assertEquals
 abstract class RepoDiscussionUpdateTest {
     abstract val repo: IDiscussionRepository
     protected open val updateSucc = initObjects[0]
-    protected val updateConc = initObjects[1]
-    private val updateIdNotFound = DiscId("discussion-repo-update-not-found")
+    protected open val updateConc = initObjects[1]
+    protected val updateIdNotFound = DiscId("discussion-repo-update-not-found")
     protected val lockBad = DiscLock("20000000-0000-0000-0000-000000000009")
     protected val lockNew = DiscLock("20000000-0000-0000-0000-000000000002")
 
@@ -37,16 +36,17 @@ abstract class RepoDiscussionUpdateTest {
         lock = initObjects.first().lock,
     )
 
-    private val reqUpdateConc = DiscDiscussion(
-        id = updateConc.id,
-        title = "update object not found",
-        soundUrl = "update object not found url",
-        ownerId = DiscUserId("owner-123"),
-        status = DiscStatus.OPEN,
-        answers = mutableListOf(),
-        lock = lockBad,
-    )
-
+    private val reqUpdateConc by lazy {
+        DiscDiscussion(
+            id = updateConc.id,
+            title = "update object not found",
+            soundUrl = "update object not found url",
+            ownerId = DiscUserId("owner-123"),
+            status = DiscStatus.OPEN,
+            answers = mutableListOf(),
+            lock = lockBad,
+        )
+    }
     @Test
     fun updateSuccess() = runRepoTest {
         val result = repo.updateDiscussion(DbDiscussionRequest(reqUpdateSucc))
@@ -57,6 +57,7 @@ abstract class RepoDiscussionUpdateTest {
         assertEquals(reqUpdateSucc.status, result.data?.status)
         assertEquals(reqUpdateSucc.answers, result.data?.answers)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     @Test
@@ -70,7 +71,7 @@ abstract class RepoDiscussionUpdateTest {
     }
 
     @Test
-    fun updateConcurrencyError() = runTest {
+    fun updateConcurrencyError() = runRepoTest {
         val result = repo.updateDiscussion(DbDiscussionRequest(reqUpdateConc))
         assertEquals(false, result.isSuccess)
         val error = result.errors.find { it.code == "concurrency" }

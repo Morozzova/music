@@ -14,10 +14,10 @@ fun ICorChainDsl<DiscContext>.accessValidation(title: String) = chain {
     this.title = title
     description = "Вычисление прав доступа по группе принципала и таблице прав доступа"
     on { state == DiscState.RUNNING }
-    worker("Вычисление отношения объявления к принципалу") {
+    worker("Вычисление отношения обсуждения к принципалу") {
         discussionRepoRead.principalRelations = discussionRepoRead.resolveRelationsTo(principal)
     }
-    worker("Вычисление доступа к объявлению") {
+    worker("Вычисление доступа к обсуждению") {
         permitted = checkPermitted(command, discussionRepoRead.principalRelations, permissionsChain)
     }
     worker {

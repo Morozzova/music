@@ -106,6 +106,8 @@ private fun MusicPermissionClient.toTransportDisc() = when (this) {
     MusicPermissionClient.UPDATE -> DiscussionPermissions.UPDATE
     MusicPermissionClient.CLOSE -> DiscussionPermissions.CLOSE
     MusicPermissionClient.DELETE -> DiscussionPermissions.DELETE
+    MusicPermissionClient.ALL_DISCUSSIONS -> DiscussionPermissions.READ
+    MusicPermissionClient.USERS_DISCUSSIONS -> DiscussionPermissions.READ
 }
 
 private fun List<DiscError>.toTransportErrors(): List<Error>? = this

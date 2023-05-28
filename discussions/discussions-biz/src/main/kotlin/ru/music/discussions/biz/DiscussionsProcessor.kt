@@ -8,6 +8,7 @@ import ru.music.discussions.biz.general.operation
 import ru.music.discussions.biz.general.prepareResult
 import ru.music.discussions.biz.general.stubs
 import ru.music.discussions.biz.permissions.accessValidation
+import ru.music.discussions.biz.permissions.accessValidationMulti
 import ru.music.discussions.biz.permissions.chainPermissions
 import ru.music.discussions.biz.permissions.frontPermissions
 import ru.music.discussions.biz.repo.*
@@ -195,7 +196,7 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                 chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика поиска в БД"
-                    accessValidation("Вычисление прав доступа")
+                    accessValidationMulti("Вычисление прав доступа")
                     repoPrepareAllDiscussions("Подготовка загрузки всех обсуждений")
                     repoAllDiscussions("Чтение всех обсуждений")
                 }
@@ -220,7 +221,7 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                 chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика поиска в БД"
-                    accessValidation("Вычисление прав доступа")
+                    accessValidationMulti("Вычисление прав доступа")
                     repoPrepareUsersDiscussions("Подготовка загрузки обсуждений пользователя")
                     repoUsersDiscussions("Чтение обсуждений пользователя")
                 }

@@ -15,6 +15,7 @@ import ru.music.common.models.DiscCommand
 import ru.music.common.models.DiscState
 import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.IMpLogWrapper
+import ru.music.discussions.base.toModel
 import toLog
 import toTransport
 
@@ -30,6 +31,7 @@ suspend inline fun <reified Q : IRequest, @Suppress("unused") reified R : IRespo
     val processor = appSettings.processor
     try {
         logger.doWithLogging(id = logId) {
+            ctx.principal = principal<JWTPrincipal>().toModel()
             val request = receive<Q>()
             ctx.fromTransport(request)
             logger.info(

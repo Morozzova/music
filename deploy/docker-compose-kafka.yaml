@@ -28,7 +28,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
 
 #  app:
-#    image: ok-marketplace-be-app-kafka:0.0.1
+#    image: discussions-be-app-kafka:0.0.1
 #    depends_on:
 #      - kafka
 #    links:
@@ -36,6 +36,6 @@ services:
 #      - kafka
 #    environment:
 #      KAFKA_HOSTS: kafka:9092
-#      KAFKA_TOPIC_IN: marketplace-in
-#      KAFKA_TOPIC_OUT: marketplace-out
+#      KAFKA_TOPIC_IN: discussions-in
+#      KAFKA_TOPIC_OUT: discussions-out
 

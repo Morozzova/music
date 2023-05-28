@@ -1,4 +1,4 @@
-package ru.music.discussions.biz.groups
+package ru.music.discussions.biz.general
 
 import ru.music.common.DiscContext
 import ru.music.common.models.DiscCommand

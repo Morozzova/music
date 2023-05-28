@@ -8,10 +8,17 @@ ktor:
   watch:
     - classes
     - resources
-  application:
-    modules:
-      - "ru.music.discussions.ApplicationKt.module"
-  urls:
-    - "http://127.0.0.1:8080/"
-    - "http://0.0.0.0:8080/"
-    - "http://192.168.0.182:8080/"
+#  urls:
+#    - "http://127.0.0.1:8080/"
+#    - "http://0.0.0.0:8080/"
+#    - "http://192.168.0.182:8080/"
+discussions:
+  repository:
+    test: inmemory
+    prod: psql
+
+    psql:
+      password: postgres-pass
+      schema: discussions
+      url: jdbc:postgresql://localhost:5432/discussions
+      user: postgres

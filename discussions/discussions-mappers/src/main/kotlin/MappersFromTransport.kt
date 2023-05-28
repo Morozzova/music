@@ -20,6 +20,23 @@ private fun String?.toDiscId() = this?.let { DiscId(it) } ?: DiscId.NONE
 private fun String?.toDiscWithId() = DiscDiscussion(id = this.toDiscId())
 private fun String?.toUserId() = this?.let { DiscUserId(it) } ?: DiscUserId.NONE
 private fun String?.toAnswer() = this?.let { DiscAnswer(it) } ?: DiscAnswer.NONE
+private fun String?.toDiscLock() = this?.let { DiscLock(it) } ?: DiscLock.NONE
+
+private fun DiscussionReadObject?.toInternal(): DiscDiscussion = if (this != null) {
+    DiscDiscussion(id = id.toDiscId())
+} else {
+    DiscDiscussion.NONE
+}
+
+private fun DiscussionDeleteObject?.toInternal(): DiscDiscussion = if (this != null) {
+    DiscDiscussion(
+        id = id.toDiscId(),
+        lock = lock.toDiscLock(),
+    )
+} else {
+    DiscDiscussion.NONE
+}
+
 
 private fun DiscussionCreateObject.toInternal(): DiscDiscussion = DiscDiscussion(
     title = this.title ?: "",
@@ -33,7 +50,8 @@ private fun DiscussionUpdateObject.toInternal(): DiscDiscussion = DiscDiscussion
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
     answers = this.answers.fromTransport() ?: mutableListOf(),
-    status = this.status.fromTransportStatus()
+    status = this.status.fromTransportStatus(),
+    lock = lock.toDiscLock(),
 )
 
 private fun DiscussionCloseObject.toInternal(): DiscDiscussion = DiscDiscussion(
@@ -41,7 +59,8 @@ private fun DiscussionCloseObject.toInternal(): DiscDiscussion = DiscDiscussion(
     title = this.title ?: "",
     soundUrl = this.soundUrl ?: "",
     answers = this.answers.fromTransport() ?: mutableListOf(),
-    status = this.status.fromTransportStatus()
+    status = this.status.fromTransportStatus(),
+    lock = lock.toDiscLock(),
 )
 
 private fun AllDiscussionsReadObject.toInternal(): DiscMulti = DiscMulti()
@@ -90,7 +109,7 @@ fun DiscContext.fromTransport(request: DiscussionCreateRequest) {
 fun DiscContext.fromTransport(request: DiscussionReadRequest) {
     command = DiscCommand.READ
     requestId = request.requestId()
-    discussionRequest = request.discussion?.id.toDiscWithId()
+    discussionRequest = request.discussion.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
@@ -114,7 +133,7 @@ fun DiscContext.fromTransport(request: DiscussionCloseRequest) {
 fun DiscContext.fromTransport(request: DiscussionDeleteRequest) {
     command = DiscCommand.DELETE
     requestId = request.requestId()
-    discussionRequest = request.discussion?.id.toDiscWithId()
+    discussionRequest = request.discussion.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }

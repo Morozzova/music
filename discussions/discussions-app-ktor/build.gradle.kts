@@ -1,7 +1,3 @@
-import org.jetbrains.kotlin.util.suffixIfNot
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-
 val ktorVersion: String by project
 val logbackVersion: String by project
 val serializationVersion: String by project
@@ -39,8 +35,6 @@ dependencies {
 
 dependencies {
     implementation(kotlin("stdlib-common"))
-    implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
-
     implementation(ktorServer("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktorServer("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
     implementation(ktorServer("auth")) // "io.ktor:ktor-server-auth:$ktorVersion"
@@ -95,6 +89,12 @@ dependencies {
 
     // Stubs
     implementation(project(":discussions:discussions-stubs"))
+
+
+    implementation(project(":discussions:discussions-repo-in-memory"))
+    implementation(project(":discussions:discussions-repo-stubs"))
+    implementation(project(":discussions:discussions-repo-tests"))
+    implementation(project(":discussions:discussions-repo-postgresql"))
 }
 
 tasks {

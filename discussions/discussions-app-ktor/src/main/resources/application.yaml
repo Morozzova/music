@@ -22,3 +22,10 @@ discussions:
       schema: discussions
       url: jdbc:postgresql://localhost:5432/discussions
       user: postgres
+
+jwt:
+  secret: "secret"
+  issuer: "MusicBroker"
+  audience: "music-users"
+  realm: "music-discussions"
+  clientId: "music-broker-service"

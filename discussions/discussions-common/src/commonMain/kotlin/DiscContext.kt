@@ -1,9 +1,11 @@
 package ru.music.common
 
 import kotlinx.datetime.Instant
+import permissions.MusicPrincipalModel
+import permissions.MusicUserPermissions
+import repo.IDiscussionRepository
 import ru.music.common.models.*
 import ru.music.common.stubs.DiscStubs
-import repo.IDiscussionRepository
 
 data class DiscContext(
     var command: DiscCommand = DiscCommand.NONE,
@@ -13,6 +15,10 @@ data class DiscContext(
 
     var workMode: DiscWorkMode = DiscWorkMode.PROD,
     var stubCase: DiscStubs = DiscStubs.NONE,
+
+    var principal: MusicPrincipalModel = MusicPrincipalModel.NONE,
+    val permissionsChain: MutableSet<MusicUserPermissions> = mutableSetOf(),
+    var permitted: Boolean = false,
 
     var discussionRepo: IDiscussionRepository = IDiscussionRepository.NONE,
     var discussionRepoRead: DiscDiscussion = DiscDiscussion(),

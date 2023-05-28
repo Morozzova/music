@@ -15,6 +15,8 @@ dependencies {
     implementation(project(":discussions:discussions-repo-stubs"))
     implementation(project(":discussions:discussions-repo-tests"))
 
+    implementation(project(":auth"))
+
     implementation(kotlin("test-common"))
     implementation(kotlin("test-annotations-common"))
 

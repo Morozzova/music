@@ -1,5 +1,6 @@
 import exceptions.UnknownDiscCommand
 import musicBroker.api.v1.models.*
+import permissions.MusicPermissionClient
 import ru.music.common.DiscContext
 import ru.music.common.models.*
 
@@ -64,7 +65,7 @@ fun List<DiscDiscussion>.toTransportDisc(): List<DiscussionResponseObject>? = th
     .map { it.toTransportDisc() }
     .toList()
     .takeIf { it.isNotEmpty() }
-fun Set<DiscPermissionsClient>.toTransportDisc(): Set<DiscussionPermissions>? = this
+fun Set<MusicPermissionClient>.toTransportDisc(): Set<DiscussionPermissions>? = this
     .map { it.toTransportDisc() }
     .takeIf { it.isNotEmpty() }?.toSet()
 
@@ -88,15 +89,16 @@ private fun DiscStatus.toTransport(): DiscussionStatus = when (this) {
     DiscStatus.OPEN -> DiscussionStatus.OPEN
     DiscStatus.CLOSED -> DiscussionStatus.CLOSED
 }
-private fun List<DiscPermissionsClient>.toTransportDisc(): Set<DiscussionPermissions>? = this
+private fun List<MusicPermissionClient>.toTransportDisc(): Set<DiscussionPermissions>? = this
     .map { it.toTransportDisc() }
     .toSet()
     .takeIf { it.isNotEmpty() }
 
-private fun DiscPermissionsClient.toTransportDisc() = when (this) {
-    DiscPermissionsClient.READ -> DiscussionPermissions.READ
-    DiscPermissionsClient.UPDATE -> DiscussionPermissions.UPDATE
-    DiscPermissionsClient.DELETE -> DiscussionPermissions.DELETE
+private fun MusicPermissionClient.toTransportDisc() = when (this) {
+    MusicPermissionClient.READ -> DiscussionPermissions.READ
+    MusicPermissionClient.UPDATE -> DiscussionPermissions.UPDATE
+    MusicPermissionClient.CLOSE -> DiscussionPermissions.CLOSE
+    MusicPermissionClient.DELETE -> DiscussionPermissions.DELETE
 }
 
 private fun List<DiscError>.toTransportErrors(): List<Error>? = this

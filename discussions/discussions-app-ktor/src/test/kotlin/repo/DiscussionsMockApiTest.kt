@@ -1,7 +1,9 @@
 package repo
 
+import auth.addAuth
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import helpers.testSettings
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -11,11 +13,10 @@ import io.ktor.server.testing.*
 import musicBroker.api.v1.models.*
 import org.junit.Assert
 import org.junit.Test
-import ru.music.common.DiscCorSettings
 import ru.music.common.models.*
-import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
 import ru.music.discussions.repo.tests.DiscussionsRepositoryMock
+import ru.music.discussions.ru.music.discussions.base.KtorAuthConfig
 import ru.music.discussions.stubs.DiscStub
 import kotlin.test.assertEquals
 
@@ -35,7 +36,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -54,6 +55,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionCreateResponse>()
@@ -80,7 +82,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -93,6 +95,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionReadResponse>()
@@ -120,7 +123,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -141,6 +144,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
 
@@ -173,7 +177,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -194,6 +198,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
 
@@ -229,7 +234,7 @@ class DiscussionsMockApiTest {
                     )
                 }
             )
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
 
         val client = myClient()
@@ -245,6 +250,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
 
@@ -273,7 +279,7 @@ class DiscussionsMockApiTest {
                         )
                     }
                 )
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
 
         val client = myClient()
@@ -286,6 +292,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AllDiscussionsResponse>()
@@ -314,7 +321,7 @@ class DiscussionsMockApiTest {
                         )
                     }
                 )
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -327,6 +334,7 @@ class DiscussionsMockApiTest {
                 usersId = "567"
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<UsersDiscussionsResponse>()

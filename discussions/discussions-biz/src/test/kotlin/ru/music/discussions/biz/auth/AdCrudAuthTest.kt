@@ -51,10 +51,10 @@ class DiscussionCrudAuthTest {
         assertEquals(DiscState.FINISHING, context.state)
         with(context.discussionResponse) {
             assertTrue { id.asString().isNotBlank() }
-            assertContains(permissionsClient, permissions.MusicPermissionClient.READ)
-            assertContains(permissionsClient, permissions.MusicPermissionClient.UPDATE)
-            assertContains(permissionsClient, permissions.MusicPermissionClient.DELETE)
-//            assertFalse { permissionsClient.contains(PermissionModel.CONTACT) }
+            assertContains(permissionsClient, MusicPermissionClient.READ)
+            assertContains(permissionsClient, MusicPermissionClient.UPDATE)
+            assertContains(permissionsClient, MusicPermissionClient.CLOSE)
+            assertContains(permissionsClient, MusicPermissionClient.DELETE)
         }
     }
 
@@ -87,9 +87,8 @@ class DiscussionCrudAuthTest {
             assertTrue { id.asString().isNotBlank() }
             assertContains(permissionsClient, MusicPermissionClient.READ)
             assertContains(permissionsClient, MusicPermissionClient.UPDATE)
+            assertContains(permissionsClient, MusicPermissionClient.CLOSE)
             assertContains(permissionsClient, MusicPermissionClient.DELETE)
-//            assertFalse { context.responseAd.permissions.contains(PermissionModel.CONTACT) }
         }
     }
-
 }

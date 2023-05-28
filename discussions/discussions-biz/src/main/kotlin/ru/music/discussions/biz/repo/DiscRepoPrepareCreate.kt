@@ -11,7 +11,7 @@ fun ICorChainDsl<DiscContext>.repoPrepareCreate(title: String) = worker {
     on { state == DiscState.RUNNING }
     handle {
         discussionRepoRead = discussionValidated.deepCopy()
+        discussionRepoRead.ownerId = principal.id
         discussionRepoPrepare = discussionRepoRead
-
     }
 }

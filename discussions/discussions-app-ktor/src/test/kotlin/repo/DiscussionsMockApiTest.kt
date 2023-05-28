@@ -1,6 +1,5 @@
 package repo
 
-import DiscussionsRepositoryMock
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.client.call.*
@@ -16,6 +15,7 @@ import ru.music.common.DiscCorSettings
 import ru.music.common.models.*
 import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
+import ru.music.discussions.repo.tests.DiscussionsRepositoryMock
 import ru.music.discussions.stubs.DiscStub
 import kotlin.test.assertEquals
 

@@ -5,4 +5,6 @@ enum class MusicPermissionClient {
     UPDATE,
     CLOSE,
     DELETE,
+    ALL_DISCUSSIONS,
+    USERS_DISCUSSIONS
 }

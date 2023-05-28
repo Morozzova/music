@@ -44,13 +44,13 @@ private val accessTable = mapOf(
     ),
 
     // CLOSE
-    MusicUserPermissions.UPDATE_OWN to mapOf(
+    MusicUserPermissions.CLOSE_OWN to mapOf(
         MusicPrincipalRelations.OWN to MusicPermissionClient.CLOSE
     ),
-    MusicUserPermissions.UPDATE_PUBLIC to mapOf(
+    MusicUserPermissions.CLOSE_PUBLIC to mapOf(
         MusicPrincipalRelations.MODERATABLE to MusicPermissionClient.CLOSE
     ),
-    MusicUserPermissions.UPDATE_CANDIDATE to mapOf(
+    MusicUserPermissions.CLOSE_CANDIDATE to mapOf(
         MusicPrincipalRelations.MODERATABLE to MusicPermissionClient.CLOSE
     ),
 
@@ -63,5 +63,27 @@ private val accessTable = mapOf(
     ),
     MusicUserPermissions.DELETE_CANDIDATE to mapOf(
         MusicPrincipalRelations.MODERATABLE to MusicPermissionClient.DELETE
+    ),
+
+    // ALL DISCUSSIONS
+    MusicUserPermissions.ALL_DISCUSSIONS_OWN to mapOf(
+        MusicPrincipalRelations.OWN to MusicPermissionClient.ALL_DISCUSSIONS
+    ),
+    MusicUserPermissions.ALL_DISCUSSIONS_PUBLIC to mapOf(
+        MusicPrincipalRelations.MODERATABLE to MusicPermissionClient.ALL_DISCUSSIONS
+    ),
+    MusicUserPermissions.ALL_DISCUSSIONS_CANDIDATE to mapOf(
+        MusicPrincipalRelations.MODERATABLE to MusicPermissionClient.ALL_DISCUSSIONS
+    ),
+
+    // USERS DISCUSSIONS
+    MusicUserPermissions.USERS_DISCUSSIONS_OWN to mapOf(
+        MusicPrincipalRelations.OWN to MusicPermissionClient.USERS_DISCUSSIONS
+    ),
+    MusicUserPermissions.USERS_DISCUSSIONS_PUBLIC to mapOf(
+        MusicPrincipalRelations.MODERATABLE to MusicPermissionClient.USERS_DISCUSSIONS
+    ),
+    MusicUserPermissions.USERS_DISCUSSIONS_CANDIDATE to mapOf(
+        MusicPrincipalRelations.MODERATABLE to MusicPermissionClient.USERS_DISCUSSIONS
     ),
 )

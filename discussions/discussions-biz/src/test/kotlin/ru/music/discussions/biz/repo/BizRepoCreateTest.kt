@@ -2,6 +2,8 @@ package ru.music.discussions.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import permissions.MusicPrincipalModel
+import permissions.MusicUserGroups
 import repo.DbDiscussionResponse
 import ru.music.common.DiscContext
 import ru.music.common.DiscCorSettings
@@ -47,6 +49,13 @@ class BizRepoCreateTest {
                 title = "abc",
                 soundUrl = "abc",
                 status = DiscStatus.OPEN
+            ),
+            principal = MusicPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    MusicUserGroups.USER,
+                    MusicUserGroups.TEST,
+                )
             ),
         )
         processor.exec(ctx)

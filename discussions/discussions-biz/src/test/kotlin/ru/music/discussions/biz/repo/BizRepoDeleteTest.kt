@@ -2,6 +2,8 @@ package ru.music.discussions.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import permissions.MusicPrincipalModel
+import permissions.MusicUserGroups
 import repo.DbDiscussionResponse
 import ru.music.common.DiscContext
 import ru.music.common.DiscCorSettings
@@ -62,7 +64,14 @@ class BizRepoDeleteTest {
             command = command,
             state = DiscState.NONE,
             workMode = DiscWorkMode.TEST,
-            discussionRequest = discToDel
+            discussionRequest = discToDel,
+            principal = MusicPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    MusicUserGroups.USER,
+                    MusicUserGroups.TEST,
+                )
+            ),
         )
         processor.exec(ctx)
         assertEquals(DiscState.FINISHING, ctx.state)

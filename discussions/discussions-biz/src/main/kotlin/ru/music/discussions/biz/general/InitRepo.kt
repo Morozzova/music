@@ -1,5 +1,6 @@
 package ru.music.discussions.biz.general
 
+import permissions.MusicUserGroups
 import repo.IDiscussionRepository
 import ru.music.common.DiscContext
 import ru.music.common.helpers.errorAdministration
@@ -17,6 +18,7 @@ fun ICorChainDsl<DiscContext>.initRepo(title: String) = worker {
         discussionRepo = when {
             workMode == DiscWorkMode.TEST -> settings.repoTest
             workMode == DiscWorkMode.STUB -> settings.repoStub
+            principal.groups.contains(MusicUserGroups.TEST) -> settings.repoTest
             else -> settings.repoProd
         }
         if (workMode != DiscWorkMode.STUB && discussionRepo == IDiscussionRepository.NONE) fail(

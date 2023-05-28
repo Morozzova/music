@@ -16,6 +16,7 @@ fun DiscContext.toTransport() : IResponse = when (command) {
 }
 
 fun DiscContext.toTransportCreate() = DiscussionCreateResponse(
+    responseType = "create",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -23,18 +24,21 @@ fun DiscContext.toTransportCreate() = DiscussionCreateResponse(
 )
 
 fun DiscContext.toTransportRead() = DiscussionReadResponse(
+    responseType = "read",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     discussion = discussionResponse.toTransportDisc()
 )
 fun DiscContext.toTransportUpdate() = DiscussionUpdateResponse(
+    responseType = "update",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     discussion = discussionResponse.toTransportDisc()
 )
 fun DiscContext.toTransportClose() = DiscussionCloseResponse(
+    responseType = "close",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -42,6 +46,7 @@ fun DiscContext.toTransportClose() = DiscussionCloseResponse(
 )
 
 fun DiscContext.toTransportDelete() = DiscussionDeleteResponse(
+    responseType = "delete",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -49,6 +54,7 @@ fun DiscContext.toTransportDelete() = DiscussionDeleteResponse(
 )
 
 fun DiscContext.toTransportAllDisc() = AllDiscussionsResponse(
+    responseType = "allDiscussions",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
@@ -56,6 +62,7 @@ fun DiscContext.toTransportAllDisc() = AllDiscussionsResponse(
 )
 
 fun DiscContext.toTransportUsersDisc() = UsersDiscussionsResponse(
+    responseType = "usersDiscussions",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
     result = if (state == DiscState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),

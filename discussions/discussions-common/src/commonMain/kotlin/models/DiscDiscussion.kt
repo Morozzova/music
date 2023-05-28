@@ -15,6 +15,7 @@ data class DiscDiscussion(
     val permissionsClient: MutableSet<MusicPermissionClient> = mutableSetOf()
 ) {
     fun deepCopy(): DiscDiscussion = copy(
+        principalRelations = principalRelations.toSet(),
         permissionsClient = permissionsClient.toMutableSet(),
     )
     fun isEmpty() = this == NONE

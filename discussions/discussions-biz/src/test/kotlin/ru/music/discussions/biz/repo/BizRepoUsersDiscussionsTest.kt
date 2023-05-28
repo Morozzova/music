@@ -2,6 +2,8 @@ package ru.music.discussions.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import permissions.MusicPrincipalModel
+import permissions.MusicUserGroups
 import repo.DbDiscussionResponse
 import repo.DbDiscussionsResponse
 import ru.music.common.DiscContext
@@ -64,7 +66,14 @@ class BizRepoUsersDiscussionsTest {
             command = command,
             state = DiscState.NONE,
             workMode = DiscWorkMode.TEST,
-            multiDiscussionsRequest = DiscMulti(userId)
+            multiDiscussionsRequest = DiscMulti(userId),
+            principal = MusicPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    MusicUserGroups.USER,
+                    MusicUserGroups.TEST,
+                )
+            ),
         )
         processor.exec(ctx)
         assertEquals(DiscState.FINISHING, ctx.state)

@@ -2,12 +2,17 @@ package ru.music.discussions.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import permissions.MusicPrincipalModel
+import permissions.MusicUserGroups
 import ru.music.common.DiscContext
 import ru.music.common.models.*
 import ru.music.discussions.biz.DiscussionsProcessor
+import ru.music.discussions.stubs.DiscStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+
+private val stub = DiscStub.prepareResult { id = DiscId("123-234-abc-ABC") }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun validationIdCorrect(command: DiscCommand, processor: DiscussionsProcessor) = runTest {
@@ -23,6 +28,13 @@ fun validationIdCorrect(command: DiscCommand, processor: DiscussionsProcessor) =
             status = DiscStatus.OPEN,
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
+        ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -45,6 +57,13 @@ fun validationIdTrim(command: DiscCommand, processor: DiscussionsProcessor) = ru
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
         ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -65,6 +84,13 @@ fun validationIdEmpty(command: DiscCommand, processor: DiscussionsProcessor) = r
             status = DiscStatus.OPEN,
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
+        ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -89,6 +115,13 @@ fun validationIdFormat(command: DiscCommand, processor: DiscussionsProcessor) = 
             status = DiscStatus.OPEN,
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
+        ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)

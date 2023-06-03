@@ -132,7 +132,8 @@ class DiscussionsMockApiTest {
             title = "Very good music",
             soundUrl = "abc.ru",
             status = DiscussionStatus.OPEN,
-            answers = mutableListOf("111", "222", "000")
+            answers = mutableListOf("111", "222", "000"),
+            lock = "123"
         )
 
         val response = client.post("/discussion/update") {
@@ -186,7 +187,8 @@ class DiscussionsMockApiTest {
             title = "Very good music",
             soundUrl = "abc.ru",
             status = DiscussionStatus.CLOSED,
-            answers = mutableListOf("111", "222", "000")
+            answers = mutableListOf("111", "222", "000"),
+            lock = "123"
         )
 
         val response = client.post("/discussion/close") {
@@ -239,11 +241,14 @@ class DiscussionsMockApiTest {
 
         val client = myClient()
 
+        val deleteId = "248"
+
         val response = client.post("/discussion/delete") {
             val requestObj = DiscussionDeleteRequest(
                 requestId = "12345",
                 discussion = DiscussionDeleteObject(
-                    id = "248",
+                    id = deleteId,
+                    lock = "123",
                 ),
                 debug = DiscussionDebug(
                     mode = DiscussionRequestDebugMode.TEST,
@@ -256,7 +261,7 @@ class DiscussionsMockApiTest {
 
         val responseObj = response.body<DiscussionDeleteResponse>()
         assertEquals(200, response.status.value)
-        assertEquals("248", responseObj.discussion?.id)
+        assertEquals(deleteId, responseObj.discussion?.id)
     }
 
     @Test

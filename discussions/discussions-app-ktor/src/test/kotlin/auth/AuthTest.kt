@@ -15,7 +15,7 @@ class AuthTest {
             module(testSettings())
         }
 
-        val response = client.post("/discussions/create") {
+        val response = client.post("/discussion/create") {
             addAuth(config = KtorAuthConfig.TEST.copy(audience = "invalid"))
         }
         assertEquals(401, response.status.value)

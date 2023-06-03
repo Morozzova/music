@@ -7,9 +7,9 @@ import io.ktor.http.*
 import ru.music.discussions.ru.music.discussions.base.KtorAuthConfig
 
 fun HttpRequestBuilder.addAuth(
-    id: String,
-    groups: List<String>,
-    config: KtorAuthConfig
+    id: String = "user1",
+    groups: List<String> = listOf("USER", "TEST"),
+    config: KtorAuthConfig = KtorAuthConfig.TEST,
 ) {
     val token = JWT.create()
         .withAudience(config.audience)

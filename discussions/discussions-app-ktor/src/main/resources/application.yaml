@@ -14,25 +14,24 @@ ktor:
 #    - "http://192.168.0.182:8080/"
 discussions:
   repository:
-    test: inmemory
-    prod: psql
-
+    test: "$DB_TYPE_TEST:inmemory"
+    prod: "$DB_TYPE_PROD:psql"
     psql:
       password: postgres-pass
       schema: discussions
       url: jdbc:postgresql://localhost:5432/discussions
       user: postgres
 
-#jwt:
-#  secret: "secret"
-#  issuer: "MusicBroker"
-#  audience: "music-users"
-#  realm: "music-discussions"
-#  clientId: "music-broker-service"
-
 jwt:
-  issuer: "http://localhost:8081/auth/realms/music-broker"
+  secret: "secret"
+  issuer: "MusicBroker"
   audience: "music-users"
   realm: "music-discussions"
   clientId: "music-broker-service"
-  certUrl: "http://localhost:8081/auth/realms/music-broker/protocol/openid-connect/certs"
+
+#jwt:
+#  issuer: "http://localhost:8081/auth/realms/music-broker"
+#  audience: "music-users"
+#  realm: "music-discussions"
+#  clientId: "music-broker-service"
+#  certUrl: "http://localhost:8081/auth/realms/music-broker/protocol/openid-connect/certs"

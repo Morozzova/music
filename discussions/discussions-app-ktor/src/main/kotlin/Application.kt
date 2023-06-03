@@ -71,7 +71,9 @@ fun Application.module(appSettings: DiscAppSettings = initAppSettings()) {
 
     routing {
         route("discussion") {
-            discussions(appSettings)
+            authenticate("auth-jwt") {
+                discussions(appSettings)
+            }
         }
         swagger(appSettings)
         staticResources("static", "ru.music.static")

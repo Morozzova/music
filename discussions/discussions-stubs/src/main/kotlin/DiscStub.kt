@@ -13,5 +13,6 @@ object DiscStub {
 
     fun prepareResult(block: DiscDiscussion.() -> Unit): DiscDiscussion = get().apply(block)
 
-    fun prepareDiscussionsList(id: DiscUserId?) = getAll()
+    fun prepareDiscussionsList(id: DiscUserId?) = if (id == null) getAll()
+    else getUsers()
 }

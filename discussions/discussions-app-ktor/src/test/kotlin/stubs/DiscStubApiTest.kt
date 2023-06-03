@@ -181,7 +181,7 @@ class DiscStubApiTest {
         }
         val responseObj = response.body<AllDiscussionsResponse>()
         assertEquals(200, response.status.value)
-        assertEquals(4, responseObj.discussions?.size)
+        assertEquals(3, responseObj.discussions?.size)
     }
 
     @Test
@@ -206,7 +206,7 @@ class DiscStubApiTest {
         }
         val responseObj = response.body<UsersDiscussionsResponse>()
         assertEquals(200, response.status.value)
-        assertEquals(4, responseObj.discussions?.size)
+        assertEquals(2, responseObj.discussions?.size)
     }
 
 

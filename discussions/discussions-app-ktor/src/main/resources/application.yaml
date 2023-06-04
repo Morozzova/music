@@ -35,6 +35,6 @@ discussions:
 jwt:
   issuer: "http://localhost:8081/auth/realms/music-broker"
   audience: "music-users"
-  realm: "music-discussions"
+  realm: "music-broker"
   clientId: "music-broker-service"
   certUrl: "http://localhost:8081/auth/realms/music-broker/protocol/openid-connect/certs"

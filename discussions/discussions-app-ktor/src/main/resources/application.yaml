@@ -8,6 +8,9 @@ ktor:
   watch:
     - classes
     - resources
+#  application:
+#    modules:
+#      - "ru.music.discussions.ApplicationKt.module"
 #  urls:
 #    - "http://127.0.0.1:8080/"
 #    - "http://0.0.0.0:8080/"
@@ -22,16 +25,16 @@ discussions:
       url: jdbc:postgresql://localhost:5432/discussions
       user: postgres
 
-jwt:
-  secret: "secret"
-  issuer: "MusicBroker"
-  audience: "music-users"
-  realm: "music-discussions"
-  clientId: "music-broker-service"
-
 #jwt:
-#  issuer: "http://localhost:8081/auth/realms/music-broker"
+#  secret: "secret"
+#  issuer: "MusicBroker"
 #  audience: "music-users"
 #  realm: "music-discussions"
 #  clientId: "music-broker-service"
-#  certUrl: "http://localhost:8081/auth/realms/music-broker/protocol/openid-connect/certs"
+
+jwt:
+  issuer: "http://localhost:8081/auth/realms/music-broker"
+  audience: "music-users"
+  realm: "music-discussions"
+  clientId: "music-broker-service"
+  certUrl: "http://localhost:8081/auth/realms/music-broker/protocol/openid-connect/certs"

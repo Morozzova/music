@@ -44,6 +44,7 @@ dependencies {
     implementation(ktorServer("websockets")) // "io.ktor:ktor-server-websockets:$ktorVersion"
     implementation(ktorServer("config-yaml")) // "io.ktor:ktor-server-config-yaml:$ktorVersion"
     implementation(ktorServer("content-negotiation")) // "io.ktor:ktor-server-content-negotiation:$ktorVersion"
+    implementation(ktorServer("auth")) // "io.ktor:ktor-auth:$ktorVersion"
 
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")

@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3"
 services:
   #  app:
   #    image: ok-marketplace-be-app-ktor:0.0.1

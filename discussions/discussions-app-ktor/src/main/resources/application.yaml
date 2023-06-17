@@ -8,9 +8,9 @@ ktor:
   watch:
     - classes
     - resources
-#  application:
-#    modules:
-#      - "ru.music.discussions.ApplicationKt.module"
+  application:
+    modules:
+      - "ru.music.discussions.ApplicationKt.module"
   urls:
     - "http://127.0.0.1:8080/"
     - "http://0.0.0.0:8080/"

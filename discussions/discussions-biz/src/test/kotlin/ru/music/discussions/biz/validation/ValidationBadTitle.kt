@@ -2,6 +2,8 @@ package ru.music.discussions.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import permissions.MusicPrincipalModel
+import permissions.MusicUserGroups
 import ru.music.common.DiscContext
 import ru.music.common.models.*
 import ru.music.discussions.biz.DiscussionsProcessor
@@ -27,6 +29,13 @@ fun validationTitleCorrect(command: DiscCommand, processor: DiscussionsProcessor
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
         ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -49,6 +58,13 @@ fun validationTitleTrim(command: DiscCommand, processor: DiscussionsProcessor) =
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
         ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -70,6 +86,13 @@ fun validationTitleEmpty(command: DiscCommand, processor: DiscussionsProcessor) 
             status = DiscStatus.OPEN,
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
+        ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)
@@ -94,6 +117,13 @@ fun validationTitleSymbols(command: DiscCommand, processor: DiscussionsProcessor
             status = DiscStatus.OPEN,
             answers = mutableListOf(),
             lock = DiscLock("123-234-abc-ABC")
+        ),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
         ),
     )
     processor.exec(ctx)

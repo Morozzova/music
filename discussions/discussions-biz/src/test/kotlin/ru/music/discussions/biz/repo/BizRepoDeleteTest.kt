@@ -1,13 +1,15 @@
 package ru.music.discussions.biz.repo
 
-import DiscussionsRepositoryMock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import permissions.MusicPrincipalModel
+import permissions.MusicUserGroups
 import repo.DbDiscussionResponse
 import ru.music.common.DiscContext
 import ru.music.common.DiscCorSettings
 import ru.music.common.models.*
 import ru.music.discussions.biz.DiscussionsProcessor
+import ru.music.discussions.repo.tests.DiscussionsRepositoryMock
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -62,7 +64,14 @@ class BizRepoDeleteTest {
             command = command,
             state = DiscState.NONE,
             workMode = DiscWorkMode.TEST,
-            discussionRequest = discToDel
+            discussionRequest = discToDel,
+            principal = MusicPrincipalModel(
+                id = userId,
+                groups = setOf(
+                    MusicUserGroups.USER,
+                    MusicUserGroups.TEST,
+                )
+            ),
         )
         processor.exec(ctx)
         assertEquals(DiscState.FINISHING, ctx.state)

@@ -48,3 +48,5 @@ include("discussions:discussions-repo-in-memory")
 include("discussions:discussions-repo-stubs")
 include("discussions:discussions-repo-tests")
 include("discussions:discussions-repo-postgresql")
+
+include("auth")

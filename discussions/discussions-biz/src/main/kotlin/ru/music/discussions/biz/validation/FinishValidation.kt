@@ -12,3 +12,11 @@ fun ICorChainDsl<DiscContext>.finishDiscValidation(title: String) = worker {
         discussionValidated = discussionValidating
     }
 }
+
+fun ICorChainDsl<DiscContext>.finishDiscValidationMulti(title: String) = worker {
+    this.title = title
+    on { state == DiscState.RUNNING }
+    handle {
+        discussionValidatedMulti = discussionValidatingMulti
+    }
+}

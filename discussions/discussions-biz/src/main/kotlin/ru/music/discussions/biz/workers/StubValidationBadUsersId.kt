@@ -15,9 +15,9 @@ fun ICorChainDsl<DiscContext>.stubValidationBadUsersId(title: String) = worker {
         this.errors.add(
             DiscError(
                 group = "validation",
-                code = "validation-id",
+                code = "validation-users-id",
                 field = "ownerId",
-                message = "Wrong id field"
+                message = "Wrong users id field"
             )
         )
     }

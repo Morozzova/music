@@ -1,6 +1,10 @@
 package ru.music.discussions.stubs
 
-import ru.music.common.models.*
+import permissions.MusicPermissionClient
+import ru.music.common.models.DiscDiscussion
+import ru.music.common.models.DiscId
+import ru.music.common.models.DiscStatus
+import ru.music.common.models.DiscUserId
 
 object DiscStubItems {
     val DISCUSSION_FIRST: DiscDiscussion
@@ -11,9 +15,10 @@ object DiscStubItems {
             soundUrl = "www.lorem.ipsum",
             status = DiscStatus.OPEN,
             permissionsClient = mutableSetOf(
-                DiscPermissionsClient.READ,
-                DiscPermissionsClient.UPDATE,
-                DiscPermissionsClient.DELETE
+                MusicPermissionClient.READ,
+                MusicPermissionClient.UPDATE,
+                MusicPermissionClient.CLOSE,
+                MusicPermissionClient.DELETE
             )
         )
     val ALL_DISCUSSIONS = listOf(DISCUSSION_FIRST, DISCUSSION_FIRST, DISCUSSION_FIRST)

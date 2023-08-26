@@ -1,7 +1,9 @@
 package repo
 
+import auth.addAuth
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import helpers.testSettings
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -11,11 +13,10 @@ import io.ktor.server.testing.*
 import musicBroker.api.v1.models.*
 import org.junit.Assert.assertNotEquals
 import org.junit.Test
-import ru.music.common.DiscCorSettings
 import ru.music.common.models.*
-import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
 import ru.music.discussions.repo.inmemory.DiscussionsRepoInMemory
+import ru.music.discussions.ru.music.discussions.base.KtorAuthConfig
 import ru.music.discussions.stubs.DiscStub
 import kotlin.test.assertEquals
 
@@ -41,11 +42,12 @@ class DiscussionsInMemoryApiTest {
         ownerId = DiscUserId(usersId)
     }
 
+    private val userId = initDiscussion.ownerId
     @Test
     fun create() = testApplication {
         val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion), randomUuid = { uuidNew })
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -64,6 +66,7 @@ class DiscussionsInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionCreateResponse>()
@@ -79,7 +82,7 @@ class DiscussionsInMemoryApiTest {
     fun read() = testApplication {
         val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion), randomUuid = { uuidNew })
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -92,6 +95,7 @@ class DiscussionsInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionReadResponse>()
@@ -103,7 +107,7 @@ class DiscussionsInMemoryApiTest {
     fun update() = testApplication {
         val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion), randomUuid = { uuidNew })
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -125,6 +129,7 @@ class DiscussionsInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionUpdateResponse>()
@@ -140,7 +145,7 @@ class DiscussionsInMemoryApiTest {
     fun close() = testApplication {
         val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion), randomUuid = { uuidNew })
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -162,6 +167,7 @@ class DiscussionsInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionCloseResponse>()
@@ -177,7 +183,7 @@ class DiscussionsInMemoryApiTest {
     fun delete() = testApplication {
         val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion), randomUuid = { uuidNew })
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -193,6 +199,7 @@ class DiscussionsInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionDeleteResponse>()
@@ -204,7 +211,7 @@ class DiscussionsInMemoryApiTest {
     fun allDiscussions() = testApplication {
         val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion, initDiscussionSupply), randomUuid = { uuidNew })
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -216,6 +223,7 @@ class DiscussionsInMemoryApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AllDiscussionsResponse>()
@@ -229,7 +237,7 @@ class DiscussionsInMemoryApiTest {
     fun usersDiscussions() = testApplication {
         val repo = DiscussionsRepoInMemory(initObjects = listOf(initDiscussion, initDiscussionSupply), randomUuid = { uuidNew })
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -242,6 +250,7 @@ class DiscussionsInMemoryApiTest {
                 usersId = usersId
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<UsersDiscussionsResponse>()

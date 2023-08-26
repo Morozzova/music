@@ -349,6 +349,7 @@ components:
       enum:
         - read
         - update
+        - close
         - delete
     DiscussionResponseSingle:
       allOf:

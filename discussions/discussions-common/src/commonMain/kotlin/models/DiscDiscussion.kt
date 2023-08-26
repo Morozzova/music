@@ -1,5 +1,8 @@
 package ru.music.common.models
 
+import permissions.MusicPermissionClient
+import permissions.MusicPrincipalRelations
+
 data class DiscDiscussion(
     var id: DiscId = DiscId.NONE,
     var title: String = "",
@@ -8,9 +11,11 @@ data class DiscDiscussion(
     var status: DiscStatus = DiscStatus.NONE,
     var answers: MutableList<DiscAnswer> = mutableListOf(),
     var lock: DiscLock = DiscLock.NONE,
-    var permissionsClient: MutableSet<DiscPermissionsClient> = mutableSetOf()
+    var principalRelations: Set<MusicPrincipalRelations> = emptySet(),
+    val permissionsClient: MutableSet<MusicPermissionClient> = mutableSetOf()
 ) {
     fun deepCopy(): DiscDiscussion = copy(
+        principalRelations = principalRelations.toSet(),
         permissionsClient = permissionsClient.toMutableSet(),
     )
     fun isEmpty() = this == NONE

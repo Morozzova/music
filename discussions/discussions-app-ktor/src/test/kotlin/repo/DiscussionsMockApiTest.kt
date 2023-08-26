@@ -1,8 +1,9 @@
 package repo
 
-import DiscussionsRepositoryMock
+import auth.addAuth
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import helpers.testSettings
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -12,10 +13,10 @@ import io.ktor.server.testing.*
 import musicBroker.api.v1.models.*
 import org.junit.Assert
 import org.junit.Test
-import ru.music.common.DiscCorSettings
 import ru.music.common.models.*
-import ru.music.discussions.DiscAppSettings
 import ru.music.discussions.module
+import ru.music.discussions.repo.tests.DiscussionsRepositoryMock
+import ru.music.discussions.ru.music.discussions.base.KtorAuthConfig
 import ru.music.discussions.stubs.DiscStub
 import kotlin.test.assertEquals
 
@@ -35,7 +36,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -54,6 +55,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionCreateResponse>()
@@ -80,7 +82,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -93,6 +95,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<DiscussionReadResponse>()
@@ -120,7 +123,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -129,7 +132,8 @@ class DiscussionsMockApiTest {
             title = "Very good music",
             soundUrl = "abc.ru",
             status = DiscussionStatus.OPEN,
-            answers = mutableListOf("111", "222", "000")
+            answers = mutableListOf("111", "222", "000"),
+            lock = "123"
         )
 
         val response = client.post("/discussion/update") {
@@ -141,6 +145,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
 
@@ -173,7 +178,7 @@ class DiscussionsMockApiTest {
             }
         )
         application {
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -182,7 +187,8 @@ class DiscussionsMockApiTest {
             title = "Very good music",
             soundUrl = "abc.ru",
             status = DiscussionStatus.CLOSED,
-            answers = mutableListOf("111", "222", "000")
+            answers = mutableListOf("111", "222", "000"),
+            lock = "123"
         )
 
         val response = client.post("/discussion/close") {
@@ -194,6 +200,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
 
@@ -229,28 +236,32 @@ class DiscussionsMockApiTest {
                     )
                 }
             )
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
 
         val client = myClient()
+
+        val deleteId = "248"
 
         val response = client.post("/discussion/delete") {
             val requestObj = DiscussionDeleteRequest(
                 requestId = "12345",
                 discussion = DiscussionDeleteObject(
-                    id = "248",
+                    id = deleteId,
+                    lock = "123",
                 ),
                 debug = DiscussionDebug(
                     mode = DiscussionRequestDebugMode.TEST,
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
 
         val responseObj = response.body<DiscussionDeleteResponse>()
         assertEquals(200, response.status.value)
-        assertEquals("248", responseObj.discussion?.id)
+        assertEquals(deleteId, responseObj.discussion?.id)
     }
 
     @Test
@@ -273,7 +284,7 @@ class DiscussionsMockApiTest {
                         )
                     }
                 )
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
 
         val client = myClient()
@@ -286,6 +297,7 @@ class DiscussionsMockApiTest {
                 )
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<AllDiscussionsResponse>()
@@ -314,7 +326,7 @@ class DiscussionsMockApiTest {
                         )
                     }
                 )
-            module(DiscAppSettings(corSettings = DiscCorSettings(repoTest = repo)))
+            module(testSettings(repo))
         }
         val client = myClient()
 
@@ -327,6 +339,7 @@ class DiscussionsMockApiTest {
                 usersId = "567"
             )
             contentType(ContentType.Application.Json)
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST)
             setBody(requestObj)
         }
         val responseObj = response.body<UsersDiscussionsResponse>()

@@ -7,6 +7,10 @@ import ru.music.discussions.biz.general.initRepo
 import ru.music.discussions.biz.general.operation
 import ru.music.discussions.biz.general.prepareResult
 import ru.music.discussions.biz.general.stubs
+import ru.music.discussions.biz.permissions.accessValidation
+import ru.music.discussions.biz.permissions.accessValidationMulti
+import ru.music.discussions.biz.permissions.chainPermissions
+import ru.music.discussions.biz.permissions.frontPermissions
 import ru.music.discussions.biz.repo.*
 import ru.music.discussions.biz.validation.*
 import ru.music.discussions.biz.workers.*
@@ -41,11 +45,15 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
 
                     finishDiscValidation("Завершение проверок")
                 }
+
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка объекта для сохранения")
+                    accessValidation("Вычисление прав доступа")
                     repoCreate("Создание обсуждения в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Получить обсуждение", DiscCommand.READ) {
@@ -63,15 +71,18 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
 
                     finishDiscValidation("Успешное завершение валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение обсуждения из БД")
+                    accessValidation("Вычисление прав доступа")
                     worker {
                         title = "Подготовка ответа для Read"
                         on { state == DiscState.RUNNING }
                         handle { discussionRepoDone = discussionRepoRead }
                     }
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Изменить обсуждение", DiscCommand.UPDATE) {
@@ -100,12 +111,15 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
 
                     finishDiscValidation("Успешное завершение валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoRead("Чтение обсуждения из БД")
+                    accessValidation("Вычисление прав доступа")
                     repoPrepareUpdate("Подготовка объекта для обновления")
                     repoUpdate("Обновление обсуждения в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Закрыть обсуждение", DiscCommand.CLOSE) {
@@ -134,12 +148,15 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
 
                     finishDiscValidation("Успешное завершение валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoRead("Чтение обсуждения из БД")
+                    accessValidation("Вычисление прав доступа")
                     repoPrepareClose("Подготовка объекта для обновления")
                     repoClose("Закрытие обсуждения в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Удалить обсуждение", DiscCommand.DELETE) {
@@ -160,12 +177,14 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
 
                     finishDiscValidation("Успешное завершение валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика удаления"
                     repoRead("Чтение обсуждения из БД")
                     repoPrepareDelete("Подготовка объекта для удаления")
                     repoDelete("Удаление обсуждения из БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Получить все обсуждения", DiscCommand.ALL_DISCUSSIONS) {
@@ -174,11 +193,14 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
                     stubDbError("Имитация ошибки работы с БД")
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика поиска в БД"
+                    accessValidationMulti("Вычисление прав доступа")
                     repoPrepareAllDiscussions("Подготовка загрузки всех обсуждений")
                     repoAllDiscussions("Чтение всех обсуждений")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Получить обсуждения пользователя", DiscCommand.USERS_DISCUSSIONS) {
@@ -196,11 +218,14 @@ class DiscussionsProcessor(private val settings: DiscCorSettings = DiscCorSettin
 
                     finishDiscValidation("Успешное завершение валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика поиска в БД"
+                    accessValidationMulti("Вычисление прав доступа")
                     repoPrepareUsersDiscussions("Подготовка загрузки обсуждений пользователя")
                     repoUsersDiscussions("Чтение обсуждений пользователя")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
         }.build()

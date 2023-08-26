@@ -2,6 +2,8 @@ package ru.music.discussions.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import permissions.MusicPrincipalModel
+import permissions.MusicUserGroups
 import ru.music.common.DiscContext
 import ru.music.common.models.*
 import ru.music.discussions.biz.DiscussionsProcessor
@@ -19,6 +21,13 @@ fun validationUsersIdCorrect(command: DiscCommand, processor: DiscussionsProcess
         state = DiscState.NONE,
         workMode = DiscWorkMode.TEST,
         multiDiscussionsRequest = DiscMulti(DiscUserId("555")),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -31,7 +40,14 @@ fun validationUsersIdTrim(command: DiscCommand, processor: DiscussionsProcessor)
         command = command,
         state = DiscState.NONE,
         workMode = DiscWorkMode.TEST,
-        multiDiscussionsRequest = DiscMulti(DiscUserId(" \n\t 555 \n\t "))
+        multiDiscussionsRequest = DiscMulti(DiscUserId(" \n\t 555 \n\t ")),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -44,7 +60,14 @@ fun validationUsersIdEmpty(command: DiscCommand, processor: DiscussionsProcessor
         command = command,
         state = DiscState.NONE,
         workMode = DiscWorkMode.TEST,
-        multiDiscussionsRequest = DiscMulti(DiscUserId(""))
+        multiDiscussionsRequest = DiscMulti(DiscUserId("")),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)
@@ -60,7 +83,14 @@ fun validationUsersIdFormat(command: DiscCommand, processor: DiscussionsProcesso
         command = command,
         state = DiscState.NONE,
         workMode = DiscWorkMode.TEST,
-        multiDiscussionsRequest = DiscMulti(DiscUserId("!@#\$%^&*(),.{}"))
+        multiDiscussionsRequest = DiscMulti(DiscUserId("!@#\$%^&*(),.{}")),
+        principal = MusicPrincipalModel(
+            id = stub.ownerId,
+            groups = setOf(
+                MusicUserGroups.USER,
+                MusicUserGroups.TEST,
+            )
+        ),
     )
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)

@@ -1,7 +1,9 @@
 package ru.music.discussions.stubs
 
+import auth.addAuth
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import helpers.testSettings
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
@@ -10,11 +12,16 @@ import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import musicBroker.api.v1.models.*
 import org.junit.Test
+import ru.music.discussions.module
+import ru.music.discussions.ru.music.discussions.base.KtorAuthConfig
 import kotlin.test.assertEquals
 
 class DiscStubApiTest {
     @Test
     fun create() = testApplication {
+        application {
+            module(appSettings = testSettings())
+        }
         val client = myClient()
 
         val response = client.post("/discussion/create") {
@@ -30,6 +37,7 @@ class DiscStubApiTest {
                     stub = DiscussionRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -41,6 +49,9 @@ class DiscStubApiTest {
 
     @Test
     fun read() = testApplication {
+        application {
+            module(appSettings = testSettings())
+        }
         val client = myClient()
 
         val response = client.post("/discussion/read") {
@@ -54,6 +65,7 @@ class DiscStubApiTest {
                     stub = DiscussionRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -64,6 +76,9 @@ class DiscStubApiTest {
 
     @Test
     fun update() = testApplication {
+        application {
+            module(appSettings = testSettings())
+        }
         val client = myClient()
 
         val response = client.post("/discussion/update") {
@@ -79,6 +94,7 @@ class DiscStubApiTest {
                     stub = DiscussionRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -89,6 +105,9 @@ class DiscStubApiTest {
 
     @Test
     fun close() = testApplication {
+        application {
+            module(appSettings = testSettings())
+        }
         val client = myClient()
 
         val response = client.post("/discussion/close") {
@@ -104,6 +123,7 @@ class DiscStubApiTest {
                     stub = DiscussionRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -115,6 +135,9 @@ class DiscStubApiTest {
 
     @Test
     fun delete() = testApplication {
+        application {
+            module(appSettings = testSettings())
+        }
         val client = myClient()
 
         val response = client.post("/discussion/delete") {
@@ -128,6 +151,7 @@ class DiscStubApiTest {
                     stub = DiscussionRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -138,6 +162,9 @@ class DiscStubApiTest {
 
     @Test
     fun allDiscussions() = testApplication {
+        application {
+            module(appSettings = testSettings())
+        }
         val client = myClient()
 
         val response = client.post("/discussion/all") {
@@ -148,16 +175,20 @@ class DiscStubApiTest {
                     stub = DiscussionRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
         val responseObj = response.body<AllDiscussionsResponse>()
         assertEquals(200, response.status.value)
-        assertEquals(4, responseObj.discussions?.size)
+        assertEquals(3, responseObj.discussions?.size)
     }
 
     @Test
     fun usersDiscussions() = testApplication {
+        application {
+            module(appSettings = testSettings())
+        }
         val client = myClient()
 
         val response = client.post("/discussion/users") {
@@ -169,12 +200,13 @@ class DiscStubApiTest {
                     stub = DiscussionRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST)
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
         val responseObj = response.body<UsersDiscussionsResponse>()
         assertEquals(200, response.status.value)
-        assertEquals(4, responseObj.discussions?.size)
+        assertEquals(2, responseObj.discussions?.size)
     }
 
 
